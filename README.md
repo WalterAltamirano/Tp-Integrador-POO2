@@ -27,7 +27,7 @@ Detalles de implementacion muy importantes:
  * !Detalles de Implementacion!
  * !Detalles de Implementacion!
 
-Patrones utilizados Y los roles segun el "Patrones de Diseño Gamma et. al.":
+Patrones utilizados Y los roles segun el libro "Patrones de Diseño Gamma et. al.":
  * !Patron con sus roles!
  * !Patron con sus roles!
 
