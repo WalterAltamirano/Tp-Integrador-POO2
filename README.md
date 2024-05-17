@@ -7,8 +7,11 @@ Descripcion:
 El repositorio que vamos a usar para desarrollar el Tp final de la materia Programacion con Objetos 2
 
 Integrantes:
+
 Walter Gabriel Altamirano // Comision 2
+
 Ian Bravo //  Comision 1
+
 Matias Maza Vega // Comision ?
 
 Emails:
