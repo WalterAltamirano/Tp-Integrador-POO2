@@ -12,7 +12,7 @@ Walter Gabriel Altamirano // Comision 2
 
 Ian Bravo //  Comision 1
 
-Matias Maza Vega // Comision ?
+Matias Maza Vega // Comision 1
 
 Emails:
 altamiranow4@gmail.com
