@@ -16,7 +16,7 @@ Matias Maza Vega // Comision 1
 
 Emails:
 altamiranow4@gmail.com
-*Email del gil de ian*
+ian_bravo014@hotmail.com
 mjmazavega@gmail.com
 
 Decisiones de Diseño:
