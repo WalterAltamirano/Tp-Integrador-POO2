@@ -16,7 +16,6 @@ public class SEM {
 		
 	}
 	
-
 	public List<ZonaDeEstacionamiento> getZonasDeEstacionamiento() {
 		
 		return this.zonasEstacionamiento;
@@ -28,22 +27,28 @@ public class SEM {
 		
 	}
 
-
 	public List<Compra> getCompras() {
 		
 		return this.compras;
 	}
 
+	
+	public void registrarEstacionamiento(Estacionamiento nuevoEstacionamiento) {
+		this.getEstacionamientos().add(nuevoEstacionamiento);
+		
+	}
 
 	public List<Estacionamiento> getEstacionamientos() {
 		
 		return this.estacionamientosRegistrados ;
 	}
 
-
-	public void registrarEstacionamiento(Estacionamiento nuevoEstacionamiento) {
-		this.getEstacionamientos().add(nuevoEstacionamiento);
+	public void finDeFranjaHoraria() {
+		this.getEstacionamientos().stream().forEach(e -> e.finalizarEstacionamiento());
 		
 	}
+
+
+
 
 }

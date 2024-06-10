@@ -25,10 +25,10 @@ public class PuntoDeVenta {
 
 	public void registrarEstacionamiento(double horaInicio, double horaFin, Auto auto) {
 		
-		Compra nuevaCompraEstacionamiento = new CompraPuntual(this, horaInicio);
+		CompraPuntual nuevaCompraEstacionamiento = new CompraPuntual(this, horaInicio, horaFin);
 		this.getSem().registrarCompra(nuevaCompraEstacionamiento);
 		
-		Estacionamiento nuevoEstacionamiento = new EstacionamientoCompraPuntual(auto, horaInicio, horaFin, nuevaCompraEstacionamiento);
+		Estacionamiento nuevoEstacionamiento = new EstacionamientoCompraPuntual(nuevaCompraEstacionamiento, auto.getPatente());
 		this.getSem().registrarEstacionamiento(nuevoEstacionamiento);
 	}
 
