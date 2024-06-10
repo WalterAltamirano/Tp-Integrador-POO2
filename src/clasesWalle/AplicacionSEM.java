@@ -2,7 +2,7 @@ package clasesWalle;
 
 public class AplicacionSEM implements MovementSensor {
 	
-	private boolean estaCaminando;
+	private boolean usuarioEstaCaminando;
     //private int horaActual;
 	private double saldoAcreditado;
 	private int numeroDeCelular;
@@ -32,22 +32,22 @@ public class AplicacionSEM implements MovementSensor {
 
 	@Override
 	public void driving() {
-		this.estaCaminando = false;
+		this.usuarioEstaCaminando = false;
 		deteccionDeDesplazamiento.notificarAlerta(this);
 		
 	}
 	@Override
 	public void walking() {
-		this.estaCaminando = true;
+		this.usuarioEstaCaminando = true;
 		deteccionDeDesplazamiento.notificarAlerta(this);
 	}
 
 	void setEstaCaminando(boolean valor) {
-		this.estaCaminando = valor;
+		this.usuarioEstaCaminando = valor;
 	}
 	
 	boolean getEstaCaminando() {
-		return this.estaCaminando;
+		return this.usuarioEstaCaminando;
 	}
 	
 	
