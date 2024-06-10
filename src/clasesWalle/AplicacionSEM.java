@@ -2,20 +2,20 @@ package clasesWalle;
 
 public class AplicacionSEM implements MovementSensor {
 	
-	private boolean estaCaminando;
     //private int horaActual;
 	private double saldoAcreditado;
 	private int numeroDeCelular;
 	//private SEM sistemaEstacionamiento;
 	private Modo modo;
 	private EstadoGPS gps;
-	private DeteccionDesplazamiento deteccionDeDesplazamiento;
-
+    private EstadoApp estado;
+    
 	public AplicacionSEM(Modo modo) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = 0;
 		this.modo = modo;
+		
 	}
 	
 	public void inicioEstacionamiento(int numeroCelular,String patente) {}
@@ -32,24 +32,20 @@ public class AplicacionSEM implements MovementSensor {
 
 	@Override
 	public void driving() {
-		this.estaCaminando = false;
-		deteccionDeDesplazamiento.notificarAlerta(this);
+		estado.manejando(this);
 		
 	}
 	@Override
 	public void walking() {
-		this.estaCaminando = true;
-		deteccionDeDesplazamiento.notificarAlerta(this);
-	}
-
-	void setEstaCaminando(boolean valor) {
-		this.estaCaminando = valor;
+		estado.caminando(this);
 	}
 	
-	boolean getEstaCaminando() {
-		return this.estaCaminando;
+	void setEstado(EstadoApp estado) {
+		this.estado = estado;
 	}
-	
+//	void setGps(EstadoGPS estado) {
+//		this.gps = estado;
+//	}
 	
   //public double consultarSaldo() {} //Pide getCredito()
 	
@@ -101,13 +97,12 @@ public class AplicacionSEM implements MovementSensor {
   / Se envia el mensaje inicioEstacionamiento()
      * verifica que (Constantemente recibiendo uno de los dos mensajes "driving()" o "walking()") 
        1. No haya un estacionamiento vigente con esa patente
-       2. Que el mensaje que reciba sea "walking()"
-           *(Es decir, que le envia a su estado el mensaje getEstaCaminando()), 
+       2. Que el estadoApp sea Caminando
        3. Que tenga credito.
        4. Que se encuentre en una zona de estacionamiento
       
       Entonces toma las siguientes decisiones: 
-        1. deteccionDeDesplazamiento.notificarAlerta()  --Independientemente de que si esta activada o no
+        1. modo.notificarAlertaInicio()  --Independientemente de que si esta activada o no
         2. sistemaEstacionamiento.registrarEstacionamiento(new Estaciomiento(patente,nroCelular,this.horaActual))
         3. 
         4. 
