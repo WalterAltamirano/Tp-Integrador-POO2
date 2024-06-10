@@ -24,9 +24,7 @@ public class AplicacionSEM implements MovementSensor {
 	
 	public void elegirModo(Modo modo) {}
 	
-	public void encenderGPS() {}
-	
-	public void apagarGPS() {}
+	public void elegirEstadoGPS(EstadoGPS estado) {}
 	
 	public void cargarSaldo(double saldoACargar) {}
 
@@ -43,9 +41,11 @@ public class AplicacionSEM implements MovementSensor {
 	void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-//	void setGps(EstadoGPS estado) {
-//		this.gps = estado;
-//	}
+	void setEstadoGPS(EstadoGPS estado) {
+		this.gps = estado;
+	}
+
+
 	
   //public double consultarSaldo() {} //Pide getCredito()
 	
