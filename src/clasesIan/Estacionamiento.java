@@ -1,0 +1,38 @@
+package clasesIan;
+
+import java.time.*;
+
+public abstract class Estacionamiento {
+	private LocalDateTime horaDeInicio;
+	private LocalDateTime horaDeFin;
+	protected String patenteDeVehiculo;
+	private boolean vigencia;
+	
+	/*public Estacionamiento(String patenteDeVehiculo) {
+		this.patenteDeVehiculo = patenteDeVehiculo;
+	}*/
+	
+	public boolean estaVigente() {
+		if(LocalDateTime.now().isAfter(horaDeInicio) && LocalDateTime.now().isBefore(horaDeFin)) {
+			vigencia = true;
+		}else{
+			vigencia = false;
+		}; //verifica si la hora actual esta despues de la hora de inicio y antes de la hora de finalizacion.
+		return vigencia;
+	}
+	
+	public void notificarFinalizacion() {
+        if (haFinalizado()) {
+            System.out.println("El estacionamiento ha finalizado para el vehículo con patente: " + patenteDeVehiculo);
+        }
+        
+	}
+
+	private boolean haFinalizado() {
+		return LocalDateTime.now().isAfter(horaDeFin);
+	};
+	
+	public void finalizarEstacionamiento() {
+		vigencia = false;
+	}
+}
