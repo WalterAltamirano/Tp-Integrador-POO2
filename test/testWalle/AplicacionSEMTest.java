@@ -2,7 +2,7 @@ package testWalle;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-
+import static org.mockito.Mockito.*;
 
 public class AplicacionSEMTest {
 	
@@ -14,11 +14,11 @@ public class AplicacionSEMTest {
 	
 	
 	@Test
-	public void test1() {
+	public void testUnUsuarioDecideIniciarUnEstacionamientoConGPSActivadoYModoAutomaticoYLaApliacionSEMIniciaElEstacionamiento() {
 		
 	}
 	@Test
-	public void test2() {
+	public void testUnUsuarioDecideIniciarUnEstacionamientoConGPSDesactivadoYModoAutomaticoYLaApliacionSEMIniciaElEstacionamiento() {
 		
 	}
 	@Test
