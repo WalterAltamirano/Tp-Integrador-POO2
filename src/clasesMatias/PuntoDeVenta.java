@@ -21,6 +21,8 @@ public class PuntoDeVenta {
 		aplicacion.cargarSaldo(saldo);
 		Compra nuevaCarga = new CargaDeSaldo(this, saldo, aplicacion);
 		this.getSem().registrarCompra(nuevaCarga);
+		//this.getSem().notificarOrganismosInteresados();
+		
 	}
 
 	public void registrarEstacionamiento(String patente, int cantidadDeHoras ) {
@@ -30,6 +32,8 @@ public class PuntoDeVenta {
 		
 		Estacionamiento nuevoEstacionamiento = new EstacionamientoCompraPuntual(nuevaCompraEstacionamiento, patente);
 		this.getSem().registrarEstacionamiento(nuevoEstacionamiento);
+		//this.getSem().notificarOrganismosInteresados();
+		
 	}
 
 }
