@@ -49,4 +49,9 @@ public class AplicacionSEM implements MovementSensor{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void alertaFinDeEstacionamiento() {
+		// TODO Auto-generated method stub
+		
+	}
 }
