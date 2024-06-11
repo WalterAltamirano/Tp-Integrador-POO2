@@ -10,7 +10,8 @@ public class Usuario {
 	}
 	
 	//FALTA RETOCAR
-	public void estacionamientoCompraPuntual() {
+	public void estacionamientoCompraPuntual(String patente, int cantidadDeHoras, PuntoDeVenta puntoDeVenta) {
+		puntoDeVenta.registrarEstacionamiento(patente, cantidadDeHoras);
 	}
 	
 	public void solicitarCargaDeSaldo(PuntoDeVenta puestoDeCarga, double saldoACargar) {

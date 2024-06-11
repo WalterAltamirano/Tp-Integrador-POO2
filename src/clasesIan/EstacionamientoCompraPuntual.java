@@ -1,5 +1,7 @@
 package clasesIan;
 
+import clasesMatias.CompraPuntual;
+
 public class EstacionamientoCompraPuntual extends Estacionamiento{
 
 	private CompraPuntual compraPuntual;

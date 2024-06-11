@@ -35,4 +35,8 @@ public abstract class Estacionamiento {
 	public void finalizarEstacionamiento() {
 		vigencia = false;
 	}
+	
+	public String getPatente() {
+		return patenteDeVehiculo;
+	}
 }
