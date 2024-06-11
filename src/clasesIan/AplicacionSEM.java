@@ -39,4 +39,14 @@ public class AplicacionSEM implements MovementSensor{
 	int getNumero() {
 		return 0;
 	}
+
+	public Object getModo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void alertaInicioDeEstacionamiento() {
+		// TODO Auto-generated method stub
+		
+	}
 }
