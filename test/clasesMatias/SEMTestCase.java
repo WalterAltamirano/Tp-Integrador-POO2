@@ -18,7 +18,8 @@ public class SEMTestCase {
 	private Estacionamiento estacionamiento1;
 	private Compra cargaDeSaldo;
 	private Compra compraPuntual;
-	
+	private Infraccion infraccion1;
+	private INotificar organismoInteresado;
 	
 	@BeforeEach 
 	public void setUp () {
@@ -27,6 +28,8 @@ public class SEMTestCase {
 		estacionamiento1 = mock(Estacionamiento.class);
 		cargaDeSaldo = mock(CargaDeSaldo.class);
 		compraPuntual = mock(CompraPuntual.class);
+		infraccion1 = mock(Infraccion.class);
+		organismoInteresado = mock(INotificar.class);
 		
 		sem = new SEM();
 		
@@ -84,6 +87,7 @@ public class SEMTestCase {
 		//Verify
 		assertTrue(sem.getEstacionamientos().contains(estacionamiento1));
 	}
+
 	
 	@Test
 	public void finDeFranjaHorariaTest() {
@@ -93,6 +97,69 @@ public class SEMTestCase {
 		//Verify
 		verify(estacionamiento1, atLeast(1)).finalizarEstacionamiento();
 	}
+	
+
+	
+	@Test
+	public void registrarInfraccionTest() {
+		//Exercise
+		sem.registrarInfraccion(infraccion1);
+		//Verify
+		assertEquals(sem.getInfraccionesRegistradas().size(), 1);
+	}
+	
+	@Test
+	public void getInfraccionesRegistradasTest() {
+		//Exercise
+		sem.registrarInfraccion(infraccion1);
+		//Verify
+		assertTrue(sem.getInfraccionesRegistradas().contains(infraccion1));
+	}
+	
+	@Test 
+	public void buscarPorNumeroDeCelularTest() {
+		when(estacionamiento1.getNumeroDeCelularDeEstacionamiento()).thenReturn(123456);
+		//exercise
+		sem.registrarEstacionamiento(estacionamiento1);
+		
+		//verify
+		assertEquals(sem.buscarPorNumeroCelular(123456), estacionamiento1);
+	}
+	
+	@Test
+	public void suscribirOrganismosInteresadosTest() {
+		//Exercise
+		sem.suscribirOrganismosInteresados(organismoInteresado);
+		//Verify
+		assertEquals(sem.getOrganismosInteresados().size(), 1);
+	}
+	
+	@Test
+	public void desuscribirOrganismosInteresadosTest() {
+		//Exercise
+		sem.suscribirOrganismosInteresados(organismoInteresado);
+		sem.desuscribirOrganismosInteresados(organismoInteresado);
+		//Verify
+		assertFalse(sem.getOrganismosInteresados().contains(organismoInteresado));
+	}
+	
+	@Test
+	public void getOrganismosInteresadosTest() {
+		//Exercise
+		sem.suscribirOrganismosInteresados(organismoInteresado);
+		//Verify
+		assertTrue(sem.getOrganismosInteresados().contains(organismoInteresado));
+	}
+	
+	@Test
+	public void notificarOrganismosInteresadosTest() {
+		//Exercise
+		sem.suscribirOrganismosInteresados(organismoInteresado);
+		sem.notificarOrganismosInteresados();
+		//verify
+		verify(organismoInteresado, atLeast(1)).actualizar(sem);
+	}
+	
 
 
 }

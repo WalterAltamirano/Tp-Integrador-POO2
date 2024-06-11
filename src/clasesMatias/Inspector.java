@@ -13,16 +13,20 @@ public class Inspector {
 	}
 
 	public void inspeccionarAuto(Auto auto) {
-		boolean vigencia = this.empleador.verificarEstacionamientoVigente(auto);
+		boolean vigencia = this.empleador.verificarEstacionamientoVigente(auto.getPatente());
 		if (vigencia == false) {
-			this.AltaDeInfraccion(auto);
+			this.altaDeInfraccion(auto);
 		}
 		
 	}
 
-	private void AltaDeInfraccion(Auto auto) {
-		Infraccion infraccion = new Infraccion(auto, this);
-		
+	public void altaDeInfraccion(Auto auto) {
+		Infraccion infraccion = new Infraccion(auto.getPatente(), this);
+		this.empleador.registrarInfraccion(infraccion);
+	}
+
+	public ZonaDeEstacionamiento getZonaAsignada() {
+		return zonaAsignada;
 	}
 
 }

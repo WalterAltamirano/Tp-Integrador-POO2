@@ -2,12 +2,17 @@ package clasesMatias;
 
 public class CompraPuntual extends Compra {
 
-	private double horasCompradas;
+	private int horasCompradas;
+	private long horaInicio;
+	private long horaFin;
 
-	public CompraPuntual(PuntoDeVenta puntoDeVenta, double horaInicio, double horaFin) {
+	public CompraPuntual(PuntoDeVenta puntoDeVenta, int cantidadDeHoras) {
 		super(puntoDeVenta);
-		this.hora = (long) horaInicio;
-		this.horasCompradas = horaFin - horaInicio;
+		this.horasCompradas = cantidadDeHoras;
+		this.horaInicio = this.horaEmision;
+		this.horaFin = this.horaInicio + this.horasCompradas;
+		
+		
 	}
 
 

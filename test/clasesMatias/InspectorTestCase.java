@@ -36,7 +36,15 @@ class InspectorTestCase {
 		//exercise
 		inspector.inspeccionarAuto(auto1);
 		//verify
-		verify(sem, atLeast(1)).verificarEstacionamientoVigente(auto1);
+		verify(sem, atLeast(1)).verificarEstacionamientoVigente(auto1.getPatente());
+	}
+	
+	@Test
+	public void AltaDeInfraccionTest() {
+		//exercise
+		inspector.altaDeInfraccion(auto1);
+		//verify
+		assertEquals(sem.getInfraccionesRegistradas().size(), 1);
 	}
 	
 	
