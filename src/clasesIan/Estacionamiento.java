@@ -39,4 +39,8 @@ public abstract class Estacionamiento {
 	public String getPatente() {
 		return patenteDeVehiculo;
 	}
+	
+	public int getNumeroDeCelularDeEstacionamiento() {
+		return 0;
+	}
 }
