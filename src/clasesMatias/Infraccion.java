@@ -12,8 +12,12 @@ public class Infraccion {
 	private Inspector inspector;
 	private ZonaDeEstacionamiento zona;
 
-	public Infraccion(Auto auto, Inspector inspector) {
-		
+	public Infraccion(String patente, Inspector inspector) {
+		this.patenteAutoEnInfraccion = patente;
+		this.fecha = new Date();	
+		this.hora = fecha.getTime();
+		this.inspector = inspector;
+		this.zona = inspector.getZonaAsignada();
 	}
 
 }

@@ -49,7 +49,7 @@ class PuntoDeVentaTestCase {
 	public void registrarEstacionamientoTest() {
 				
 		//exercise
-		puntoVenta1.registrarEstacionamiento(8, 12, auto);
+		puntoVenta1.registrarEstacionamiento(auto.getPatente(), 4);
 		//verify		
 		assertEquals(sem.getEstacionamientos().size(), 1);
 		assertEquals(sem.getCompras().size(), 1);
