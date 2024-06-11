@@ -3,6 +3,7 @@ package clasesMatias;
 import java.util.ArrayList;
 import java.util.List;
 
+import clasesIan.Auto;
 import clasesIan.Estacionamiento;
 
 public class SEM {
@@ -45,6 +46,11 @@ public class SEM {
 
 	public void finDeFranjaHoraria() {
 		this.getEstacionamientos().stream().forEach(e -> e.finalizarEstacionamiento());
+		
+	}
+
+	public boolean verificarEstacionamientoVigente(Auto auto) {
+		// TODO Auto-generated method stub
 		
 	}
 
