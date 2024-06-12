@@ -16,10 +16,13 @@ public abstract class Modo {
 	}
 	
 	public void finDeEstacionamiento(AplicacionSEM app,int numeroDeCelular) {
-		app.getSistemaEstacionamiento().finalizarEstacionamientoCon(numeroDeCelular);
-		this.notificarAlertaDeFinDeEstacionamiento(app);
-		this.darRespuestaFinal(app);
-		app.descontarSaldo();
+		if(!app.hayEstacionamientoCon(numeroDeCelular)) {
+			 app.getSistemaEstacionamiento().finalizarEstacionamientoCon(numeroDeCelular);
+			 this.notificarAlertaDeFinDeEstacionamiento(app);
+			 this.darRespuestaFinal(app);
+			 app.descontarSaldo();
+		}
+		
 	}
 	
 	public abstract void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app);

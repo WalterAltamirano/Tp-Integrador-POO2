@@ -62,7 +62,10 @@ public class AplicacionSEM implements MovementSensor {
 	public double consultarSaldo() {
 		return this.getCredito();
 	}
+	public void asignarCelular() {
 		
+	}
+	
 	public int getNumeroDeCelular() { 
 //		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
 //			System.out.print("No hay un numero de celular asociado a la app. "
@@ -100,6 +103,9 @@ public class AplicacionSEM implements MovementSensor {
 	}
 	boolean hayEstacionamientoCon(String patente) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
+	}
+	boolean hayEstacionamientoCon(int nroDeCelular) {
+	    return sistemaEstacionamiento.verificarEstacionamientoVigente(nroDeCelular);
 	}
 	double getCredito() {   
 	    return this.saldoAcreditado;

@@ -45,7 +45,7 @@ public class AplicacionSEMTest {
 		when(sistemaEstacionamiento.verificarEstacionamientoVigente("333ALO")).thenReturn(false);
 		when(automovil.getPatente()).thenReturn("333ALO");
 		//Excercise
-		app.establecerNroDeCelular(nroDeCelular); //El usuario le provee el nro de celular
+		
 		app.elegirEstadoGPS(gpsEncendido);
 		app.elegirModo(modoAutomatico);
 		app.cargarSaldo(100);
