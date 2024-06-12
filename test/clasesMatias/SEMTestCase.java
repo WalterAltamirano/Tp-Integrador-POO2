@@ -182,6 +182,26 @@ public class SEMTestCase {
 		verify(organismoInteresado, atLeast(1)).actualizar(sem);
 	}
 	
+	@Test
+	public void verificarEstacionamientoVigenteTest() {
+		when(estacionamiento1.estaVigente()).thenReturn(true);
+		//Exercise
+		sem.registrarEstacionamiento(estacionamiento1);
+		//Verify
+		assertTrue(sem.verificarEstacionamientoVigente(estacionamiento1.getNumeroDeCelularDeEstacionamiento()));
+		assertTrue(sem.verificarEstacionamientoVigente(estacionamiento1.getPatente()));
+		
+	}
+	
+	@Test
+	public void finalizarEstacionamiento() {
+		//Exercise
+		sem.registrarEstacionamiento(estacionamiento1);
+		sem.finalizarEstacionamientoCon(estacionamiento1.getNumeroDeCelularDeEstacionamiento());
+		//verify
+		assertFalse(sem.verificarEstacionamientoVigente(estacionamiento1.getNumeroDeCelularDeEstacionamiento()));
+	}
+	
 
 
 }

@@ -75,7 +75,7 @@ public class SEM {
 	}
 	
 	public boolean verificarEstacionamientoVigente(int numeroCelular) {
-		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getNumeroDeCelularDeEstacionamiento().equals(numeroCelular));		
+		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getNumeroDeCelularDeEstacionamiento() == numeroCelular);		
 	}
 
 	public void registrarInfraccion(Infraccion infraccion) {
@@ -113,6 +113,12 @@ public class SEM {
 
 	public void desuscribirOrganismosInteresados(INotificar organismoInteresado) {
 		this.getOrganismosInteresados().remove(organismoInteresado);
+		
+	}
+
+	public void finalizarEstacionamientoCon(int numeroDeCelular) {
+		Estacionamiento estacionamiento = this.buscarPorNumeroCelular(numeroDeCelular);
+		estacionamiento.finalizarEstacionamiento();
 		
 	}
 
