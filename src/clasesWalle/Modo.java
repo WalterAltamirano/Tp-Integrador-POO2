@@ -1,10 +1,26 @@
 package clasesWalle;
 
+import clasesIan.EstacionamientoAplicacion;
+
 public abstract class Modo {
 	
-	public abstract void inicioDeEstacionamiento(AplicacionSEM app,int numeroDeCelular, String patente);
+	public void inicioDeEstacionamiento(AplicacionSEM app,int numeroDeCelular, String patente)  {
+		try {
+			this.puedeEstacionar(app,patente);
+			app.getSistemaEstacionamiento()
+			.registrarEstacionamiento(new EstacionamientoAplicacion(numeroDeCelular,patente));
+			this.darRespuestaInicial(app);
+		}
+		catch (Exception e) {
+		}
+	}
 	
-	public abstract void finDeEstacionamiento(AplicacionSEM app,int numeroDeCelular);
+	public void finDeEstacionamiento(AplicacionSEM app,int numeroDeCelular) {
+		app.getSistemaEstacionamiento().finalizarEstacionamientoCon(numeroDeCelular);
+		this.notificarAlertaDeFinDeEstacionamiento(app);
+		this.darRespuestaFinal(app);
+		app.descontarSaldo();
+	}
 	
 	public abstract void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app);
 	
@@ -13,7 +29,7 @@ public abstract class Modo {
 	public abstract boolean estaEnModoAutomatico();
 	
 	protected void puedeEstacionar(AplicacionSEM app,String patente) throws Exception {
-		if(!app.tieneCreditoSuficiente() || app.estaEnZonaDeEstacionamiento()
+		if(!app.tieneCreditoSuficienteParaEstacionar() || app.estaEnZonaDeEstacionamiento()
 				|| app.hayEstacionamientoCon(patente)) {
 			
 			throw new Exception("No se cumplen alguna/as de las condiciones para iniciar un estacionamiento"
@@ -25,6 +41,8 @@ public abstract class Modo {
 	
 	protected abstract void avisoDeCambio();
 	
-	protected abstract void darRespuesta(AplicacionSEM app);
+	protected abstract void darRespuestaInicial(AplicacionSEM app);
+	
+	protected abstract void darRespuestaFinal(AplicacionSEM app);
 	
 }

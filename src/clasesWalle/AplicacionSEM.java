@@ -11,7 +11,9 @@ import clasesIan.Caminando;
 
 public class AplicacionSEM implements MovementSensor {
 	
-    private LocalDateTime horaActual;
+	//Variables de Instancia
+    private LocalDateTime horaInicio;
+    private LocalDateTime horaFin;
 	private double saldoAcreditado;
 	private int numeroDeCelular;
 	private SEM sistemaEstacionamiento;
@@ -20,7 +22,8 @@ public class AplicacionSEM implements MovementSensor {
     private EstadoApp estado;
     private Usuario usuario;
     
-	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario) {
+    //Constructor
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,LocalDateTime horaDeInicio, LocalDateTime horaFin) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = 0;
@@ -28,6 +31,8 @@ public class AplicacionSEM implements MovementSensor {
 		this.estado = estado;
 		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
 		this.usuario = usuario;
+		this.horaInicio = horaDeInicio;
+		this.horaFin = horaFin;
 	}
 	
 	
@@ -55,7 +60,7 @@ public class AplicacionSEM implements MovementSensor {
 	}
 	
 	public double consultarSaldo() {
-		return this.saldoAcreditado;
+		return this.getCredito();
 	}
 	
 	public void establecerNroDeCelular(int nroDeCelular) {}
@@ -95,8 +100,8 @@ public class AplicacionSEM implements MovementSensor {
 	double getCredito() {   
 	    return this.saldoAcreditado;
 	}
-	boolean tieneCreditoSuficiente() {
-		return this.calcularCreditoAPagar() < this.saldoAcreditado;
+	boolean tieneCreditoSuficienteParaEstacionar() {
+		return this.saldoAcreditado > this.valorPorHoraDeEstacionamiento();
 	}
 	boolean estaEnZonaDeEstacionamiento() { 
 	    return this.getGps().estaEncendido();
@@ -113,32 +118,67 @@ public class AplicacionSEM implements MovementSensor {
 	void descontarSaldo() {
 		this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
 	}
-	int getHoraActual() {
-		return this.horaActual.getHour();
+	int getHoraInicio() {
+		return this.horaInicio.getHour();
+	}
+	int horaFinal() { //Para el modo automatico
+		if(this.puedePagarHastaFinDeFranjaHoraria()) {
+			return this.horaMaximaDeEstacionamiento();
+		}
+		else {
+			return this.getHoraInicio() + this.cantidadDeHorasSegunSaldo();
+		}
+		
+	}
+	int calcularHoraFin() { //Para el modo manual
+		return this.getHoraInicio() + this.horaFin.getHour();
+	}
+	int minutoFin() {
+		return LocalDateTime.now().getMinute();
+	}
+	int minutoInicio() {
+		return this.horaInicio.getMinute();
+	}
+	private int getNumeroDeCelular() { 
+//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
+//			System.out.print("No hay un numero de celular asociado a la app. "
+//					+ "No se puede ejecutar el modo automatico sin el celular");
+//		} else {
+	   return this.numeroDeCelular;
 	}
 //	!-------------------------------------------------------------------------!
 	
 	
 							  //Metodos privados
 //	!-------------------------------------------------------------------------!	
-	private int getNumeroDeCelular() { 
-//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
-//			System.out.print("No hay un numero de celular asociado a la app. "
-//					+ "No se puede ejecutar el modo automatico sin el celular");
-//		} else {
-	return this.numeroDeCelular;
-
-	}
+	
     private void setModoApp(Modo modo) {
 		this.modo = modo;
    }
-	 
-    private double calcularCreditoAPagar() {
-	   double cantidadDeHorasMaximas = 20 - this.horaActual.getHour();
-	   
-	   double montoHastaFinFranjaHoraria = 40 * cantidadDeHorasMaximas;
-	   
-	   return montoHastaFinFranjaHoraria;
+   private int valorPorHoraDeEstacionamiento() {
+	   return 40;
+   }
+   
+   private int horaMaximaDeEstacionamiento() {
+	   return 20;
+   }
+   private int cantidadDeHorasSegunSaldo() {
+	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
+   }
+   private int cantidadDeHorasMaximas() {
+	   return this.horaMaximaDeEstacionamiento() - this.getHoraInicio();
+   }
+   private boolean puedePagarHastaFinDeFranjaHoraria() {
+       return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
+    	
+    }
+   private double calcularCreditoAPagar() {
+    	if(this.puedePagarHastaFinDeFranjaHoraria()) {
+    		return this.valorPorHoraDeEstacionamiento() * this.cantidadDeHorasMaximas();
+    	} 
+    	else {
+    		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
+    	}
     }
 	
     private void setEstadoGPS(EstadoGPS estado) {
