@@ -62,10 +62,14 @@ public class AplicacionSEM implements MovementSensor {
 	public double consultarSaldo() {
 		return this.getCredito();
 	}
-	
-	public void establecerNroDeCelular(int nroDeCelular) {}
-	
-	
+		
+	public int getNumeroDeCelular() { 
+//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
+//			System.out.print("No hay un numero de celular asociado a la app. "
+//					+ "No se puede ejecutar el modo automatico sin el celular");
+//		} else {
+	   return this.numeroDeCelular;
+	}
 							//Metodos de interfaz
 //	!-------------------------------------------------------------------------!
 	@Override
@@ -138,13 +142,6 @@ public class AplicacionSEM implements MovementSensor {
 	}
 	int minutoInicio() {
 		return this.horaInicio.getMinute();
-	}
-	private int getNumeroDeCelular() { 
-//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
-//			System.out.print("No hay un numero de celular asociado a la app. "
-//					+ "No se puede ejecutar el modo automatico sin el celular");
-//		} else {
-	   return this.numeroDeCelular;
 	}
 //	!-------------------------------------------------------------------------!
 	
