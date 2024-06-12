@@ -3,8 +3,9 @@ package clasesMatias;
 import java.util.ArrayList;
 import java.util.List;
 
-import clasesIan.Auto;
+
 import clasesIan.Estacionamiento;
+import clasesWalle.AplicacionSEM;
 
 public class SEM {
 
@@ -13,9 +14,24 @@ public class SEM {
 	private List<Estacionamiento> estacionamientosRegistrados = new ArrayList<Estacionamiento>();
 	private List<Infraccion> infraccionesRegistradas = new ArrayList<Infraccion>();
 	private List<INotificar> organismosInteresados = new ArrayList<INotificar>();
+	private List<AplicacionSEM> aplicacionesRegistradas = new ArrayList<AplicacionSEM>();
+	
 
+
+
+
+	public void registrarAplicacion(AplicacionSEM aplicacion) {
+		this.aplicacionesRegistradas.add(aplicacion);
+		
+	}
+	
+	public List<AplicacionSEM> getAplicacionesRegistradas() {
+		return aplicacionesRegistradas;
+	}
+	
+	
 	public void añadirZonaDeEstacionamiento(ZonaDeEstacionamiento zona) {
-		this.getZonasDeEstacionamiento().add(zona);
+		this.zonasEstacionamiento.add(zona);
 		
 	}
 	
@@ -49,14 +65,17 @@ public class SEM {
 	}
 
 	public void finDeFranjaHoraria() {
-		this.getEstacionamientos().stream().forEach(e -> e.finalizarEstacionamiento());
-		this.notificarOrganismosInteresados();
+		this.getAplicacionesRegistradas().stream().forEach(a -> a.finalizarEstacionamiento(a.getNumeroDeCelular()));
+		
 		
 	}
 
 	public boolean verificarEstacionamientoVigente(String patente) {
-		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getPatente().equals(patente));
-		
+		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getPatente().equals(patente));		
+	}
+	
+	public boolean verificarEstacionamientoVigente(int numeroCelular) {
+		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getNumeroDeCelularDeEstacionamiento().equals(numeroCelular));		
 	}
 
 	public void registrarInfraccion(Infraccion infraccion) {

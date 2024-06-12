@@ -1,6 +1,6 @@
 package clasesMatias;
 
-import clasesIan.Auto;
+
 import clasesIan.Estacionamiento;
 import clasesIan.EstacionamientoCompraPuntual;
 import clasesWalle.AplicacionSEM;
@@ -21,7 +21,7 @@ public class PuntoDeVenta {
 		aplicacion.cargarSaldo(saldo);
 		Compra nuevaCarga = new CargaDeSaldo(this, saldo, aplicacion);
 		this.getSem().registrarCompra(nuevaCarga);
-		//this.getSem().notificarOrganismosInteresados();
+		this.getSem().notificarOrganismosInteresados();
 		
 	}
 
@@ -32,7 +32,7 @@ public class PuntoDeVenta {
 		
 		Estacionamiento nuevoEstacionamiento = new EstacionamientoCompraPuntual(nuevaCompraEstacionamiento, patente);
 		this.getSem().registrarEstacionamiento(nuevoEstacionamiento);
-		//this.getSem().notificarOrganismosInteresados();
+		this.getSem().notificarOrganismosInteresados();
 		
 	}
 

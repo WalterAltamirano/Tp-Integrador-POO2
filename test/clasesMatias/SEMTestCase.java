@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import clasesIan.Estacionamiento;
+import clasesWalle.AplicacionSEM;
 
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ public class SEMTestCase {
 	private Compra compraPuntual;
 	private Infraccion infraccion1;
 	private INotificar organismoInteresado;
+	private AplicacionSEM aplicacion1;
 	
 	@BeforeEach 
 	public void setUp () {
@@ -30,13 +32,32 @@ public class SEMTestCase {
 		compraPuntual = mock(CompraPuntual.class);
 		infraccion1 = mock(Infraccion.class);
 		organismoInteresado = mock(INotificar.class);
+		aplicacion1 = mock(AplicacionSEM.class);
 		
 		sem = new SEM();
 		
 		
 	}
 	
-
+	@Test
+	public void registrarAplicacionTest() {
+		//Exercise
+		sem.registrarAplicacion(aplicacion1);
+		
+		//Verify
+		assertEquals(sem.getAplicacionesRegistradas().size(), 1);
+	}
+	
+	@Test
+	public void getAplicacionesRegistradasTest() {
+		//Exercise
+		sem.registrarAplicacion(aplicacion1);
+		//Verify
+		assertTrue(sem.getAplicacionesRegistradas().contains(aplicacion1));
+		
+	}
+	
+	
 	@Test
 	public void registrarCompraTest() {
 		//Exercise
@@ -92,10 +113,11 @@ public class SEMTestCase {
 	@Test
 	public void finDeFranjaHorariaTest() {
 		//Exercise
-		sem.registrarEstacionamiento(estacionamiento1);
+		sem.registrarAplicacion(aplicacion1);
+		
 		sem.finDeFranjaHoraria();
 		//Verify
-		verify(estacionamiento1, atLeast(1)).finalizarEstacionamiento();
+		verify(aplicacion1, atLeast(1)).finalizarEstacionamiento(aplicacion1.getNumeroDeCelular());
 	}
 	
 
