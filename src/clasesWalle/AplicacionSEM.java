@@ -1,33 +1,68 @@
 package clasesWalle;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.time.*;
+import clasesIan.EstadoApp;
+import clasesIan.Usuario;
+import clasesMatias.SEM;
+import clasesIan.EnAuto;
+import clasesIan.Caminando;
+
 public class AplicacionSEM implements MovementSensor {
 	
-    //private int horaActual;
+    private LocalDateTime horaActual;
 	private double saldoAcreditado;
 	private int numeroDeCelular;
-	//private SEM sistemaEstacionamiento;
+	private SEM sistemaEstacionamiento;
 	private Modo modo;
 	private EstadoGPS gps;
     private EstadoApp estado;
+    private Usuario usuario;
     
-	public AplicacionSEM(Modo modo) {
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = 0;
 		this.modo = modo;
-		
+		this.estado = estado;
+		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
+		this.usuario = usuario;
 	}
 	
-	public void inicioEstacionamiento(int numeroCelular,String patente) {}
 	
-	public void finalizarEstacionamiento(int numeroCelular) {}
+					    //Mensajes Publicos
+//	!-------------------------------------------------------------------------!
+	public void inicioEstacionamiento(int numeroCelular,String patente) {
+		this.getModo().inicioDeEstacionamiento(this, numeroCelular, patente);
+	}
 	
-	public void elegirModo(Modo modo) {}
+	public void finalizarEstacionamiento(int numeroCelular) {
+		this.getModo().finDeEstacionamiento(this, numeroCelular);
+	}
 	
-	public void elegirEstadoGPS(EstadoGPS estado) {}
+	public void elegirModo(Modo modo) {
+		this.setModoApp(modo);
+		this.getModo().avisoDeCambio();
+	}
 	
-	public void cargarSaldo(double saldoACargar) {}
-
+	public void elegirEstadoGPS(EstadoGPS estado) {
+		this.setEstadoGPS(estado);
+	}
+	
+	public void cargarSaldo(double saldoACargar) {
+		this.saldoAcreditado = this.saldoAcreditado + saldoACargar;
+	}
+	
+	public double consultarSaldo() {
+		return this.saldoAcreditado;
+	}
+	
+	public void establecerNroDeCelular(int nroDeCelular) {}
+	
+	
+							//Metodos de interfaz
+//	!-------------------------------------------------------------------------!
 	@Override
 	public void driving() {
 		estado.manejando(this);
@@ -37,38 +72,86 @@ public class AplicacionSEM implements MovementSensor {
 	public void walking() {
 		estado.caminando(this);
 	}
+//	!-------------------------------------------------------------------------!	
+
 	
+						//Metodos de visibilidad de Paquete
+//	!-------------------------------------------------------------------------!	
 	void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-	void setEstadoGPS(EstadoGPS estado) {
-		this.gps = estado;
+	void alertaInicioDeEstacionamiento() {
+		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
 	}
+	void alertaFinDeEstacionamiento() {
+		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
+	}
+	EstadoGPS getGps() {
+		return this.gps;
+	}
+	boolean hayEstacionamientoCon(String patente) {
+	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
+	}
+	double getCredito() {   
+	    return this.saldoAcreditado;
+	}
+	boolean tieneCreditoSuficiente() {
+		return this.calcularCreditoAPagar() < this.saldoAcreditado;
+	}
+	boolean estaEnZonaDeEstacionamiento() { 
+	    return this.getGps().estaEncendido();
+    }
+	SEM getSistemaEstacionamiento() {
+		return this.sistemaEstacionamiento;
+	}
+	Usuario getUsuario() {
+		return this.usuario;
+	}
+	Modo getModo() {
+		return this.modo;
+	}
+	void descontarSaldo() {
+		this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
+	}
+	int getHoraActual() {
+		return this.horaActual.getHour();
+	}
+//	!-------------------------------------------------------------------------!
+	
+	
+							  //Metodos privados
+//	!-------------------------------------------------------------------------!	
+	private int getNumeroDeCelular() { 
+//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
+//			System.out.print("No hay un numero de celular asociado a la app. "
+//					+ "No se puede ejecutar el modo automatico sin el celular");
+//		} else {
+	return this.numeroDeCelular;
+
+	}
+    private void setModoApp(Modo modo) {
+		this.modo = modo;
+   }
+	 
+    private double calcularCreditoAPagar() {
+	   double cantidadDeHorasMaximas = 20 - this.horaActual.getHour();
+	   
+	   double montoHastaFinFranjaHoraria = 40 * cantidadDeHorasMaximas;
+	   
+	   return montoHastaFinFranjaHoraria;
+    }
+	
+    private void setEstadoGPS(EstadoGPS estado) {
+    	this.gps = estado;
+    }
+//	!-------------------------------------------------------------------------!
 
 
 	
-  //public double consultarSaldo() {} //Pide getCredito()
+
+
 	
-	
-//	private double getCredito() {   //Primero hay que testear
-//		return this.saldoAcreditado;
-//	}
-	
-	//Metodos privados
-//	private int getNumeroDeCelular() {
-//		return this.numeroDeCelular;
-//	}
-//  private void setModoApp(Modo modo) {
-//		this.modo = modo;
-//  }
-//  private boolean hayEstacionamientoCon(String patente) {
-//      return sistemaEstacionamiento.verificarSiEstaEstacionado(patente);
-//	}
-//	
-//   private int calcularCreditoAPagar() {
-//	   int cantidadDeHoras = 20 - this.horaActual;
-//	   return 40 * cantidadDeHoras;
-//   }
+    
 }
 
 
@@ -94,10 +177,12 @@ public class AplicacionSEM implements MovementSensor {
    * de testeo me encuentre
   
   
-  / Se envia el mensaje inicioEstacionamiento()
+  / Se envia el mensaje inicioEstacionamiento() (Modo manual)
      * verifica que (Constantemente recibiendo uno de los dos mensajes "driving()" o "walking()") 
        1. No haya un estacionamiento vigente con esa patente
-       2. Que el estadoApp sea Caminando
+       2. Que el estadoApp va a ser Caminando (El estado se encarga de enviar el mensaje "alerta")
+         a.esta en una zona de estacionameinto
+         b.se detecta que el desplazamiento es de manejando a caminando
        3. Que tenga credito.
        4. Que se encuentre en una zona de estacionamiento
       
@@ -120,6 +205,11 @@ public class AplicacionSEM implements MovementSensor {
     
     
     
-    
+    private boolean estaEnZonaDeEstacionamiento() { //!Una idea!
+//		List<ZonaEstacionamiento> zonas = sistemaEstacionamiento.getZonasDeEstacionamiento();
+//		List<ZonaEstacionamieto> zonaQueCoincide = zonas.stream().
+//								filter( zona -> zona.puntoGeografico() == gps.puntoGeograficoActual())
+//								.Collect(Collectors.toList());
+//		return !zonaQueCoincide.isEmpty();
   
  * */
