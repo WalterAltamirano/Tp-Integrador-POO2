@@ -15,14 +15,23 @@ public class Inspector {
 	public void inspeccionarAuto(Auto auto) {
 		boolean vigencia = this.empleador.verificarEstacionamientoVigente(auto.getPatente());
 		if (vigencia == false) {
-			this.altaDeInfraccion(auto);
+			Infraccion infraccion = this.altaDeInfraccion(auto.getPatente());
+			this.cargarInfraccion(infraccion);
 		}
 		
 	}
 
-	public void altaDeInfraccion(Auto auto) {
-		Infraccion infraccion = new Infraccion(auto.getPatente(), this);
+	
+
+	public Infraccion altaDeInfraccion(String patente) {
+		Infraccion infraccion = new Infraccion(patente, this);
+		
+		return infraccion;
+	}
+	
+	public void cargarInfraccion(Infraccion infraccion) {
 		this.empleador.registrarInfraccion(infraccion);
+		
 	}
 
 	public ZonaDeEstacionamiento getZonaAsignada() {

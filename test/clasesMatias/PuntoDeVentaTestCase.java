@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import clasesIan.Auto;
+import clasesIan.EstacionamientoCompraPuntual;
 import clasesWalle.AplicacionSEM;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,19 +41,40 @@ class PuntoDeVentaTestCase {
 				
 		//exercise
 		puntoVenta1.cargarSaldo(aplicacion, 50);
+		
 		//verify		
 		verify(aplicacion, atLeast(1)).cargarSaldo(50);	
-		assertEquals(sem.getCompras().size(), 1);
+		
+		
+	}
+	
+	@Test
+	public void generarCompraSaldoTest() {
+		//exercise
+		CargaDeSaldo nuevaCarga = puntoVenta1.generarCompraSaldo(10, aplicacion);
+		//verify
+		assertEquals(nuevaCarga.getMontoCargado(), 10);
 	}
 	
 	@Test
 	public void registrarEstacionamientoTest() {
+		//exercise
+		puntoVenta1.registrarEstacionamiento("123456", 4);
+		//verify
+		verify(sem, atLeast(1)).notificarOrganismosInteresados();
+		
+		
+	}
+	
+	@Test
+	public void generarNuevaCompraYNuevoEstacionamientoTest() {
 				
 		//exercise
-		puntoVenta1.registrarEstacionamiento(auto.getPatente(), 4);
+		CompraPuntual nuevaCompra = puntoVenta1.generarNuevaCompra(4);
+		EstacionamientoCompraPuntual nuevoEstacionamiento = puntoVenta1.generarNuevoEstacionamiento(nuevaCompra, auto.getPatente());
 		//verify		
-		assertEquals(sem.getEstacionamientos().size(), 1);
-		assertEquals(sem.getCompras().size(), 1);
+		verify(sem, atLeast(1)).registrarCompra(nuevaCompra);
+		verify(sem, atLeast(1)).registrarEstacionamiento(nuevoEstacionamiento);
 		
 	}
 

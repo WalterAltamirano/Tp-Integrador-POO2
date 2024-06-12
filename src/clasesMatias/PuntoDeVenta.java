@@ -19,21 +19,36 @@ public class PuntoDeVenta {
 
 	public void cargarSaldo(AplicacionSEM aplicacion, double saldo) {
 		aplicacion.cargarSaldo(saldo);
-		Compra nuevaCarga = new CargaDeSaldo(this, saldo, aplicacion);
+		CargaDeSaldo nuevaCarga = this.generarCompraSaldo(saldo, aplicacion);
 		this.getSem().registrarCompra(nuevaCarga);
 		this.getSem().notificarOrganismosInteresados();
 		
 	}
+	
+	public CargaDeSaldo generarCompraSaldo(double saldo, AplicacionSEM aplicacion) {
+		CargaDeSaldo nuevaCarga = new CargaDeSaldo(this, saldo, aplicacion);
+		return nuevaCarga;
+	}
 
 	public void registrarEstacionamiento(String patente, int cantidadDeHoras ) {
 		
-		CompraPuntual nuevaCompraEstacionamiento = new CompraPuntual(this, cantidadDeHoras);
-		this.getSem().registrarCompra(nuevaCompraEstacionamiento);
-		
-		Estacionamiento nuevoEstacionamiento = new EstacionamientoCompraPuntual(nuevaCompraEstacionamiento, patente);
-		this.getSem().registrarEstacionamiento(nuevoEstacionamiento);
+		CompraPuntual nuevaCompraEstacionamiento = this.generarNuevaCompra(cantidadDeHoras);
+	    this.generarNuevoEstacionamiento(nuevaCompraEstacionamiento, patente);
 		this.getSem().notificarOrganismosInteresados();
 		
 	}
+	
+	public CompraPuntual generarNuevaCompra(int cantidadDeHoras) {
+		CompraPuntual nuevaCompraEstacionamiento = new CompraPuntual(this, cantidadDeHoras);
+		this.getSem().registrarCompra(nuevaCompraEstacionamiento);
+		return nuevaCompraEstacionamiento;
+	}
+	
+	public EstacionamientoCompraPuntual generarNuevoEstacionamiento(CompraPuntual nuevaCompraEstacionamiento, String patente) {
+		EstacionamientoCompraPuntual nuevoEstacionamiento = new EstacionamientoCompraPuntual(nuevaCompraEstacionamiento, patente);
+		this.getSem().registrarEstacionamiento(nuevoEstacionamiento);
+		return nuevoEstacionamiento;
+	}
+	
 
 }

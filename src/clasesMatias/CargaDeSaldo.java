@@ -15,6 +15,10 @@ public class CargaDeSaldo extends Compra {
 		
 	}
 
+	public double getMontoCargado() {
+		return montoCargado;
+	}
+
 
 		
 		

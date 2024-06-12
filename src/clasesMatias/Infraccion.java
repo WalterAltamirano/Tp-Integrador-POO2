@@ -2,7 +2,7 @@ package clasesMatias;
 
 import java.util.Date;
 
-import clasesIan.Auto;
+
 
 public class Infraccion {
 	
@@ -18,6 +18,10 @@ public class Infraccion {
 		this.hora = fecha.getTime();
 		this.inspector = inspector;
 		this.zona = inspector.getZonaAsignada();
+	}
+
+	public String getPatenteAutoEnInfraccion() {
+		return patenteAutoEnInfraccion;
 	}
 
 }

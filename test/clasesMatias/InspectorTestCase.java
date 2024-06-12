@@ -42,9 +42,19 @@ class InspectorTestCase {
 	@Test
 	public void AltaDeInfraccionTest() {
 		//exercise
-		inspector.altaDeInfraccion(auto1);
+		Infraccion infraccion = inspector.altaDeInfraccion(auto1.getPatente());
 		//verify
-		assertEquals(sem.getInfraccionesRegistradas().size(), 1);
+		assertEquals(infraccion.getPatenteAutoEnInfraccion(), auto1.getPatente());
+	}
+	
+	@Test
+	public void cargarInfraccionTest() {
+	//exercise
+	Infraccion infraccion = inspector.altaDeInfraccion(auto1.getPatente());	
+	inspector.cargarInfraccion(infraccion);
+	//verify
+	verify(sem, atLeast(1)).registrarInfraccion(infraccion);
+	
 	}
 	
 	

@@ -43,7 +43,7 @@ public class SEM {
 
 	public void registrarCompra(Compra compra) {
 		this.getCompras().add(compra);
-		//this.notificarOrganismosInteresados();
+		
 		
 	}
 
@@ -55,7 +55,7 @@ public class SEM {
 	
 	public void registrarEstacionamiento(Estacionamiento nuevoEstacionamiento) {
 		this.getEstacionamientos().add(nuevoEstacionamiento);
-		//this.notificarOrganismosInteresados();
+		
 		
 	}
 

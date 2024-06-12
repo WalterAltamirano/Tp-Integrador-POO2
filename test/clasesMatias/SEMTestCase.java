@@ -195,11 +195,12 @@ public class SEMTestCase {
 	
 	@Test
 	public void finalizarEstacionamiento() {
+		
 		//Exercise
 		sem.registrarEstacionamiento(estacionamiento1);
 		sem.finalizarEstacionamientoCon(estacionamiento1.getNumeroDeCelularDeEstacionamiento());
 		//verify
-		assertFalse(sem.verificarEstacionamientoVigente(estacionamiento1.getNumeroDeCelularDeEstacionamiento()));
+		assertFalse(estacionamiento1.estaVigente());
 	}
 	
 
