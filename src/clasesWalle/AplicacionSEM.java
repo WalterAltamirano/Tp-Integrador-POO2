@@ -23,10 +23,10 @@ public class AplicacionSEM implements MovementSensor {
     private Usuario usuario;
     
     //Constructor
-	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,LocalDateTime horaDeInicio, LocalDateTime horaFin) {
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,int nroDeCelular,LocalDateTime horaDeInicio, LocalDateTime horaFin) {
 		super();
 		this.saldoAcreditado = 0;
-		this.numeroDeCelular = 0;
+		this.numeroDeCelular = nroDeCelular;
 		this.modo = modo;
 		this.estado = estado;
 		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
@@ -62,12 +62,11 @@ public class AplicacionSEM implements MovementSensor {
 	public double consultarSaldo() {
 		return this.getCredito();
 	}
+	public void asignarCelular() {
 		
+	}
+	
 	public int getNumeroDeCelular() { 
-//		if(this.numeroDeCelular == 0) {  //Si no obtiene el numero
-//			System.out.print("No hay un numero de celular asociado a la app. "
-//					+ "No se puede ejecutar el modo automatico sin el celular");
-//		} else {
 	   return this.numeroDeCelular;
 	}
 							//Metodos de interfaz
@@ -100,6 +99,9 @@ public class AplicacionSEM implements MovementSensor {
 	}
 	boolean hayEstacionamientoCon(String patente) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
+	}
+	boolean hayEstacionamientoCon(int nroDeCelular) {
+	    return sistemaEstacionamiento.verificarEstacionamientoVigente(nroDeCelular);
 	}
 	double getCredito() {   
 	    return this.saldoAcreditado;
@@ -178,7 +180,7 @@ public class AplicacionSEM implements MovementSensor {
     	}
     }
 	
-    private void setEstadoGPS(EstadoGPS estado) {
+   private void setEstadoGPS(EstadoGPS estado) {
     	this.gps = estado;
     }
 //	!-------------------------------------------------------------------------!
