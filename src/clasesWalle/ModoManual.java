@@ -4,7 +4,7 @@ package clasesWalle;
 public class ModoManual extends Modo{
 
 	@Override
-	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
+	protected void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha iniciado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure iniciar el estacionamiento para evitar una infraccion");
@@ -14,7 +14,7 @@ public class ModoManual extends Modo{
 	}
 
 	@Override
-	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
+	protected void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha finalizado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure finalizar el estacionamiento para evitar descontar saldo de mas");
@@ -60,6 +60,7 @@ public class ModoManual extends Modo{
 				 + "Hora exacta: " + app.getHoraInicio() + ":" + app.minutoInicio()
 				 + "Hora fin: " + app.calcularHoraFin() + ":" + app.minutoFin()
 				 + "Duracion " + (app.horaFinal() - app.getHoraInicio())
+				 + "Costo: " + app.calcularCreditoAPagar()
 				 + "!---------------------------------!");
 	}
 

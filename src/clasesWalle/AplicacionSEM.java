@@ -62,8 +62,8 @@ public class AplicacionSEM implements MovementSensor {
 	public double consultarSaldo() {
 		return this.getCredito();
 	}
-	public void asignarCelular() {
-		
+	public void asignarCelular(int numeroDeCelular) {
+		this.numeroDeCelular = numeroDeCelular;
 	}
 	
 	public int getNumeroDeCelular() { 
@@ -118,7 +118,7 @@ public class AplicacionSEM implements MovementSensor {
 	Usuario getUsuario() {
 		return this.usuario;
 	}
-	Modo getModo() {
+	public Modo getModo() {
 		return this.modo;
 	}
 	void descontarSaldo() {
@@ -145,6 +145,14 @@ public class AplicacionSEM implements MovementSensor {
 	int minutoInicio() {
 		return this.horaInicio.getMinute();
 	}
+	double calcularCreditoAPagar() {
+    	if(this.puedePagarHastaFinDeFranjaHoraria()) {
+    		return this.valorPorHoraDeEstacionamiento() * this.cantidadDeHorasMaximas();
+    	} 
+    	else {
+    		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
+    	}
+    }
 //	!-------------------------------------------------------------------------!
 	
 	
@@ -170,14 +178,6 @@ public class AplicacionSEM implements MovementSensor {
    private boolean puedePagarHastaFinDeFranjaHoraria() {
        return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
     	
-    }
-   private double calcularCreditoAPagar() {
-    	if(this.puedePagarHastaFinDeFranjaHoraria()) {
-    		return this.valorPorHoraDeEstacionamiento() * this.cantidadDeHorasMaximas();
-    	} 
-    	else {
-    		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
-    	}
     }
 	
    private void setEstadoGPS(EstadoGPS estado) {
