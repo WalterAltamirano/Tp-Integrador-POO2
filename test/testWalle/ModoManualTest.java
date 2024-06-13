@@ -101,6 +101,7 @@ public class ModoManualTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
+		when(gps.estaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeInicioDeEstacionamiento(app);
 		
@@ -113,6 +114,7 @@ public class ModoManualTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
+		when(gps.estaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeFinDeEstacionamiento(app);
 		

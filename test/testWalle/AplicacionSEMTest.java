@@ -202,7 +202,7 @@ public class AplicacionSEMTest {
 		app.inicioEstacionamiento(nroDeCelular, "333ALO");
 		
 		assertTrue(app.estaEnZonaDeEstacionamiento());
-		
+	
 		//Verify
 		verify(gps).estaEncendido();
 		
