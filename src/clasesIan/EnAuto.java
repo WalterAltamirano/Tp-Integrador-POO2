@@ -10,7 +10,7 @@ public class EnAuto extends EstadoApp {
 	}
 	@Override
 	public void caminando(AplicacionSEM aplicacion) {
-		System.out.println("El estado actual cambiara a manejando");	
+		System.out.println("El estado actual cambiara a caminando");	
 		aplicacion.setEstado(new Caminando());
 		if(aplicacion.getModo().estaEnModoAutomatico()) {
 			aplicacion.inicioEstacionamiento(aplicacion.getNumeroDeCelular(), aplicacion.getUsuario().getPatente());
