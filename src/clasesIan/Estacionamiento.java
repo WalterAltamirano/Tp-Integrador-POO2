@@ -3,8 +3,8 @@ package clasesIan;
 import java.time.*;
 
 public abstract class Estacionamiento {
-	private LocalDateTime horaDeInicio;
-	private LocalDateTime horaDeFin;
+	protected LocalDateTime horaDeInicio;
+	protected LocalDateTime horaDeFin;
 	protected String patenteDeVehiculo;
 	private boolean vigencia;
 	
@@ -42,5 +42,9 @@ public abstract class Estacionamiento {
 	
 	public int getNumeroDeCelularDeEstacionamiento() {
 		return 0;
+	}
+	
+	public boolean getViencia() {
+		return vigencia;
 	}
 }

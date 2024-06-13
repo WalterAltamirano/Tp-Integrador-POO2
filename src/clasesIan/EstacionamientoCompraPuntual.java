@@ -1,5 +1,7 @@
 package clasesIan;
 
+import java.time.LocalDateTime;
+
 import clasesMatias.CompraPuntual;
 
 public class EstacionamientoCompraPuntual extends Estacionamiento{
@@ -9,6 +11,9 @@ public class EstacionamientoCompraPuntual extends Estacionamiento{
 	public EstacionamientoCompraPuntual(CompraPuntual compraPuntual, String patente) {
 		this.compraPuntual = compraPuntual;
 		this.patenteDeVehiculo = patente;
+		this.horaDeInicio = LocalDateTime.now();
+		long horasCompradas = (long) compraPuntual.getHorasCompradas();
+		this.horaDeFin = this.horaDeInicio.plusHours(horasCompradas);
 	}
 	
 }

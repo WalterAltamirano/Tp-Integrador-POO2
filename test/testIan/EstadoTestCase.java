@@ -34,20 +34,25 @@ public class EstadoTestCase {
 		modoManual = mock(ModoManual.class);
 		usuario = mock(Usuario.class);
 		modo = mock(Modo.class);
-		auto = new Auto("123");
+		auto = mock(Auto.class);
 	}
 	
 	@Test
 	public void pruebaPasajeDeManejandoACaminando() {
 		when(aplicacion.getModo()).thenReturn(modoAutomatico);
 		/*when(aplicacion.getUsuario()).thenReturn(usuario);
-		when(usuario.getPatente()).thenReturn(auto.getPatente());
-		when(aplicacion.getNumeroDeCelular()).thenReturn(12345);
+		when(usuario.getPatente()).thenReturn("abc");
+		when(aplicacion.getNumeroDeCelular()).thenReturn(1234);
 		when(modo.estaEnModoAutomatico()).thenReturn(true);*/
 		
 		estadoEnAuto.caminando(aplicacion);
 		verify(aplicacion,atLeast(1)).alertaInicioDeEstacionamiento();
-		//verify(aplicacion,atLeast(1)).inicioEstacionamiento(aplicacion.getNumeroDeCelular(), usuario.getPatente());
+		//verify(aplicacion,atLeast(1)).inicioEstacionamiento(1234, "abc");
+	}
+	
+	@Test
+	public void pruebaPasajeDeManejandoAManejando() {
+		estadoEnAuto.manejando(aplicacion);
 	}
 	
 	@Test
@@ -55,5 +60,10 @@ public class EstadoTestCase {
 		when(aplicacion.getModo()).thenReturn(modoAutomatico);
 		estadoCaminando.manejando(aplicacion);
 		verify(aplicacion,atLeast(1)).alertaFinDeEstacionamiento();
-	}	
+	}
+	
+	@Test
+	public void pruebaPasajeDeCaminandoACaminando() {
+		estadoCaminando.caminando(aplicacion);
+	}
 }
