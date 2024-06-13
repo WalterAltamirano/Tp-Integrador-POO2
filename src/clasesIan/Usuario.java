@@ -25,11 +25,15 @@ public class Usuario {
 		this.aplicacion.inicioEstacionamiento(aplicacion.getNumeroDeCelular(), auto.getPatente());
 	}
 	
-	public void notificarAlerta(String alerta) {
+	/*public void notificarAlerta(String alerta) {
 		System.out.println(alerta);
-	}
+	}*/
 	
 	public String getPatente() {
 		return auto.getPatente();
+	}
+	
+	public AplicacionSEM getAplicacion() {
+		return aplicacion;
 	}
 }

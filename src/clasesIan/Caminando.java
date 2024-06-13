@@ -6,7 +6,7 @@ public class Caminando extends EstadoApp{
 	
 	@Override
 	public void manejando(AplicacionSEM aplicacion) {
-		System.out.println("El estado actual cambiara a caminando");
+		System.out.println("El estado actual cambiara a manejando");
 		aplicacion.setEstado(new Caminando());
 		if(aplicacion.getModo().estaEnModoAutomatico()) {
 			aplicacion.finalizarEstacionamiento(aplicacion.getNumeroDeCelular());
