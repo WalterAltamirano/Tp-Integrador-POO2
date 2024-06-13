@@ -1,6 +1,6 @@
 package clasesIan;
 
 public interface MovementSensor {
-	    void driving();
-	    void walking();
+	    public void driving();
+	    public void walking();
 }
