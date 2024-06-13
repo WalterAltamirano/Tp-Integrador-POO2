@@ -85,13 +85,13 @@ public class AplicacionSEM implements MovementSensor {
 	
 						//Metodos de visibilidad de Paquete
 //	!-------------------------------------------------------------------------!	
-	void setEstado(EstadoApp estado) {
+	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-	void alertaInicioDeEstacionamiento() {
+	public void alertaInicioDeEstacionamiento() {
 		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
 	}
-	void alertaFinDeEstacionamiento() {
+	public void alertaFinDeEstacionamiento() {
 		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
 	}
 	EstadoGPS getGps() {
@@ -115,7 +115,7 @@ public class AplicacionSEM implements MovementSensor {
 	SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
 	}
-	Usuario getUsuario() {
+	public Usuario getUsuario() {
 		return this.usuario;
 	}
 	public Modo getModo() {
