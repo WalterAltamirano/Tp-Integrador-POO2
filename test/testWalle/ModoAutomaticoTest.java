@@ -66,7 +66,25 @@ public class ModoAutomaticoTest {
 		verify(app).getHoraInicio();
 		
 	}
-	
+	@Test
+	public void testAplicacionRecibeUnFinDeEstacionamientoYDelegaEnModoUnFinDeEstacionamientoYSeFinaliza() {
+		
+		//SetUp
+		when(app.getCredito()).thenReturn(100d);
+		when(app.tieneCreditoSuficienteParaEstacionar()).thenReturn(true);
+		when(app.hayEstacionamientoCon(patente)).thenReturn(false);
+		when(app.estaEnZonaDeEstacionamiento()).thenReturn(true);
+		when(app.getSistemaEstacionamiento()).thenReturn(sistema);
+		when(app.getGps()).thenReturn(gps);
+		when(estacionamiento.getPatente()).thenReturn(patente);
+		//Excercise
+		modo.inicioDeEstacionamiento(app, nroDeCelular, patente);
+		modo.finDeEstacionamiento(app, 1123234444);
+		//Verify
+		verify(app,atLeast(3)).getHoraInicio();
+		verify(app,atLeast(2)).getSistemaEstacionamiento();
+		
+	}
 	@Test
 	public void testAplicacionRecibeUnFinDeEstacionamientoYDelegaEnModoUnFinDeEstacionamientoPeroNoSeFinaliza() {
 		
@@ -87,6 +105,7 @@ public class ModoAutomaticoTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
+		when(gps.estaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeInicioDeEstacionamiento(app);
 		
@@ -99,6 +118,7 @@ public class ModoAutomaticoTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
+		when(gps.estaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeFinDeEstacionamiento(app);
 		
@@ -131,11 +151,14 @@ public class ModoAutomaticoTest {
 	@Test
 	public void testEstaEnModoAutomatico() {
 		
-		
 		assertTrue(modo.estaEnModoAutomatico());
 	}
 	@Test
 	public void testPruebaAvisoDeCambio() {
 		modo.avisoDeCambio();
+	}
+	@Test
+	public void test() {
+		
 	}
 }
