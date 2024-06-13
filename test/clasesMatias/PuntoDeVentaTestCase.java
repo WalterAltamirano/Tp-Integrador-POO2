@@ -73,6 +73,7 @@ class PuntoDeVentaTestCase {
 		CompraPuntual nuevaCompra = puntoVenta1.generarNuevaCompra(4);
 		EstacionamientoCompraPuntual nuevoEstacionamiento = puntoVenta1.generarNuevoEstacionamiento(nuevaCompra, auto.getPatente());
 		//verify		
+		assertEquals(nuevaCompra.getHorasCompradas(), 4);
 		verify(sem, atLeast(1)).registrarCompra(nuevaCompra);
 		verify(sem, atLeast(1)).registrarEstacionamiento(nuevoEstacionamiento);
 		
