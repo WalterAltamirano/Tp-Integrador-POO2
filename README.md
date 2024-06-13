@@ -51,6 +51,6 @@ Patrones utilizados Y los roles segun el libro "Patrones de Diseño Gamma et. al
 - Estrategias concretas: Apagado y Encendido
 
 * Template Method
-Se formo una estructura de Template Method en las clases del Strategy 1, especificamente en los mensajes inicioDeEstacionamiento() y finDeEstacionamiento()
+- Se formo una estructura de Template Method en las clases del Strategy 1, especificamente en los mensajes inicioDeEstacionamiento() y finDeEstacionamiento()
 
 
