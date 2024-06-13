@@ -85,13 +85,13 @@ public class AplicacionSEM implements MovementSensor {
 	
 						//Metodos de visibilidad de Paquete
 //	!-------------------------------------------------------------------------!	
-	void setEstado(EstadoApp estado) {
+	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-	void alertaInicioDeEstacionamiento() {
+	public void alertaInicioDeEstacionamiento() {
 		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
 	}
-	void alertaFinDeEstacionamiento() {
+	public void alertaFinDeEstacionamiento() {
 		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
 	}
 	EstadoGPS getGps() {
@@ -115,7 +115,7 @@ public class AplicacionSEM implements MovementSensor {
 	SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
 	}
-	Usuario getUsuario() {
+	public Usuario getUsuario() {
 		return this.usuario;
 	}
 	public Modo getModo() {
@@ -185,30 +185,10 @@ public class AplicacionSEM implements MovementSensor {
     }
 //	!-------------------------------------------------------------------------!
 
-
-	
-
-
-	
-    
 }
 
 
 /*
-
-  //Para verificar el credito disponible
-   * if(this.calcularCreditoAPagar() <= this.saldoAcreditado) {
-		   return 
-      }
-  
-  
-  
-  Evento 1 via app
-   *Para dar una respuesta, deberia hacer un "system.out.print("mensaje");"
-   
-   Otra opcion
-    *
-   
   
   / Interfaz MovementSensor
    * En el test, deberia en algun momento del execercise
