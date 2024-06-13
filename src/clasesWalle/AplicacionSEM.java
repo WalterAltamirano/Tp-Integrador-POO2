@@ -185,30 +185,10 @@ public class AplicacionSEM implements MovementSensor {
     }
 //	!-------------------------------------------------------------------------!
 
-
-	
-
-
-	
-    
 }
 
 
 /*
-
-  //Para verificar el credito disponible
-   * if(this.calcularCreditoAPagar() <= this.saldoAcreditado) {
-		   return 
-      }
-  
-  
-  
-  Evento 1 via app
-   *Para dar una respuesta, deberia hacer un "system.out.print("mensaje");"
-   
-   Otra opcion
-    *
-   
   
   / Interfaz MovementSensor
    * En el test, deberia en algun momento del execercise
