@@ -5,7 +5,7 @@ public class ModoAutomatico extends Modo{
 
 	
 	@Override
-	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
+	protected void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a iniciar automaticamente");
 			System.out.print("Alerta: Se ha iniciado el estacionamiento con exito!"
@@ -14,7 +14,7 @@ public class ModoAutomatico extends Modo{
 	}
 
 	@Override
-	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
+	protected void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a finalizar automaticamente");
 			System.out.print("Alerta: Se ha finalizado el estacionamiento con exito!"
@@ -51,6 +51,7 @@ public class ModoAutomatico extends Modo{
 				 + "Hora exacta: " + app.getHoraInicio()
 				 + "Hora fin: " + app.horaFinal()
 				 + "Duracion: " + (app.horaFinal() - app.getHoraInicio())
+				 + "Costo: " + app.calcularCreditoAPagar()
 				 + "Esta en Modo Automatico, lo que significa que fue dado de baja automaticamente"
 				 + "!---------------------------------!");
 	
