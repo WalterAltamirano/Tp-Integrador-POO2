@@ -1,5 +1,7 @@
 package clasesIan;
 
+import clasesWalle.AplicacionSEM;
+
 public abstract class EstadoApp {
 	
 	public abstract void manejando(AplicacionSEM aplicacion);
