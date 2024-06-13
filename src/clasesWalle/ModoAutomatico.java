@@ -5,7 +5,7 @@ public class ModoAutomatico extends Modo{
 
 	
 	@Override
-	protected void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
+	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a iniciar automaticamente");
 			System.out.print("Alerta: Se ha iniciado el estacionamiento con exito!"
@@ -14,7 +14,7 @@ public class ModoAutomatico extends Modo{
 	}
 
 	@Override
-	protected void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
+	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a finalizar automaticamente");
 			System.out.print("Alerta: Se ha finalizado el estacionamiento con exito!"
@@ -28,12 +28,12 @@ public class ModoAutomatico extends Modo{
 	}
 
 	@Override
-	protected void avisoDeCambio() {
+	public void avisoDeCambio() {
 		System.out.print("Usted a elegido el Modo Automatico");
 	}
 
 	@Override
-	protected void darRespuestaInicial(AplicacionSEM app) {
+	public void darRespuestaInicial(AplicacionSEM app) {
 		System.out.print("!---------------------------------!"
 				 + "Su estacionamiento fue dado de alta con exito."
 				 + "Hora exacta: " + app.getHoraInicio()
@@ -45,8 +45,9 @@ public class ModoAutomatico extends Modo{
 	}
 	
 	@Override
-	protected void darRespuestaFinal(AplicacionSEM app) {
+	public void darRespuestaFinal(AplicacionSEM app) {
 		System.out.print("!---------------------------------!"
+				 + "                                        "
 				 + "Su estacionamiento fue dado de baja con exito."
 				 + "Hora exacta: " + app.getHoraInicio()
 				 + "Hora fin: " + app.horaFinal()

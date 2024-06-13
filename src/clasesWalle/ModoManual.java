@@ -4,7 +4,7 @@ package clasesWalle;
 public class ModoManual extends Modo{
 
 	@Override
-	protected void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
+	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha iniciado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure iniciar el estacionamiento para evitar una infraccion");
@@ -14,7 +14,7 @@ public class ModoManual extends Modo{
 	}
 
 	@Override
-	protected void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
+	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
 		if(app.getGps().estaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha finalizado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure finalizar el estacionamiento para evitar descontar saldo de mas");
@@ -30,8 +30,9 @@ public class ModoManual extends Modo{
 
 
 	@Override
-	protected void darRespuestaInicial(AplicacionSEM app) {
+	public void darRespuestaInicial(AplicacionSEM app) {
 		System.out.print("!---------------------------------!"
+				 + "                                        "
 				 + "Su estacionamiento fue dado de alta con exito."
 				 + "Hora exacta: " + app.getHoraInicio()
 				 + "Hora fin: " + "Pendiente"
@@ -48,13 +49,13 @@ public class ModoManual extends Modo{
 
 
 	@Override
-	protected void avisoDeCambio() {
+	public void avisoDeCambio() {
 		System.out.print("!---------------------------------!"
 				+ "Usted a elegido el Modo Manual");
 	}
 
 	@Override
-	protected void darRespuestaFinal(AplicacionSEM app) {
+	public void darRespuestaFinal(AplicacionSEM app) {
 		System.out.print("!---------------------------------!"
 				 + "Su estacionamiento fue dado de baja con exito."
 				 + "Hora exacta: " + app.getHoraInicio() + ":" + app.minutoInicio()
