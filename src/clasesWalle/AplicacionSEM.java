@@ -12,8 +12,6 @@ import clasesIan.Caminando;
 public class AplicacionSEM implements MovementSensor {
 	
 	//Variables de Instancia
-    private LocalDateTime horaInicio;
-    private LocalDateTime horaFin;
 	private double saldoAcreditado;
 	private int numeroDeCelular;
 	private SEM sistemaEstacionamiento;
@@ -23,7 +21,7 @@ public class AplicacionSEM implements MovementSensor {
     private Usuario usuario;
     
     //Constructor
-	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,int nroDeCelular,LocalDateTime horaDeInicio, LocalDateTime horaFin) {
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,int nroDeCelular) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = nroDeCelular;
@@ -31,8 +29,6 @@ public class AplicacionSEM implements MovementSensor {
 		this.estado = estado;
 		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
 		this.usuario = usuario;
-		this.horaInicio = horaDeInicio;
-		this.horaFin = horaFin;
 	}
 	
 	
@@ -88,31 +84,38 @@ public class AplicacionSEM implements MovementSensor {
 	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
+	
+	
+	public EstadoApp getEstado() {
+		return estado;
+	}
+
+
 	public void alertaInicioDeEstacionamiento() {
 		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
 	}
 	public void alertaFinDeEstacionamiento() {
 		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
 	}
-	EstadoGPS getGps() {
+	public EstadoGPS getGps() {
 		return this.gps;
 	}
-	boolean hayEstacionamientoCon(String patente) {
+	public boolean hayEstacionamientoCon(String patente) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
 	}
-	boolean hayEstacionamientoCon(int nroDeCelular) {
+	public boolean hayEstacionamientoCon(int nroDeCelular) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(nroDeCelular);
 	}
-	double getCredito() {   
+	public double getCredito() {   
 	    return this.saldoAcreditado;
 	}
-	boolean tieneCreditoSuficienteParaEstacionar() {
-		return this.saldoAcreditado > this.valorPorHoraDeEstacionamiento();
+	public boolean tieneCreditoSuficienteParaEstacionar() {
+		return this.saldoAcreditado >= this.valorPorHoraDeEstacionamiento();
 	}
-	boolean estaEnZonaDeEstacionamiento() { 
+	public boolean estaEnZonaDeEstacionamiento() { 
 	    return this.getGps().estaEncendido();
     }
-	SEM getSistemaEstacionamiento() {
+	public SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
 	}
 	public Usuario getUsuario() {
@@ -121,13 +124,13 @@ public class AplicacionSEM implements MovementSensor {
 	public Modo getModo() {
 		return this.modo;
 	}
-	void descontarSaldo() {
+	public void descontarSaldo() {
 		this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
 	}
-	int getHoraInicio() {
-		return this.horaInicio.getHour();
+	public int getHoraInicio() {
+		return LocalDateTime.now().getHour();
 	}
-	int horaFinal() { //Para el modo automatico
+	public int horaFinal() { //Para el modo automatico
 		if(this.puedePagarHastaFinDeFranjaHoraria()) {
 			return this.horaMaximaDeEstacionamiento();
 		}
@@ -136,16 +139,16 @@ public class AplicacionSEM implements MovementSensor {
 		}
 		
 	}
-	int calcularHoraFin() { //Para el modo manual
-		return this.getHoraInicio() + this.horaFin.getHour();
+	public int calcularHoraFin() { //Para el modo manual
+		return this.getHoraInicio() + LocalDateTime.now().getHour();
 	}
-	int minutoFin() {
+	public int minutoFin() {
 		return LocalDateTime.now().getMinute();
 	}
-	int minutoInicio() {
-		return this.horaInicio.getMinute();
+	public int minutoInicio() {
+		return LocalDateTime.now().getMinute();
 	}
-	double calcularCreditoAPagar() {
+	public double calcularCreditoAPagar() {
     	if(this.puedePagarHastaFinDeFranjaHoraria()) {
     		return this.valorPorHoraDeEstacionamiento() * this.cantidadDeHorasMaximas();
     	} 
@@ -159,76 +162,34 @@ public class AplicacionSEM implements MovementSensor {
 							  //Metodos privados
 //	!-------------------------------------------------------------------------!	
 	
-    private void setModoApp(Modo modo) {
+   public void setModoApp(Modo modo) {
 		this.modo = modo;
    }
-   private int valorPorHoraDeEstacionamiento() {
+   public int valorPorHoraDeEstacionamiento() {
 	   return 40;
    }
    
-   private int horaMaximaDeEstacionamiento() {
+   public int horaMaximaDeEstacionamiento() {
 	   return 20;
    }
-   private int cantidadDeHorasSegunSaldo() {
+   public int cantidadDeHorasSegunSaldo() {
 	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
    }
-   private int cantidadDeHorasMaximas() {
+   public int cantidadDeHorasMaximas() {
 	   return this.horaMaximaDeEstacionamiento() - this.getHoraInicio();
    }
-   private boolean puedePagarHastaFinDeFranjaHoraria() {
+   public boolean puedePagarHastaFinDeFranjaHoraria() {
        return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
     	
     }
 	
-   private void setEstadoGPS(EstadoGPS estado) {
+   public void setEstadoGPS(EstadoGPS estado) {
     	this.gps = estado;
     }
 //	!-------------------------------------------------------------------------!
 
 }
 
-
-/*
-  
-  / Interfaz MovementSensor
-   * En el test, deberia en algun momento del execercise
-   * enviar el mensaje driving o walking dependiendo en que escenario
-   * de testeo me encuentre
-  
-  
-  / Se envia el mensaje inicioEstacionamiento() (Modo manual)
-     * verifica que (Constantemente recibiendo uno de los dos mensajes "driving()" o "walking()") 
-       1. No haya un estacionamiento vigente con esa patente
-       2. Que el estadoApp va a ser Caminando (El estado se encarga de enviar el mensaje "alerta")
-         a.esta en una zona de estacionameinto
-         b.se detecta que el desplazamiento es de manejando a caminando
-       3. Que tenga credito.
-       4. Que se encuentre en una zona de estacionamiento
-      
-      Entonces toma las siguientes decisiones: 
-        1. modo.notificarAlertaInicio()  --Independientemente de que si esta activada o no
-        2. sistemaEstacionamiento.registrarEstacionamiento(new Estaciomiento(patente,nroCelular,this.horaActual))
-        3. 
-        4. 
-      
-    ** el saldo a debitar se calcula una vez que termine el estacionamiento 
-       ya que todavia no sabria cuantas horas va a dejar estacionado el auto añaña**
-       *this.saldoAcreditado = this.saldoAcreditado - this.calcularCostoEstacionamiento()*
     
     
-    /Se envia el mensaje finalizarEstacionamiento()
-     *
-      
-    
-    
-    
-    
-    
-    private boolean estaEnZonaDeEstacionamiento() { //!Una idea!
-//		List<ZonaEstacionamiento> zonas = sistemaEstacionamiento.getZonasDeEstacionamiento();
-//		List<ZonaEstacionamieto> zonaQueCoincide = zonas.stream().
-//								filter( zona -> zona.puntoGeografico() == gps.puntoGeograficoActual())
-//								.Collect(Collectors.toList());
-//		return !zonaQueCoincide.isEmpty();
-  
- * */
+ 
