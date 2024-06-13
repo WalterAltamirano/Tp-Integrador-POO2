@@ -185,6 +185,7 @@ public class SEMTestCase {
 	@Test
 	public void verificarEstacionamientoVigenteTest() {
 		when(estacionamiento1.estaVigente()).thenReturn(true);
+		when(estacionamiento1.getPatente()).thenReturn("123456");
 		//Exercise
 		sem.registrarEstacionamiento(estacionamiento1);
 		//Verify
