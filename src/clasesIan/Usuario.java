@@ -20,7 +20,7 @@ public class Usuario {
 		puestoDeCarga.cargarSaldo(aplicacion, saldoACargar);
 	}
 	
-	//Dudoso
+	
 	public void estacionamientoPorAplicacion() {
 		this.aplicacion.inicioEstacionamiento(aplicacion.getNumeroDeCelular(), auto.getPatente());
 	}
