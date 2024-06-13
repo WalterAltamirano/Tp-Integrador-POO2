@@ -248,6 +248,24 @@ public class AplicacionSEMTest {
 		assertEquals(app.cantidadDeHorasSegunSaldo(),3);
 		
 	}
+	
+	@Test
+	public void testAsignarCelular() {
+		
+		app.asignarCelular(nroDeCelular);
+		
+		assertEquals(app.getNumeroDeCelular(),nroDeCelular);
+		
+	}
+	
+	@Test
+	public void setEstado() {
+		
+		app.setEstado(estadoAplicacion);
+		
+		assertEquals(app.getEstado(),estadoAplicacion);
+		
+	}
 
 
 }
