@@ -61,6 +61,42 @@ public class ModoManualTest {
 		
 	}
 	@Test
+	public void testAplicacionRecibeUnInicioDeEstacionamientoYDelegaEnModoUnInicioDeEstacionamientoYSeInicia() {
+		
+		//SetUp
+		when(app.getCredito()).thenReturn(100d);
+		when(app.tieneCreditoSuficienteParaEstacionar()).thenReturn(true);
+		when(app.hayEstacionamientoCon(patente)).thenReturn(false);
+		when(app.estaEnZonaDeEstacionamiento()).thenReturn(true);
+		when(app.getSistemaEstacionamiento()).thenReturn(sistema);
+		when(app.getGps()).thenReturn(gps);
+		when(estacionamiento.getPatente()).thenReturn(patente);
+		//Excercise
+		modo.inicioDeEstacionamiento(app, 1123234444, patente);
+		//Verify
+		verify(app).getHoraInicio();
+		
+	}
+	@Test
+	public void testAplicacionRecibeUnFinDeEstacionamientoYDelegaEnModoUnFinDeEstacionamientoYSeFinaliza() {
+		
+		//SetUp
+		when(app.getCredito()).thenReturn(100d);
+		when(app.tieneCreditoSuficienteParaEstacionar()).thenReturn(true);
+		when(app.hayEstacionamientoCon(patente)).thenReturn(false);
+		when(app.estaEnZonaDeEstacionamiento()).thenReturn(true);
+		when(app.getSistemaEstacionamiento()).thenReturn(sistema);
+		when(app.getGps()).thenReturn(gps);
+		when(estacionamiento.getPatente()).thenReturn(patente);
+		//Excercise
+		modo.inicioDeEstacionamiento(app, nroDeCelular, patente);
+		modo.finDeEstacionamiento(app, 1123234444);
+		//Verify
+		verify(app,atLeast(3)).getHoraInicio();
+		verify(app).calcularHoraFin();
+		
+	}
+	@Test
 	public void testAplicacionRecibeUnaAlertaDeInicioDeEstacionamientoYDelegaEnModoUnaNotificacionDeInicio() {
 		
 		//SetUp
@@ -104,9 +140,17 @@ public class ModoManualTest {
 		verify(app,atLeast(2)).getHoraInicio();
 		verify(app).calcularCreditoAPagar();
 	}
+	
+	
 	@Test
 	public void testEstaEnModoAutomatico() {
 		
 		assertFalse(modo.estaEnModoAutomatico());
+	}
+	
+
+	@Test
+	public void testPruebaAvisoDeCambio() {
+		modo.avisoDeCambio();
 	}
 }

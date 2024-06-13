@@ -152,7 +152,6 @@ public class AplicacionSEMTest {
 		
 		verify(modo).avisoDeCambio();
 		
-		
 	}
 	
 	@Test
