@@ -75,7 +75,9 @@ public class ModoManualTest {
 		modo.inicioDeEstacionamiento(app, 1123234444, patente);
 		//Verify
 		verify(app).getHoraInicio();
-		
+		verify(app).estaEnZonaDeEstacionamiento();
+		verify(app).tieneCreditoSuficienteParaEstacionar();
+		verify(app).hayEstacionamientoCon(patente);
 	}
 	@Test
 	public void testAplicacionRecibeUnFinDeEstacionamientoYDelegaEnModoUnFinDeEstacionamientoYSeFinaliza() {
@@ -101,26 +103,26 @@ public class ModoManualTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
-		when(gps.estaEncendido()).thenReturn(true);
+		when(gps.getEstaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeInicioDeEstacionamiento(app);
 		
 		//Verify
 		verify(app).getGps();
-		verify(gps).estaEncendido();
+		verify(gps).getEstaEncendido();
 	}
 	@Test
 	public void testAplicacionRecibeUnaAlertaDeFinDeEstacionamientoYDelegaEnModoUnaNotificacionDeFin() {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
-		when(gps.estaEncendido()).thenReturn(true);
+		when(gps.getEstaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeFinDeEstacionamiento(app);
 		
 		//Verify
 		verify(app).getGps();
-		verify(gps).estaEncendido();
+		verify(gps).getEstaEncendido();
 	}
 	@Test
 	public void testModoDaUnaRespuestaInicial() {
@@ -144,11 +146,11 @@ public class ModoManualTest {
 	}
 	
 	
-	@Test
-	public void testEstaEnModoAutomatico() {
-		
-		assertFalse(modo.estaEnModoAutomatico());
-	}
+//	@Test
+//	public void testEstaEnModoAutomatico() {
+//		
+//		assertFalse(modo.estaEnModoAutomatico());
+//	}
 	
 
 	@Test

@@ -105,26 +105,26 @@ public class ModoAutomaticoTest {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
-		when(gps.estaEncendido()).thenReturn(true);
+		when(gps.getEstaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeInicioDeEstacionamiento(app);
 		
 		//Verify
 		verify(app).getGps();
-		verify(gps).estaEncendido();
+		verify(gps).getEstaEncendido();
 	}
 	@Test
 	public void testAplicacionRecibeUnaAlertaDeFinDeEstacionamientoYDelegaEnModoUnaNotificacionDeFin() {
 		
 		//SetUp
 		when(app.getGps()).thenReturn(gps);
-		when(gps.estaEncendido()).thenReturn(true);
+		when(gps.getEstaEncendido()).thenReturn(true);
 		//Excercise
 		modo.notificarAlertaDeFinDeEstacionamiento(app);
 		
 		//Verify
 		verify(app).getGps();
-		verify(gps).estaEncendido();
+		verify(gps).getEstaEncendido();
 	}
 	@Test
 	public void testModoDaUnaRespuestaInicial() {
@@ -148,11 +148,11 @@ public class ModoAutomaticoTest {
 		verify(app).calcularCreditoAPagar();
 	}
 	
-	@Test
-	public void testEstaEnModoAutomatico() {
-		
-		assertTrue(modo.estaEnModoAutomatico());
-	}
+//	@Test
+//	public void testEstaEnModoAutomatico() {
+//		
+//		assertTrue(modo.estaEnModoAutomatico());
+//	}
 	@Test
 	public void testPruebaAvisoDeCambio() {
 		modo.avisoDeCambio();

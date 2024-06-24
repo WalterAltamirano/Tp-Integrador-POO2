@@ -5,48 +5,47 @@ import clasesIan.EstacionamientoAplicacion;
 public abstract class Modo {
 	
 	//Templeate Method 1
-	public void inicioDeEstacionamiento(AplicacionSEM app,int numeroDeCelular, String patente)  {
-		if(app.tieneCreditoSuficienteParaEstacionar() && app.estaEnZonaDeEstacionamiento()
-				&& !app.hayEstacionamientoCon(patente)) {
-			app.getSistemaEstacionamiento()
-			.registrarEstacionamiento(new EstacionamientoAplicacion(numeroDeCelular,patente));
-			this.notificarAlertaDeInicioDeEstacionamiento(app);
-			this.darRespuestaInicial(app);
+	public void inicioDeEstacionamiento(AplicacionSEM app,Integer numeroDeCelular, String patente)  {
+		try {	
+			this.puedeEstacionar(app,patente);
 		}
-		else {
-			System.out.print("No se cumplen alguna/as de las condiciones para iniciar un estacionamiento"
-					+ "Saldo: " + app.getCredito() + "Esta una zona valida: " 
-					+ app.estaEnZonaDeEstacionamiento() + "El auto ya esta estacionado: " 
-					+ app.hayEstacionamientoCon(patente));
+		catch(ExcepcionPersonalizada e) {
+			e.printStackTrace();
 		}
-	}
+		app.getSistemaEstacionamiento()
+		.registrarEstacionamiento(app.instanciaDeEstacionamiento(numeroDeCelular, patente));
+		this.notificarAlertaDeInicioDeEstacionamiento(app);
+		this.darRespuestaInicial(app);
+ 	}
 	//Templeate Method 2
-	public void finDeEstacionamiento(AplicacionSEM app,int numeroDeCelular) {
+	public void finDeEstacionamiento(AplicacionSEM app,Integer numeroDeCelular) {
 		if(!app.hayEstacionamientoCon(numeroDeCelular)) {
 			 app.getSistemaEstacionamiento().finalizarEstacionamientoCon(numeroDeCelular);
 			 this.notificarAlertaDeFinDeEstacionamiento(app);
 			 this.darRespuestaFinal(app);
 			 app.descontarSaldo();
 		}
-		
+	
 	}
+	
+	//Operacion Concreta
+	public void puedeEstacionar(AplicacionSEM app,String patente) throws ExcepcionPersonalizada {
+		if(!app.tieneCreditoSuficienteParaEstacionar()) {
+			throw new ExcepcionPersonalizada("No hay credito suficiente");
+		}
+		if(!app.estaEnZonaDeEstacionamiento()) {
+			throw new ExcepcionPersonalizada("El usuario no esta en una zona de estacionamiento");
+		}
+			
+		if(app.hayEstacionamientoCon(patente)) {
+			throw new ExcepcionPersonalizada("Ya hay un estacionamiento vigente con la patente dada");
+		}
+	}
+	
 	
 	public abstract void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app);
 	
 	public abstract void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app);
-	
-	public abstract boolean estaEnModoAutomatico();
-	
-	//Operacion Concreta
-//	public void puedeEstacionar(AplicacionSEM app,String patente) {
-//		if(!app.tieneCreditoSuficienteParaEstacionar() || !app.estaEnZonaDeEstacionamiento()
-//				|| app.hayEstacionamientoCon(patente)) {
-//			System.out.print("No se cumplen alguna/as de las condiciones para iniciar un estacionamiento"
-//					+ "Saldo: " + app.getCredito() + "Esta una zona valida: " 
-//					+ app.estaEnZonaDeEstacionamiento() + "El auto ya esta estacionado: " 
-//					+ app.hayEstacionamientoCon(patente));
-//		}
-//	}
 	
 	public abstract void avisoDeCambio();
 	

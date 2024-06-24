@@ -5,8 +5,16 @@ public class ModoAutomatico extends Modo{
 
 	
 	@Override
+	public void puedeEstacionar(AplicacionSEM app, String patente) throws ExcepcionPersonalizada{
+		super.puedeEstacionar(app, patente); 
+		if(!app.elGpsEstaEncendido()) {
+			throw new ExcepcionPersonalizada("El gps esta apagado. Para usar el modo automatico tenes que prenderlo");
+		}
+	}
+	
+	@Override
 	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
-		if(app.getGps().estaEncendido()) {
+		if(app.elGpsEstaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a iniciar automaticamente");
 			System.out.print("Alerta: Se ha iniciado el estacionamiento con exito!"
 					+ "Recuerde que esta activado el Modo Automatico");
@@ -15,17 +23,13 @@ public class ModoAutomatico extends Modo{
 
 	@Override
 	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
-		if(app.getGps().estaEncendido()) {
+		if(app.elGpsEstaEncendido()) {
 			//app.getUsuario().notificarAlerta("Alerta: El estacionamiento se va a finalizar automaticamente");
 			System.out.print("Alerta: Se ha finalizado el estacionamiento con exito!"
 					+ "Recuerde que esta activado el Modo Automatico");
 		}
 	}
 
-	@Override
-	public boolean estaEnModoAutomatico() {
-		return true;
-	}
 
 	@Override
 	public void avisoDeCambio() {

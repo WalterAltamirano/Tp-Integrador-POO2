@@ -5,7 +5,7 @@ public class ModoManual extends Modo{
 
 	@Override
 	public void notificarAlertaDeInicioDeEstacionamiento(AplicacionSEM app) {
-		if(app.getGps().estaEncendido()) {
+		if(app.getGps().getEstaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha iniciado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure iniciar el estacionamiento para evitar una infraccion");
 			System.out.print("Alerta: No se ha iniciado el estacionamiento por que usted elijio el modo Manual"
@@ -15,17 +15,12 @@ public class ModoManual extends Modo{
 
 	@Override
 	public void notificarAlertaDeFinDeEstacionamiento(AplicacionSEM app) {
-		if(app.getGps().estaEncendido()) {
+		if(app.getGps().getEstaEncendido()) {
 //			app.getUsuario().notificarAlerta("Alerta: No se ha finalizado el estacionamiento por que usted elijio el modo Manual"
 //					+ "Procure finalizar el estacionamiento para evitar descontar saldo de mas");
 			System.out.print("Alerta: No se ha finalizado el estacionamiento por que usted elijio el modo Manual"
 					+ "Procure finalizar el estacionamiento para evitar descontar saldo de mas");
 		}
-	}
-
-	@Override
-	public boolean estaEnModoAutomatico() {
-		return false;
 	}
 
 
@@ -46,7 +41,6 @@ public class ModoManual extends Modo{
 				 + "Notese que le quedara saldo negativo para esta ultima opcion"
 				 + "!---------------------------------!");
 	}
-
 
 	@Override
 	public void avisoDeCambio() {

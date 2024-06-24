@@ -7,13 +7,14 @@ import clasesIan.EstadoApp;
 import clasesIan.Usuario;
 import clasesMatias.SEM;
 import clasesIan.EnAuto;
+import clasesIan.EstacionamientoAplicacion;
 import clasesIan.Caminando;
 
 public class AplicacionSEM implements MovementSensor {
 	
 	//Variables de Instancia
 	private double saldoAcreditado;
-	private int numeroDeCelular;
+	private Integer numeroDeCelular;
 	private SEM sistemaEstacionamiento;
 	private Modo modo;
 	private EstadoGPS gps;
@@ -21,7 +22,7 @@ public class AplicacionSEM implements MovementSensor {
     private Usuario usuario;
     
     //Constructor
-	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,int nroDeCelular) {
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,EstadoGPS gps) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = nroDeCelular;
@@ -29,16 +30,17 @@ public class AplicacionSEM implements MovementSensor {
 		this.estado = estado;
 		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
 		this.usuario = usuario;
+		this.gps = gps;
 	}
 	
 	
 					    //Mensajes Publicos
 //	!-------------------------------------------------------------------------!
-	public void inicioEstacionamiento(int numeroCelular,String patente) {
+	public void inicioEstacionamiento(Integer numeroCelular,String patente) {
 		this.getModo().inicioDeEstacionamiento(this, numeroCelular, patente);
 	}
 	
-	public void finalizarEstacionamiento(int numeroCelular) {
+	public void finalizarEstacionamiento(Integer numeroCelular) {
 		this.getModo().finDeEstacionamiento(this, numeroCelular);
 	}
 	
@@ -46,9 +48,12 @@ public class AplicacionSEM implements MovementSensor {
 		this.setModoApp(modo);
 		this.getModo().avisoDeCambio();
 	}
-	
-	public void elegirEstadoGPS(EstadoGPS estado) {
-		this.setEstadoGPS(estado);
+
+	public void apagarGps() {
+		this.gps.apagar(this);
+	}
+	public void prenderGps() {
+		this.gps.prender(this);
 	}
 	
 	public void cargarSaldo(double saldoACargar) {
@@ -58,7 +63,7 @@ public class AplicacionSEM implements MovementSensor {
 	public double consultarSaldo() {
 		return this.getCredito();
 	}
-	public void asignarCelular(int numeroDeCelular) {
+	public void asignarCelular(Integer numeroDeCelular) {
 		this.numeroDeCelular = numeroDeCelular;
 	}
 	
@@ -103,7 +108,7 @@ public class AplicacionSEM implements MovementSensor {
 	public boolean hayEstacionamientoCon(String patente) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
 	}
-	public boolean hayEstacionamientoCon(int nroDeCelular) {
+	public boolean hayEstacionamientoCon(Integer nroDeCelular) {
 	    return sistemaEstacionamiento.verificarEstacionamientoVigente(nroDeCelular);
 	}
 	public double getCredito() {   
@@ -113,7 +118,7 @@ public class AplicacionSEM implements MovementSensor {
 		return this.saldoAcreditado >= this.valorPorHoraDeEstacionamiento();
 	}
 	public boolean estaEnZonaDeEstacionamiento() { 
-	    return this.getGps().estaEncendido();
+	    return this.elGpsEstaEncendido();
     }
 	public SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
@@ -156,6 +161,12 @@ public class AplicacionSEM implements MovementSensor {
     		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
     	}
     }
+	public boolean elGpsEstaEncendido() {
+		return this.gps.getEstaEncendido();
+	}
+	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
+		return new EstacionamientoAplicacion(numeroDeCelular,patente);
+	}
 //	!-------------------------------------------------------------------------!
 	
 	
@@ -182,14 +193,18 @@ public class AplicacionSEM implements MovementSensor {
        return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
     	
     }
-	
    public void setEstadoGPS(EstadoGPS estado) {
-    	this.gps = estado;
-    }
+   	this.gps = estado;
+   }
 //	!-------------------------------------------------------------------------!
-
+ 
 }
 
-    
+    /*
+     Anotaciones:
+      *Creo que el usuario deberia tener un mensaje donde pueda elegir el modo 
+        de la aplicacion y tambien otros dos mensajes que indiquen que quieran
+        prender el gps o apagarlo
+        */
     
  
