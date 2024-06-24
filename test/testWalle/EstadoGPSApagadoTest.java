@@ -25,6 +25,6 @@ public class EstadoGPSApagadoTest {
 		//Excercise
 		
 		//Verify
-		assertFalse(gps.estaEncendido());
+		assertFalse(gps.getEstaEncendido());
 	}
 }
