@@ -1,5 +1,4 @@
 package clasesIan;
-
 import clasesWalle.AplicacionSEM;
 import clasesWalle.ModoAutomatico;
 
