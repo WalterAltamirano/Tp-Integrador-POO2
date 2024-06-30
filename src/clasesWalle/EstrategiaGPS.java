@@ -2,7 +2,7 @@ package clasesWalle;
 
 import clasesMatias.ZonaDeEstacionamiento;
 
-public abstract class EstadoGPS {
+public abstract class EstrategiaGPS {
 
 	//Cambios
 	protected boolean estaEncendido;
@@ -15,9 +15,6 @@ public abstract class EstadoGPS {
 		this.estaEncendido = valor;
 	}
 	
-	public abstract void prender(AplicacionSEM app);
-		
-	public abstract void apagar(AplicacionSEM app);
 	
 	public abstract boolean coincidenEnUnMismoPunto(AplicacionSEM app,ZonaDeEstacionamiento zona);
 }

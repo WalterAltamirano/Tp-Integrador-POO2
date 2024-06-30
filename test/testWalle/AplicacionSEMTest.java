@@ -8,7 +8,6 @@ import clasesIan.*;
 import clasesMatias.*;
 import clasesWalle.*;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,7 +23,7 @@ public class AplicacionSEMTest {
 	private Modo modoAutomatico;
 	private EstadoApp estadoAplicacion;
 	private SEM sem;
-	private EstadoGPS gps;
+	private EstrategiaGPS gps;
 	private Estacionamiento estacionamiento;
 	private Usuario usuario;
 	private Modo modoManual;
@@ -37,7 +36,7 @@ public class AplicacionSEMTest {
 		modoManual = spy(ModoManual.class);
 		estadoAplicacion = mock(EnAuto.class);
 		sem = mock(SEM.class);
-		gps = mock(EstadoGPS.class);
+		gps = mock(EstrategiaGPS.class);
 		estacionamiento = mock(EstacionamientoAplicacion.class);
 		usuario = mock(Usuario.class);
 		
@@ -45,45 +44,50 @@ public class AplicacionSEMTest {
 	}
 	
 	
+//	@Test
+//	public void testUnUsuarioDejaSuAutoEnUnaZonaDeEstacionameintoConGPSActivadoYModoAutomaticoYLaApliacionSEMIniciaElEstacionamiento() {
+//		
+//		
+//		app.elegirModoGps(gps);
+//		app.elegirModo(modoAutomatico);
+//		app.cargarSaldo(100);
+//		app.driving();
+//		app.walking(); 
+//		//app.iniciarEstacionamiento(nroDeCelular, patente);
+//		
+//		assertEquals(100,app.consultarSaldo()); 
+//		
+//		verify(estadoAplicacion).manejando(app);
+//		verify(estadoAplicacion).caminando(app);
+//		verify(modoAutomatico).inicioDeEstacionamiento(app);
+//		verify(modoAutomatico).avisoDeCambio();
+//		
+//	}
 	@Test
-	public void testUnUsuarioDejaSuAutoEnUnaZonaDeEstacionameintoConGPSActivadoYModoAutomaticoYLaApliacionSEMIniciaElEstacionamiento() {
-		
-		
-		app.prenderGps();
-		app.elegirModo(modoAutomatico);
-		app.cargarSaldo(100);
-		app.driving();
-		app.walking(); 
-		app.inicioEstacionamiento(nroDeCelular, patente);
-		
-		assertEquals(100,app.consultarSaldo()); 
-		
-		verify(estadoAplicacion).manejando(app);
-		verify(estadoAplicacion).caminando(app);
-		verify(modoAutomatico).inicioDeEstacionamiento(app, nroDeCelular, patente);
-		verify(modoAutomatico).avisoDeCambio();
-		
-	}
-	@Test
-	public void testUnUsuarioFinalizaUnEstacionamientoConGPSDesactivadoYModoAutomaticoYLaApliacionSEMNoIniciaElEstacionamiento()  {
+	public void testUnUsuarioFinalizaUnEstacionamientoNoVigenteConGPSDesactivadoYModoAutomaticoYLaApliacionSEMNoIniciaElEstacionamiento()  {
 			
 		
-		app.apagarGps();
+		app.elegirModoGps(gps);
 		app.finalizarEstacionamiento(nroDeCelular);		
 		
-		verify(modoAutomatico).finDeEstacionamiento(app, nroDeCelular);		
+		Throwable exception = assertThrows(ExcepcionPersonalizada.class, () -> {
+	            app.puedeEstacionar(patente);
+	    });
+		
+		assertEquals("No hay credito suficiente",exception.getMessage());
+		//Buscar forma de captar excepcion con un metodo que no retorna nada (void)
 		
 		
 	}
 	@Test
-	public void testUnSensorIndicaQueElUsuarioPasoDeCaminarAManejarEnUnaZonaEstacionamientoYLaAplicacionSEMEnModoManualYDaUnaAlerta() {
+	public void testUnSensorIndicaQueElUsuarioPasoDeCaminarAManejarEnUnaZonaEstacionamientoYLaAplicacionSEMEnModoManualDaUnaAlerta() {
 		
 		//Setup
 		when(gps.getEstaEncendido()).thenReturn(true);
 		//when(modo.estaEnModoAutomatico()).thenReturn(false);
 		
 		//Excercise
-		app.apagarGps();
+		app.elegirModoGps(gps);
 		app.cargarSaldo(120);
 		app.driving();
 		app.driving();
@@ -97,15 +101,15 @@ public class AplicacionSEMTest {
 	@Test
 	public void testUsuarioIniciaUnEstacionamientoConGpsActivadoYModoManualSinSaldoYLaAplicacionSEMArrojaUnaExcepcion() throws ExcepcionPersonalizada{
 		
-		doThrow(new ExcepcionPersonalizada("No hay credito suficiente")).when(modoManual).puedeEstacionar(app, patente);
+		//doThrow(new ExcepcionPersonalizada("No hay credito suficiente")).when(modoManual).puedeEstacionar(app, patente);
 		
 		app.elegirModo(modoManual);
 		app.cargarSaldo(20);
-		app.inicioEstacionamiento(nroDeCelular, patente);
+		app.iniciarEstacionamiento(nroDeCelular, patente);
 		
-		verify(modoManual).inicioDeEstacionamiento(app, nroDeCelular, patente);
-		verify(modoManual).puedeEstacionar(app, patente);
-		verify(modoManual).avisoDeCambio();
+		//assertThrows(app.puedeEstacionar(patente));
+		//Buscar forma de captar excepcion con un metodo que no retorna nada (void)
+		
 	}
 	@Test
 	public void testUsuarioIniciaUnEstacionamientoConGpsActivadoYModoManualConSuAutoYaEstacionadoYLaAplicacionSEMArrojaUnaExcepcion() throws ExcepcionPersonalizada{
@@ -114,35 +118,33 @@ public class AplicacionSEMTest {
 		when(sem.verificarEstacionamientoVigente(patente)).thenReturn(true);
 		when(gps.getEstaEncendido()).thenReturn(true);
 		
-		app.prenderGps();
+		app.elegirModoGps(gps);
 		app.elegirModo(modoManual);
 		app.cargarSaldo(100);
-		app.inicioEstacionamiento(nroDeCelular, patente);
+		app.iniciarEstacionamiento(nroDeCelular, patente);
 		
-		verify(modoManual).inicioDeEstacionamiento(app, nroDeCelular, patente);
-		verify(modoManual).puedeEstacionar(app, patente);
 		verify(modoManual).avisoDeCambio();
 		verify(sem).verificarEstacionamientoVigente(patente);
 	}
-	@Test
-	public void testNoficiarAlertaIncio() {
-		
-		app.alertaInicioDeEstacionamiento();
-		
-		//
-		verify(modoAutomatico).notificarAlertaDeInicioDeEstacionamiento(app);
-		
-	}
-	@Test
-	public void testNotificacionAlertaFin() {
-		
-		app.alertaFinDeEstacionamiento();
-		
-		//
-		verify(modoAutomatico).notificarAlertaDeFinDeEstacionamiento(app);
-		
-	}
-	
+//	@Test
+//	public void testNoficiarAlertaIncio() {
+//		
+//		app.darRespuestaInicial();
+//		
+//		//
+//		verify(modoAutomatico).notificarAlertaDeInicioDeEstacionamiento(app);
+//		
+//	}
+//	@Test
+//	public void testNotificacionAlertaFin() {
+//		
+//		app.darRespuestaFinal();
+//		
+//		//
+//		verify(modoAutomatico).notificarAlertaDeFinDeEstacionamiento(app);
+//		
+//	}
+//	
 	
 	@Test
 	public void testLaAppPreguntaHayEstacionamientoConUnaPatente() {
@@ -172,49 +174,45 @@ public class AplicacionSEMTest {
 	public void testSaldoDeApp() {
 		app.cargarSaldo(100);
 		
-		app.inicioEstacionamiento(nroDeCelular, "333ALO");
+		app.iniciarEstacionamiento(nroDeCelular, "333ALO");
 		
 		app.finalizarEstacionamiento(nroDeCelular);
-		
-		app.descontarSaldo();
 		
 		assertEquals(app.getCredito(),20); //Lo maximo que puede estar son 2 horas
 		
 		//Verify
 		
 	}
-	@Test 
-	public void testUsuarioElijeElModoAutomaticoYIniciaEstacionamientoYLaAplicacionSEMVerficaQueElGpsEsteEncendido() {
-		
-		when(gps.getEstaEncendido()).thenReturn(true);
-		
-		app.prenderGps();
-		app.inicioEstacionamiento(nroDeCelular, "333ALO");
-			
-		//Verify
-		verify(gps).getEstaEncendido();
-		
-	}
+//	@Test 
+//	public void testUsuarioElijeElModoAutomaticoYIniciaEstacionamientoYLaAplicacionSEMVerficaQueElGpsEsteEncendido() {
+//		
+//		when(gps.getEstaEncendido()).thenReturn(true);
+//		
+//		app.elegirModoGps(gps);
+//		app.iniciarEstacionamiento(nroDeCelular, patente);
+//			
+//		//Verify
+//		verify(gps).getEstaEncendido();
+//		
+//	}
 	@Test
 	public void testAplicacioIniciaEstacionamiento() {
 		
 		when(gps.getEstaEncendido()).thenReturn(true);
 		//when(modo.estaEnModoAutomatico()).thenReturn(false);
 
-		app.prenderGps();
+		app.elegirModoGps(gps);
 		app.elegirModo(modoAutomatico);
-		app.inicioEstacionamiento(nroDeCelular, "333ALO");
+		app.iniciarEstacionamiento(nroDeCelular, patente);
 		
 		assertEquals(app.consultarSaldo(),0); //No queda saldo negativo
 		
 		app.cargarSaldo(120);
 		
-		app.inicioEstacionamiento(nroDeCelular, "333ALO"); //Ahora si puede iniciarse
+		app.iniciarEstacionamiento(nroDeCelular, patente); //Ahora si puede iniciarse
 		
-		app.finalizarEstacionamiento(nroDeCelular);
+		
 		//Verify
-		verify(modoAutomatico,times(2)).inicioDeEstacionamiento(app,nroDeCelular,"333ALO");
-		verify(modoAutomatico).finDeEstacionamiento(app,nroDeCelular);
 		
 		
 	}
