@@ -234,6 +234,38 @@ public class AplicacionSEMTest {
 		assertEquals(app.cantidadDeHorasSegunSaldo(),3);
 		
 	}
+	
+	@Test
+	public void testAsignarCelular() {
+		//exercise
+		app.asignarCelular(nroDeCelular);
+		//verify
+		assertEquals(app.getNumeroDeCelular(),nroDeCelular);
+		
+	}
+	
+	@Test
+	public void setEstado() {
+		//exercise
+		app.setEstado(estadoAplicacion);
+		//verify
+		assertEquals(app.getEstado(),estadoAplicacion);
+		
+	}
+	
+	@Test
+	public void getUsuario() {
+		//verify
+		assertEquals(app.getUsuario(),usuario);
+		
+	}
+	
+	@Test
+	public void getSistemaEstacionamiento() {
+		//verify
+		assertEquals(app.getSistemaEstacionamiento(), sistemaEstacionamiento);
+		
+	}
 
 
 }

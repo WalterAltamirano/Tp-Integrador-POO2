@@ -124,14 +124,17 @@ public class AplicacionSEM implements MovementSensor {
 	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-//	public void alertaInicioDeEstacionamiento() { //!Esta en modo!
-//		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
-//	}
-//	public void alertaFinDeEstacionamiento() { //!Esta en modo!
-//		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
-//	}
-	public void pasoAAuto() {						  //Nuevo
-		this.getModo().finDeEstacionamiento(this);  
+
+	public EstadoApp getEstado() {
+		return estado;
+	}
+
+
+	public void alertaInicioDeEstacionamiento() {
+		this.getModo().notificarAlertaDeInicioDeEstacionamiento(this);
+	}
+	public void alertaFinDeEstacionamiento() {
+		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
 	}
 	public void pasoACaminando() {
 		this.getModo().inicioDeEstacionamiento(this); //Nuevo
