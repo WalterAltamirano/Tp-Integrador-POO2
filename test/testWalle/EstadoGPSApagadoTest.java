@@ -20,7 +20,7 @@ public class EstadoGPSApagadoTest {
 	@Test
 	public void testGpsEstaApagado() {
 		//SetUp
-		EstadoGPS gps = new Apagado();
+		EstrategiaGPS gps = new Apagado();
 		
 		//Excercise
 		

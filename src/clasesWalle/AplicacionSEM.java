@@ -17,12 +17,12 @@ public class AplicacionSEM implements MovementSensor {
 	private Integer numeroDeCelular;
 	private SEM sistemaEstacionamiento;
 	private Modo modo;
-	private EstadoGPS gps;
+	private EstrategiaGPS gps;
     private EstadoApp estado;
     private Usuario usuario;
     
     //Constructor
-	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,EstadoGPS gps) {
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,EstrategiaGPS gps) {
 		super();
 		this.saldoAcreditado = 0;
 		this.numeroDeCelular = nroDeCelular;
@@ -33,15 +33,53 @@ public class AplicacionSEM implements MovementSensor {
 		this.gps = gps;
 	}
 	
+	//De entrada no tendria el celular, sino que se establece una vez iniciado el estacionamiento
+	public AplicacionSEM(Modo modo, EstadoApp estado, SEM sistemaDeEstacionamiento, Usuario usuario,EstrategiaGPS gps) {
+		super();
+		this.saldoAcreditado = 0;
+		this.modo = modo;
+		this.estado = estado;
+		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
+		this.usuario = usuario;
+		this.gps = gps;
+	}
 	
 					    //Mensajes Publicos
 //	!-------------------------------------------------------------------------!
-	public void inicioEstacionamiento(Integer numeroCelular,String patente) {
-		this.getModo().inicioDeEstacionamiento(this, numeroCelular, patente);
+	public void iniciarEstacionamiento(Integer numeroDeCelular, String patente)  {
+		try {	
+			this.puedeEstacionar(patente);
+		}
+		catch(ExcepcionPersonalizada e) {
+			e.printStackTrace();
+		}
+		this.setNumeroCelular(numeroDeCelular);
+		this.getSistemaEstacionamiento()
+		.registrarEstacionamiento(this.instanciaDeEstacionamiento(numeroDeCelular, patente));
+		this.darRespuestaInicial();
 	}
 	
-	public void finalizarEstacionamiento(Integer numeroCelular) {
-		this.getModo().finDeEstacionamiento(this, numeroCelular);
+	//Usaria el numero que fue asignado? o el enunciado dice que se envia por parametro?
+	public void finalizarEstacionamiento(Integer numeroDeCelular) {
+		if(!this.hayEstacionamientoCon(numeroDeCelular)) {
+			 this.getSistemaEstacionamiento().finalizarEstacionamientoCon(numeroDeCelular);
+			 this.darRespuestaFinal();
+			 this.descontarSaldo();
+		}
+		
+	}
+
+	public void puedeEstacionar(String patente) throws ExcepcionPersonalizada {
+		if(!this.tieneCreditoSuficienteParaEstacionar()) {
+				throw new ExcepcionPersonalizada("No hay credito suficiente");
+		}
+		if(!this.estaEnZonaDeEstacionamiento()) {
+				throw new ExcepcionPersonalizada("El usuario no esta en una zona de estacionamiento");
+		}
+				
+		if(this.hayEstacionamientoCon(patente)) {
+				throw new ExcepcionPersonalizada("Ya hay un estacionamiento vigente con la patente dada");
+		}
 	}
 	
 	public void elegirModo(Modo modo) {
@@ -49,11 +87,8 @@ public class AplicacionSEM implements MovementSensor {
 		this.getModo().avisoDeCambio();
 	}
 
-	public void apagarGps() {
-		this.gps.apagar(this);
-	}
-	public void prenderGps() {
-		this.gps.prender(this);
+	public void elegirModoGps(EstrategiaGPS gps) {
+		this.gps = gps;
 	}
 	
 	public void cargarSaldo(double saldoACargar) {
@@ -89,8 +124,7 @@ public class AplicacionSEM implements MovementSensor {
 	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
-	
-	
+
 	public EstadoApp getEstado() {
 		return estado;
 	}
@@ -102,7 +136,10 @@ public class AplicacionSEM implements MovementSensor {
 	public void alertaFinDeEstacionamiento() {
 		this.getModo().notificarAlertaDeFinDeEstacionamiento(this);
 	}
-	public EstadoGPS getGps() {
+	public void pasoACaminando() {
+		this.getModo().inicioDeEstacionamiento(this); //Nuevo
+	}
+	public EstrategiaGPS getGps() {
 		return this.gps;
 	}
 	public boolean hayEstacionamientoCon(String patente) {
@@ -117,7 +154,7 @@ public class AplicacionSEM implements MovementSensor {
 	public boolean tieneCreditoSuficienteParaEstacionar() {
 		return this.saldoAcreditado >= this.valorPorHoraDeEstacionamiento();
 	}
-	public boolean estaEnZonaDeEstacionamiento() { 
+	public boolean estaEnZonaDeEstacionamiento() { //hmhmmh
 	    return this.elGpsEstaEncendido();
     }
 	public SEM getSistemaEstacionamiento() {
@@ -161,7 +198,7 @@ public class AplicacionSEM implements MovementSensor {
     		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
     	}
     }
-	public boolean elGpsEstaEncendido() {
+	public boolean elGpsEstaEncendido() {		//Booleano feo
 		return this.gps.getEstaEncendido();
 	}
 	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
@@ -193,9 +230,32 @@ public class AplicacionSEM implements MovementSensor {
        return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
     	
     }
-   public void setEstadoGPS(EstadoGPS estado) {
-   	this.gps = estado;
+   public void setEstrategiaGPS(EstrategiaGPS estrategia) {
+   		this.gps = estrategia;
    }
+   
+   public void setNumeroCelular(Integer numeroDeCelular) {
+		this.numeroDeCelular = numeroDeCelular;
+	}
+	
+   public void darRespuestaFinal() {
+			System.out.print("!---------------------------------!"
+			 + "                                        "
+			 + "Su estacionamiento fue dado de baja con exito."
+			 + "Hora exacta: " + this.getHoraInicio()
+			 + "Hora fin: " + this.horaFinal()
+			 + "Duracion: " + (this.horaFinal() - this.getHoraInicio())
+			 + "Costo: " + this.calcularCreditoAPagar()
+			 + "!---------------------------------!");
+   }
+   public void darRespuestaInicial() {
+		System.out.print("!---------------------------------!"
+				 + "Su estacionamiento fue dado de alta con exito."
+				 + "Hora exacta: " + this.getHoraInicio()
+				 + "Hora fin: " + "Pendiente"
+				 + "La hora fin quedara establecida segun la cantidad de horas maximas equivalentes a su saldo acreditado"
+				 + "!---------------------------------!");					
+	}
 //	!-------------------------------------------------------------------------!
  
 }

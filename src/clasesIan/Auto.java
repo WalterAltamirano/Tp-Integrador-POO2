@@ -6,7 +6,6 @@ public class Auto {
 	public Auto(String patenteDesignada) {
 		this.patente = patenteDesignada;
 	}
-	
 	public String getPatente() {
 		return this.patente;
 	}

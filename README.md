@@ -6,8 +6,6 @@ TRABAJO FINAL POO2
 Descripcion:
 El repositorio que vamos a usar para desarrollar el Tp final de la materia Programacion con Objetos 2
 
-UML: https://drive.google.com/file/d/1RYWpFKlDohyTxtWWlcnIHLlAzkGRPCsw/view?usp=sharing
-
 Integrantes:
 
 Walter Gabriel Altamirano // Comision 2
