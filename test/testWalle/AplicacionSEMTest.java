@@ -263,7 +263,7 @@ public class AplicacionSEMTest {
 	@Test
 	public void getSistemaEstacionamiento() {
 		//verify
-		assertEquals(app.getSistemaEstacionamiento(), sistemaEstacionamiento);
+		assertEquals(app.getSistemaEstacionamiento(), sem);
 		
 	}
 
