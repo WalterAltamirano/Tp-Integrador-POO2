@@ -2,7 +2,7 @@ package clasesWalle;
 
 import clasesMatias.ZonaDeEstacionamiento;
 
-public abstract class EstrategiaGPS {
+public abstract class ModoGps {
 
 	//Cambios
 	protected boolean estaEncendido;

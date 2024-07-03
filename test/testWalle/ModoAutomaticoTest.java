@@ -21,7 +21,7 @@ public class ModoAutomaticoTest {
 	private String patente;
 	private Estacionamiento estacionamiento;
 	private SEM sistema;
-	private EstrategiaGPS gps;
+	private ModoGps gps;
 	
 	@BeforeEach
 	public void setUp() {
@@ -31,7 +31,7 @@ public class ModoAutomaticoTest {
 		 patente = "444JEO";
 		 sistema = mock(SEM.class);
 		 estacionamiento = mock(EstacionamientoAplicacion.class);
-		 gps = mock(EstrategiaGPS.class);
+		 gps = mock(ModoGps.class);
 		 modo= new ModoAutomatico();
 	}
 	
@@ -44,7 +44,7 @@ public class ModoAutomaticoTest {
 		modo.inicioDeEstacionamiento(app);
 		
 		//Verify
-		verify(app).iniciarEstacionamiento(nroDeCelular,""); 
+		verify(app).iniciarEstacionamiento(); 
 		
 	}
 	@Test
@@ -55,7 +55,7 @@ public class ModoAutomaticoTest {
 		//Excercise
 		modo.finDeEstacionamiento(app);
 		//Verify
-		verify(app).finalizarEstacionamiento(nroDeCelular);
+		verify(app).finalizarEstacionamiento();
 		verify(app).getNumeroDeCelular();
 	}
 }

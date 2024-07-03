@@ -1,7 +1,7 @@
 package clasesWalle;
 
 
-public class ModoManual extends Modo{
+public class ModoManual implements Modo{
 
 
 //	@Override
@@ -22,12 +22,6 @@ public class ModoManual extends Modo{
 //				 + "!---------------------------------!");
 //	}
 
-	@Override
-	public void avisoDeCambio() {
-		System.out.print("!---------------------------------!"
-				+ "Usted a elegido el Modo Manual");
-	}
-
 //	@Override								
 //	public void darRespuestaFinal(AplicacionSEM app) {       //Lo tendria que tener?
 //		System.out.print("!---------------------------------!"
@@ -38,7 +32,11 @@ public class ModoManual extends Modo{
 //				 + "Costo: " + app.calcularCreditoAPagar()
 //				 + "!---------------------------------!");
 //	}
-
+	@Override
+	public void avisoDeCambio() {
+		System.out.print("!---------------------------------!"
+				+ "Usted a elegido el Modo Manual");
+	}
 	@Override
 	public void inicioDeEstacionamiento(AplicacionSEM app) {
 		System.out.print("Alerta: No se ha iniciado el estacionamiento por que usted elijio el modo Manual"
