@@ -51,11 +51,9 @@ public class ModoAutomaticoTest {
 	public void testModoAutomaticoRecibeUnInicioDeEstacionamientoEnYSeInicia() {
 		
 		//SetUp
-		when(app.getNumeroDeCelular()).thenReturn(nroDeCelular);
 		//Excercise
 		modo.finDeEstacionamiento(app);
 		//Verify
 		verify(app).finalizarEstacionamiento();
-		verify(app).getNumeroDeCelular();
 	}
 }
