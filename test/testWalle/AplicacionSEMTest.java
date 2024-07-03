@@ -23,7 +23,7 @@ public class AplicacionSEMTest {
 	private Modo modoAutomatico;
 	private EstadoApp estadoAplicacion;
 	private SEM sem;
-	private EstrategiaGPS gps;
+	private ModoGps gps;
 	private Estacionamiento estacionamiento;
 	private Usuario usuario;
 	private Modo modoManual;
@@ -36,7 +36,7 @@ public class AplicacionSEMTest {
 		modoManual = spy(ModoManual.class);
 		estadoAplicacion = mock(EnAuto.class);
 		sem = mock(SEM.class);
-		gps = mock(EstrategiaGPS.class);
+		gps = mock(ModoGps.class); //Sacar
 		estacionamiento = mock(EstacionamientoAplicacion.class);
 		usuario = mock(Usuario.class);
 		
@@ -67,8 +67,8 @@ public class AplicacionSEMTest {
 	public void testUnUsuarioFinalizaUnEstacionamientoNoVigenteConGPSDesactivadoYModoAutomaticoYLaApliacionSEMNoIniciaElEstacionamiento()  {
 			
 		
-		app.elegirModoGps(gps);
-		app.finalizarEstacionamiento(nroDeCelular);		
+		app.apagarGps();
+		app.finalizarEstacionamiento();		
 		
 		Throwable exception = assertThrows(ExcepcionPersonalizada.class, () -> {
 	            app.puedeEstacionar(patente);
@@ -87,7 +87,7 @@ public class AplicacionSEMTest {
 		//when(modo.estaEnModoAutomatico()).thenReturn(false);
 		
 		//Excercise
-		app.elegirModoGps(gps);
+		app.encenderGps();
 		app.cargarSaldo(120);
 		app.driving();
 		app.driving();
@@ -103,9 +103,9 @@ public class AplicacionSEMTest {
 		
 		//doThrow(new ExcepcionPersonalizada("No hay credito suficiente")).when(modoManual).puedeEstacionar(app, patente);
 		
-		app.elegirModo(modoManual);
+		app.activarModoManual();
 		app.cargarSaldo(20);
-		app.iniciarEstacionamiento(nroDeCelular, patente);
+		app.iniciarEstacionamiento();
 		
 		//assertThrows(app.puedeEstacionar(patente));
 		//Buscar forma de captar excepcion con un metodo que no retorna nada (void)
@@ -118,10 +118,10 @@ public class AplicacionSEMTest {
 		when(sem.verificarEstacionamientoVigente(patente)).thenReturn(true);
 		when(gps.getEstaEncendido()).thenReturn(true);
 		
-		app.elegirModoGps(gps);
-		app.elegirModo(modoManual);
+		app.encenderGps();
+		app.activarModoManual();
 		app.cargarSaldo(100);
-		app.iniciarEstacionamiento(nroDeCelular, patente);
+		app.iniciarEstacionamiento();
 		
 		verify(modoManual).avisoDeCambio();
 		verify(sem).verificarEstacionamientoVigente(patente);
@@ -174,9 +174,9 @@ public class AplicacionSEMTest {
 	public void testSaldoDeApp() {
 		app.cargarSaldo(100);
 		
-		app.iniciarEstacionamiento(nroDeCelular, "333ALO");
+		app.iniciarEstacionamiento();
 		
-		app.finalizarEstacionamiento(nroDeCelular);
+		app.finalizarEstacionamiento();
 		
 		assertEquals(app.getCredito(),20); //Lo maximo que puede estar son 2 horas
 		
@@ -201,15 +201,15 @@ public class AplicacionSEMTest {
 		when(gps.getEstaEncendido()).thenReturn(true);
 		//when(modo.estaEnModoAutomatico()).thenReturn(false);
 
-		app.elegirModoGps(gps);
-		app.elegirModo(modoAutomatico);
-		app.iniciarEstacionamiento(nroDeCelular, patente);
+		app.encenderGps();
+		app.activarModoAutomatico();
+		app.iniciarEstacionamiento();
 		
 		assertEquals(app.consultarSaldo(),0); //No queda saldo negativo
 		
 		app.cargarSaldo(120);
 		
-		app.iniciarEstacionamiento(nroDeCelular, patente); //Ahora si puede iniciarse
+		app.iniciarEstacionamiento(); //Ahora si puede iniciarse
 		
 		
 		//Verify

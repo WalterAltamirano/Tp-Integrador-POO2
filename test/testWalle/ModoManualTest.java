@@ -21,7 +21,7 @@ public class ModoManualTest {
 	private String patente;
 	private Estacionamiento estacionamiento;
 	private SEM sistema;
-	private EstrategiaGPS gps;
+	private ModoGps gps;
 	
 	@BeforeEach
 	public void setUp() {
@@ -31,7 +31,7 @@ public class ModoManualTest {
 		 patente = "444JEO";
 		 sistema = mock(SEM.class);
 		 estacionamiento = mock(Estacionamiento.class);
-		 gps = mock(EstrategiaGPS.class);
+		 gps = mock(ModoGps.class);
 		 modo= new ModoManual();
 	}
 	@Test
@@ -41,7 +41,7 @@ public class ModoManualTest {
 		//Excercise
 		modo.finDeEstacionamiento(app);
 		//Verify
-		verify(app,never()).finalizarEstacionamiento(nroDeCelular);
+		verify(app,never()).finalizarEstacionamiento();
 	}
 	@Test
 	public void testAplicacionRecibeUnInicioDeEstacionamientoYDelegaEnModoUnInicioDeEstacionamientoYSeInicia() {
@@ -50,6 +50,6 @@ public class ModoManualTest {
 		//Excercise
 		modo.inicioDeEstacionamiento(app);
 		//Verify
-		verify(app,never()).iniciarEstacionamiento(nroDeCelular,"");
+		verify(app,never()).iniciarEstacionamiento();
 	}
 }

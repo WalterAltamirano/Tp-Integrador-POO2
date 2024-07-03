@@ -10,8 +10,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 public class EstadoGPSTest {
 	
-	private EstrategiaGPS gps;
-	private EstrategiaGPS gpsEncendido;
+	private ModoGps gps;
+	private ModoGps gpsEncendido;
 	private AplicacionSEM app;
 	@BeforeEach
 	public void setUp() {

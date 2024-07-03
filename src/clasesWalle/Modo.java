@@ -1,15 +1,15 @@
 package clasesWalle;
 
-import clasesIan.EstacionamientoAplicacion;
 
 //DEFINE PROTOCOLO POR AHORA, LO QUE SIGNIFICA QUE DEBERIA SER UNA INTERFACE!!!!!!!!!
 
-public abstract class Modo {
+public interface Modo {
 	
 	public abstract void inicioDeEstacionamiento(AplicacionSEM app);
 	public abstract void finDeEstacionamiento(AplicacionSEM app);
 	public abstract void avisoDeCambio();
-	
+}
+
 //	public void inicioDeEstacionamiento(AplicacionSEM app,Integer numeroDeCelular, String patente)  {
 //		try {	
 //			this.puedeEstacionar(app,patente);
@@ -46,6 +46,3 @@ public abstract class Modo {
 //	}
 //	
 //	
-
-	
-}

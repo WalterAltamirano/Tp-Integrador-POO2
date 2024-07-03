@@ -1,7 +1,7 @@
 package clasesWalle;
 
 
-public class ModoAutomatico extends Modo{
+public class ModoAutomatico implements Modo{
 
 
 	
@@ -24,12 +24,12 @@ public class ModoAutomatico extends Modo{
 	@Override
 	public void inicioDeEstacionamiento(AplicacionSEM app) {//Faltan parametros
 		System.out.print("Alerta: Usted esta en modo automatico, por lo que podria iniciarse su estacionamiento");
-		app.iniciarEstacionamiento(app.getNumeroDeCelular(), "");
+		app.iniciarEstacionamiento();
 	}
 
 	@Override
 	public void finDeEstacionamiento(AplicacionSEM app) {
 		System.out.print("Alerta: Usted esta en modo automatico, por lo que podria finalizarse su estacionamiento");
-		app.finalizarEstacionamiento(app.getNumeroDeCelular());
+		app.finalizarEstacionamiento();
 	}
 }
