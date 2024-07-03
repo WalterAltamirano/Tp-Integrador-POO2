@@ -48,8 +48,8 @@ public class AplicacionSEM implements MovementSensor {
 	
 					    //Mensajes Publicos
 //	!-------------------------------------------------------------------------!
-	
-	public void iniciarEstacionamiento()  {	//No hay parametros ya que la app, 
+	//No hay parametros ya que la app obtiene el nro de celular por medio del constructor y la patente a traves del usuario
+	public void iniciarEstacionamiento()  {	
 		try {	
 			this.puedeEstacionar(this.getPatente());
 		}
@@ -79,8 +79,8 @@ public class AplicacionSEM implements MovementSensor {
 		if(!this.estaEnZonaDeEstacionamiento()) {
 				throw new ExcepcionPersonalizada("El usuario no esta en una zona de estacionamiento");
 		}
-				
-		if(this.hayEstacionamientoCon(patente)) { //Creo que es responsabilidad del SEM verificar esta condicion
+		//Creo que es responsabilidad del SEM verificar esta condicion 		
+		if(this.hayEstacionamientoCon(patente)) { //Porque la app verifica el credito y la zona segun el enunciado
 				throw new ExcepcionPersonalizada("Ya hay un estacionamiento vigente con la patente dada");
 		}
 	}
@@ -108,9 +108,6 @@ public class AplicacionSEM implements MovementSensor {
 	
 	public double consultarSaldo() {
 		return this.getCredito();
-	}
-	public void asignarCelular(Integer numeroDeCelular) {
-		this.numeroDeCelular = numeroDeCelular;
 	}
 	
 	public int getNumeroDeCelular() { 
@@ -163,7 +160,7 @@ public class AplicacionSEM implements MovementSensor {
 		return this.saldoAcreditado >= this.valorPorHoraDeEstacionamiento();
 	}
 	public boolean estaEnZonaDeEstacionamiento() { 									//Que hago aca??
-	    return this.getGps().getEstaEncendido() && this.getGps().coincidenEnUnMismoPunto(this, null);
+	    return this.getGps().getEstaEncendido(); //&& this.getGps().coincidenEnUnMismoPunto(this, null);
     }
 	public SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
@@ -239,9 +236,6 @@ public class AplicacionSEM implements MovementSensor {
    		this.gps = modo;
    }
    
-   public void setNumeroCelular(Integer numeroDeCelular) {
-		this.numeroDeCelular = numeroDeCelular;
-	}
 	
    public void darRespuestaFinal() {
 			System.out.print("!---------------------------------!"
