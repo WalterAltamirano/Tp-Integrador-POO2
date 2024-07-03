@@ -16,24 +16,34 @@ import clasesWalle.AplicacionSEM;
 
 public class SEM {
 
+	private SemListener Listener;
 	private List<ZonaDeEstacionamiento> zonasEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Estacionamiento> estacionamientosRegistrados = new ArrayList<Estacionamiento>();
 	private List<Infraccion> infraccionesRegistradas = new ArrayList<Infraccion>();
-	private List<INotificar> organismosInteresados = new ArrayList<INotificar>();
 	private List<AplicacionSEM> aplicacionesRegistradas = new ArrayList<AplicacionSEM>();
 	 /*
 	  * Las listas de distintos elementos se crean al inicializarse la clase
 	  * */
 
+    //devulve el Listener
+	public SemListener getListener() {
+		return Listener;
+	}
 
-
+	// establece el Listener
+	public void setListener(SemListener listener) {
+		Listener = listener;
+	}
+	
     // agrega una AplicacionSEM a la lista de aplicaciones registradas
 	public void registrarAplicacion(AplicacionSEM aplicacion) {
 		this.aplicacionesRegistradas.add(aplicacion);
 		
 	}
 	
+
+
 	//devuelve la lista de aplicaciones registradas
 	public List<AplicacionSEM> getAplicacionesRegistradas() {
 		return aplicacionesRegistradas;
@@ -54,10 +64,16 @@ public class SEM {
     //agrega una Compra a la lista de Compras
 	public void registrarCompra(Compra compra) {
 		this.getCompras().add(compra);
-		
+	this.notificarNuevaCompra(compra);	
 		
 	}
     
+	//avisa al Listener que se realizo una nueva compra
+	public void notificarNuevaCompra(Compra compra) {
+		this.getListener().nuevaCompraRegistrada(this, compra);
+		
+	}
+
 	//retorna la lista de compras
 	public List<Compra> getCompras() {
 		
@@ -67,10 +83,16 @@ public class SEM {
 	//agrega un Estacionamiento a la lista de estacionamientos
 	public void registrarEstacionamiento(Estacionamiento nuevoEstacionamiento) {
 		this.getEstacionamientos().add(nuevoEstacionamiento);
-		
+		this.notificarNuevoEstacionamiento(nuevoEstacionamiento);
 		
 	}
     
+	//avisa al Listener que se inicio un nuevo estacionamiento
+	public void notificarNuevoEstacionamiento(Estacionamiento nuevoEstacionamiento) {
+		this.getListener().nuevoEstacionamientoIniciado(this, nuevoEstacionamiento);
+		
+	}
+
 	//retorna la lista de estacionamientos
 	public List<Estacionamiento> getEstacionamientos() {
 		
@@ -79,7 +101,7 @@ public class SEM {
 
 	//le indica a todas las aplicaciones que finalicen sus estacionamientos
 	public void finDeFranjaHoraria() {
-		this.getAplicacionesRegistradas().stream().forEach(a -> a.finalizarEstacionamiento(a.getNumeroDeCelular()));
+		this.getAplicacionesRegistradas().stream().forEach(a -> a.finalizarEstacionamiento());
 		
 		
 	}
@@ -110,39 +132,24 @@ public class SEM {
 		Estacionamiento estacionamiento;
 		estacionamiento = this.getEstacionamientos().stream()
 				.filter(e -> e.getNumeroDeCelularDeEstacionamiento() == numeroCelular).toList().get(0);
-		//this.notificarOrganismosInteresados();
+	
 		return estacionamiento;
 		
 				
 	}
 
-	//añade una clase que implemente la interfaz INotificar a la lista de organismos interesados
-	public void suscribirOrganismosInteresados(INotificar organismoInteresado) {
-		this.organismosInteresados.add(organismoInteresado);
-		
-	}
 
-	//retorna la lista de organismos interesados
-	public List<INotificar> getOrganismosInteresados() {
-		return organismosInteresados;
-	}
-
-	//notifica a los organismos interesados y se pasa a si mismo como parametro
-	public void notificarOrganismosInteresados() {
-		this.getOrganismosInteresados().stream().forEach(o -> o.actualizar(this));
-		
-	}
-
-	//elimina un organismo interesado de la lista
-	public void desuscribirOrganismosInteresados(INotificar organismoInteresado) {
-		this.getOrganismosInteresados().remove(organismoInteresado);
-		
-	}
 
 	// le dice que finalice a un determinado Estacionamiento que posea un determinado numero de celular 
 	public void finalizarEstacionamientoCon(int numeroDeCelular) {
 		Estacionamiento estacionamiento = this.buscarPorNumeroCelular(numeroDeCelular);
 		estacionamiento.finalizarEstacionamiento();
+		this.notificarFinEstacionamiento(estacionamiento);
+		
+	}
+
+	public void notificarFinEstacionamiento(Estacionamiento estacionamiento) {
+		this.getListener().nuevoFinDeEstacionamiento(this, estacionamiento);
 		
 	}
 

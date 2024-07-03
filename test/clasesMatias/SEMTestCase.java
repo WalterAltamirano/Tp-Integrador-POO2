@@ -20,8 +20,9 @@ public class SEMTestCase {
 	private Compra cargaDeSaldo;
 	private Compra compraPuntual;
 	private Infraccion infraccion1;
-	private INotificar organismoInteresado;
+	private SemListener listener;
 	private AplicacionSEM aplicacion1;
+	
 	
 	@BeforeEach 
 	public void setUp () {
@@ -31,10 +32,11 @@ public class SEMTestCase {
 		cargaDeSaldo = mock(CargaDeSaldo.class);
 		compraPuntual = mock(CompraPuntual.class);
 		infraccion1 = mock(Infraccion.class);
-		organismoInteresado = mock(INotificar.class);
+		listener = mock(SemListener.class);
 		aplicacion1 = mock(AplicacionSEM.class);
 		
 		sem = new SEM();
+		sem.setListener(listener);
 		
 		
 	}
@@ -117,7 +119,7 @@ public class SEMTestCase {
 		
 		sem.finDeFranjaHoraria();
 		//Verify
-		verify(aplicacion1, atLeast(1)).finalizarEstacionamiento(aplicacion1.getNumeroDeCelular());
+		verify(aplicacion1, atLeast(1)).finalizarEstacionamiento();
 	}
 	
 
@@ -148,38 +150,30 @@ public class SEMTestCase {
 		assertEquals(sem.buscarPorNumeroCelular(123456), estacionamiento1);
 	}
 	
-	@Test
-	public void suscribirOrganismosInteresadosTest() {
-		//Exercise
-		sem.suscribirOrganismosInteresados(organismoInteresado);
-		//Verify
-		assertEquals(sem.getOrganismosInteresados().size(), 1);
-	}
+
 	
 	@Test
-	public void desuscribirOrganismosInteresadosTest() {
-		//Exercise
-		sem.suscribirOrganismosInteresados(organismoInteresado);
-		sem.desuscribirOrganismosInteresados(organismoInteresado);
-		//Verify
-		assertFalse(sem.getOrganismosInteresados().contains(organismoInteresado));
-	}
-	
-	@Test
-	public void getOrganismosInteresadosTest() {
-		//Exercise
-		sem.suscribirOrganismosInteresados(organismoInteresado);
-		//Verify
-		assertTrue(sem.getOrganismosInteresados().contains(organismoInteresado));
-	}
-	
-	@Test
-	public void notificarOrganismosInteresadosTest() {
-		//Exercise
-		sem.suscribirOrganismosInteresados(organismoInteresado);
-		sem.notificarOrganismosInteresados();
+	public void notificarNuevaCompra() {
+		//exercise
+		sem.notificarNuevaCompra(cargaDeSaldo);
 		//verify
-		verify(organismoInteresado, atLeast(1)).actualizar(sem);
+		verify(listener, atLeast(1)).nuevaCompraRegistrada(sem, cargaDeSaldo);
+	}
+	
+	@Test
+	public void notificarNuevoEstacionamiento() {
+		//exercise
+		sem.notificarNuevoEstacionamiento(estacionamiento1);
+		//verify
+		verify(listener, atLeast(1)).nuevoEstacionamientoIniciado(sem, estacionamiento1);
+	}
+	
+	@Test
+	public void notificarFinEstacionamiento() {
+		//exercise
+		sem.notificarFinEstacionamiento(estacionamiento1);
+		//verify
+		verify(listener, atLeast(1)).nuevoFinDeEstacionamiento(sem, estacionamiento1);
 	}
 	
 	@Test

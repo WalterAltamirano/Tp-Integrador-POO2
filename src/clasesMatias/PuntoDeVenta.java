@@ -33,12 +33,12 @@ public class PuntoDeVenta {
 	
 	// carga el saldo indicado a la aplicacion que se pasa por parametro
 	// genera una Compra de CargaDeSaldo y la pide al SEM que la cargue en su lista de Compras
-	// le indica al SEM que notifique a sus organismos interesados
+	
 	public void cargarSaldo(AplicacionSEM aplicacion, double saldo) {
 		aplicacion.cargarSaldo(saldo);
 		CargaDeSaldo nuevaCarga = this.generarCompraSaldo(saldo, aplicacion);
 		this.getSem().registrarCompra(nuevaCarga);
-		this.getSem().notificarOrganismosInteresados();
+		
 		
 	}
 	
@@ -50,12 +50,12 @@ public class PuntoDeVenta {
     
 
 	// genera un EstacionamientoCompraPuntual y la CompraPuntual correspondiente 
-	// le indica al SEM que notifique a sus organismos interesados
+
 	public void registrarEstacionamiento(String patente, int cantidadDeHoras ) {
 		
 		CompraPuntual nuevaCompraEstacionamiento = this.generarNuevaCompra(cantidadDeHoras);
 	    this.generarNuevoEstacionamiento(nuevaCompraEstacionamiento, patente);
-		this.getSem().notificarOrganismosInteresados();
+		
 		
 	}
 	

@@ -56,20 +56,13 @@ class PuntoDeVentaTestCase {
 		assertEquals(nuevaCarga.getMontoCargado(), 10);
 	}
 	
-	@Test
-	public void registrarEstacionamientoTest() {
-		//exercise
-		puntoVenta1.registrarEstacionamiento("123456", 4);
-		//verify
-		verify(sem, atLeast(1)).notificarOrganismosInteresados();
-		
-		
-	}
+
 	
 	@Test
 	public void generarNuevaCompraYNuevoEstacionamientoTest() {
 				
 		//exercise
+		puntoVenta1.registrarEstacionamiento("123456", 4);
 		CompraPuntual nuevaCompra = puntoVenta1.generarNuevaCompra(4);
 		EstacionamientoCompraPuntual nuevoEstacionamiento = puntoVenta1.generarNuevoEstacionamiento(nuevaCompra, auto.getPatente());
 		//verify		
