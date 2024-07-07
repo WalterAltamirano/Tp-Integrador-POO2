@@ -22,7 +22,7 @@ public class Usuario {
 	
 	//Dudoso
 	public void estacionamientoPorAplicacion() {
-		this.aplicacion.inicioEstacionamiento(aplicacion.getNumeroDeCelular(), auto.getPatente());
+		this.aplicacion.iniciarEstacionamiento();
 	}
 	
 	/*public void notificarAlerta(String alerta) {
