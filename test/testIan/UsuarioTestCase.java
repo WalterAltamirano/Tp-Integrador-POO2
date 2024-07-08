@@ -52,5 +52,4 @@ public class UsuarioTestCase {
 		usuario.estacionamientoPorAplicacion();
 		verify(aplicacion,atLeast(1)).iniciarEstacionamiento();
 	}
-	
 }
