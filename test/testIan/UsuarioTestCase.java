@@ -50,7 +50,6 @@ public class UsuarioTestCase {
 	@Test
 	public void pruebaEstacionamientoPorAplicacion() {
 		usuario.estacionamientoPorAplicacion();
-		verify(aplicacion,atLeast(1)).inicioEstacionamiento(aplicacion.getNumeroDeCelular(), usuario.getPatente());
+		verify(aplicacion,atLeast(1)).iniciarEstacionamiento();
 	}
-	
 }
