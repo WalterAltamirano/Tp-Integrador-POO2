@@ -23,7 +23,7 @@ public class Inspector {
 	//consulta al SEM si hay algun Estacionamiento vigente para un Auto determinado
 	//en caso de no haberlo genera una Infraccion y le pide al SEM que la añada a sus infracciones registradas
 	public void inspeccionarAuto(Auto auto) {
-		boolean vigencia = this.empleador.verificarEstacionamientoVigente(auto.getPatente());
+		boolean vigencia = this.empleador.verificarEstacionamientoVigentePorPatente(auto.getPatente());
 		if (vigencia == false) {
 			Infraccion infraccion = this.altaDeInfraccion(auto.getPatente());
 			this.cargarInfraccion(infraccion);

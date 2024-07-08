@@ -18,18 +18,18 @@ public class AplicacionSEM implements MovementSensor {
 	private Integer numeroDeCelular;
 	private SEM sistemaEstacionamiento;
 	private Modo modo;
-	private ModoGps gps;
+	//private ModoGps gps;
     private EstadoApp estado;
     private Usuario usuario;
     private String patente;
     private Integer horaInicio;
-    
+    private boolean gps;
     					    //Constructores
 //	!-------------------------------------------------------------------------!
     
     //Constructor #1 --> No hay nada incializado, 
     //se elijen los modos, automatico o manual, Apagado o Encendido y el Estado de la app
-  	public AplicacionSEM(Modo modo, EstadoApp estado,SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,ModoGps gps) {
+  	public AplicacionSEM(Modo modo, EstadoApp estado,SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,boolean gps) {
   		super();
   		this.saldoAcreditado = 0;
   		this.numeroDeCelular = nroDeCelular;
@@ -89,7 +89,7 @@ public class AplicacionSEM implements MovementSensor {
 				this.puedeEstacionar(this.getPatente());
 				this.getSistemaEstacionamiento()
 				.registrarEstacionamiento(this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatente()));
-				this.setHoraInicio();
+				this.setHoraInicio(this.horaInicio());
 				this.darRespuestaInicial();
 			}
 			catch(ExcepcionPersonalizada e) {
@@ -107,26 +107,25 @@ public class AplicacionSEM implements MovementSensor {
 		catch(ExcepcionPersonalizada e) {
 		}
 	}
-	 public void puedeEstacionar(String patente) throws ExcepcionPersonalizada {
-		//Creo que es responsabilidad del SEM verificar esta condicion 	
-		if(this.hayEstacionamientoCon(patente)) { //Porque la app verifica el credito y la zona segun el enunciado
+	public void puedeEstacionar(String patente) throws ExcepcionPersonalizada {
+	  //Creo que es responsabilidad del SEM verificar esta condicion 	
+	  if(this.hayEstacionamientoConPatente(patente)) { //Porque la app verifica el credito y la zona segun el enunciado
 			throw new ExcepcionPersonalizada("Ya hay un estacionamiento vigente con la patente dada");
-		}
-		if(!this.tieneCreditoSuficienteParaEstacionar()) {
+	  }
+	  if(!this.tieneCreditoSuficienteParaEstacionar()) {
 			throw new ExcepcionPersonalizada("Saldo insuficiente. Estacionamiento no permitido");
-		}
-		if(!this.estaEnZonaDeEstacionamiento()) {
+	  }
+	  if(!this.estaEnZonaDeEstacionamiento()) {
 			throw new ExcepcionPersonalizada("El usuario no esta en una zona de estacionamiento");
-		}
-	}
+	  }
+    }
 		
 	public void puedeFinalizar() throws ExcepcionPersonalizada{
-		if(!this.hayEstacionamientoCon(this.getNumeroDeCelular())) {
+		if(!this.hayEstacionamientoConCelular(this.getNumeroDeCelular())) {
 			throw new ExcepcionPersonalizada("No hay un estacionamiento por finalizar");
 		}
 	}
 	   
-	
 	public void activarModoAutomatico() {
 		this.setModoApp(new ModoAutomatico());
 		this.getModo().avisoDeCambio();
@@ -138,11 +137,14 @@ public class AplicacionSEM implements MovementSensor {
 	}
 	
 	public void encenderGps() {
-		this.setModoGps(new Encendido());
+		this.setGps(true);
 	}
 	
 	public void apagarGps() {
-		this.setModoGps(new Apagado());
+		this.setGps(false);
+	}
+	private void setGps(boolean valor) {
+		this.gps = valor;
 	}
 	public void cargarSaldo(double saldoACargar) {
 		this.saldoAcreditado = this.saldoAcreditado + saldoACargar;
@@ -186,14 +188,11 @@ public class AplicacionSEM implements MovementSensor {
 	public void pasoACaminando() {
 		this.getModo().inicioDeEstacionamiento(this); 
 	}
-	public ModoGps getGps() {
-		return this.gps;
+	public boolean hayEstacionamientoConPatente(String patente) {	
+	    return sistemaEstacionamiento.verificarEstacionamientoVigentePorPatente(patente);
 	}
-	public boolean hayEstacionamientoCon(String patente) {	//Creo que es responsabilidad del SEM verificar esto y no la app
-	    return sistemaEstacionamiento.verificarEstacionamientoVigente(patente);
-	}
-	public boolean hayEstacionamientoCon(Integer nroDeCelular) {
-	    return sistemaEstacionamiento.verificarEstacionamientoVigente(nroDeCelular);
+	public boolean hayEstacionamientoConCelular(Integer nroDeCelular) {
+	    return sistemaEstacionamiento.verificarEstacionamientoVigentePorCelular(nroDeCelular);
 	}
 	public double getCredito() {   
 	    return this.saldoAcreditado;
@@ -201,8 +200,8 @@ public class AplicacionSEM implements MovementSensor {
 	public boolean tieneCreditoSuficienteParaEstacionar() {
 		return this.saldoAcreditado >= this.valorPorHoraDeEstacionamiento();
 	}
-	public boolean estaEnZonaDeEstacionamiento() { 									//Que hago aca??
-	    return this.getGps().getEstaEncendido(); //&& this.getGps().coincidenEnUnMismoPunto(this, null);
+	public boolean estaEnZonaDeEstacionamiento() { 							
+	    return this.gps; 
     }
 	public SEM getSistemaEstacionamiento() {
 		return this.sistemaEstacionamiento;
@@ -218,42 +217,28 @@ public class AplicacionSEM implements MovementSensor {
 		//es en tiempo real, y son las 22, el estacionamiento no deberia iniciarse
 		//Entonces la variable queda en NULL y falla -- Actualmente puse un cero para
 		//Que no fallen los test
-		if((this.horaFinal() - this.horaInicio()) != 0) {
+		if((this.horaFin() - this.getHoraInicio()) > 0) {
 			this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
 		}
 		
 	}
+	//Hora actual tiempo real
 	public int horaInicio() {
 		return LocalDateTime.now().getHour();
 	}
-	public int horaFinal() { //Para el modo automatico
-		if(this.puedePagarHastaFinDeFranjaHoraria()) {
-			return this.horaMaximaDeEstacionamiento();
-		}
-		else {
-			return this.getHoraInicio() + this.cantidadDeHorasSegunSaldo();
-		}
-		
+	//Hora actual tiempo real
+	private Integer horaFin() {
+		return LocalDateTime.now().getHour();
 	}
+	//Hora guardada al momento de iniciar
 	private int getHoraInicio() {
 		return this.horaInicio;
 	}
-	public int calcularHoraFin() { //Para el modo manual
-		return this.getHoraInicio() + LocalDateTime.now().getHour();
-	}
-	public int minutoFin() {
-		return LocalDateTime.now().getMinute();
-	}
-	public int minutoInicio() {
-		return LocalDateTime.now().getMinute();
+	public int calcularHoraDuracion() { 		
+		return this.horaFin() - this.getHoraInicio();
 	}
 	public double calcularCreditoAPagar() {
-    	if(this.puedePagarHastaFinDeFranjaHoraria()) {
-    		return this.valorPorHoraDeEstacionamiento() * this.cantidadDeHorasMaximas();
-    	} 
-    	else {
-    		return this.cantidadDeHorasSegunSaldo() * this.valorPorHoraDeEstacionamiento();
-    	}
+    	return (this.horaFin() - this.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
     }
 	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
 		return new EstacionamientoAplicacion(numeroDeCelular,patente);
@@ -274,41 +259,42 @@ public class AplicacionSEM implements MovementSensor {
    public int horaMaximaDeEstacionamiento() {
 	   return 20;
    }
-   public int cantidadDeHorasSegunSaldo() {
-	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
-   }
-   public int cantidadDeHorasMaximas() {
-	   return this.horaMaximaDeEstacionamiento() - this.horaInicio();
-   }
-   public boolean puedePagarHastaFinDeFranjaHoraria() {
-       return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
-    	
-    }
-   public void setModoGps(ModoGps modo) {
-   		this.gps = modo;
-   }
    
-	
+//   public int cantidadDeHorasSegunSaldo() {
+//	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
+//   }
+//   public int cantidadDeHorasMaximas() {
+//	   return this.horaMaximaDeEstacionamiento() - this.getHoraInicio();
+//   }
+//   public boolean puedePagarHastaFinDeFranjaHoraria() {
+//       return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
+//    	
+//    }
+
    public void darRespuestaFinal() {
 			System.out.print("!---------------------------------!" + "\r\n"
 			 + "Su estacionamiento fue dado de baja con exito." +"\r\n"
-			 + "Hora exacta: " + this.getHoraInicio() + ":" + this.minutoInicio() +"\r\n"
-			 + "Hora fin: " + this.horaFinal() + ":" + this.minutoFin() +"\r\n"
-			 + "Duracion: " + (this.horaFinal() - this.getHoraInicio()) + "hs" +"\r\n"
+			 + "Hora exacta: " + this.getHoraInicio() +"\r\n"
+			 + "Hora fin: " + this.horaFin()  +"\r\n"
+			 + "Duracion: " + this.calcularHoraDuracion() + "hs" +"\r\n"
 			 + "Costo: " + this.calcularCreditoAPagar() +"\r\n"
 			 + "!---------------------------------!");
    }
+
    public void darRespuestaInicial() {
 		System.out.print( "\r\n"+"!---------------------------------!"+ "\r\n"
 				 + "Su estacionamiento fue dado de alta con exito."+ "\r\n"
-				 + "Hora exacta: " + this.horaInicio() + "\r\n"
+				 + "Hora exacta: " + this.getHoraInicio() + "\r\n"
 				 + "Hora fin: " + "Pendiente" + "\r\n"
 				 + "La hora fin quedara establecida segun la cantidad de horas maximas equivalentes a su saldo acreditado" +"\r\n"
 				 + "!---------------------------------!");					
 	}
-	private void setHoraInicio() {
-		this.horaInicio = this.horaInicio();
+	public void setHoraInicio(Integer horaInicio) {
+		this.horaInicio = horaInicio;
 	}
+//	public void setHoraInicio(Integer horaHarcodeada) {
+//		this.horaInicio = horaHarcodeada;
+//	}
 	public String getPatente() {
 		// TODO Auto-generated method stub
 		return this.patente;
