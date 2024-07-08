@@ -46,7 +46,7 @@ public class EstadoTestCase {
 		when(modo.estaEnModoAutomatico()).thenReturn(true);*/
 		
 		estadoEnAuto.caminando(aplicacion);
-		verify(aplicacion,atLeast(1)).alertaInicioDeEstacionamiento();
+		verify(aplicacion,atLeast(1)).pasoACaminando();
 		//verify(aplicacion,atLeast(1)).inicioEstacionamiento(1234, "abc");
 	}
 	
@@ -59,7 +59,7 @@ public class EstadoTestCase {
 	public void pruebaPasajeDeCaminandoAManejando() {
 		when(aplicacion.getModo()).thenReturn(modoAutomatico);
 		estadoCaminando.manejando(aplicacion);
-		verify(aplicacion,atLeast(1)).alertaFinDeEstacionamiento();
+		verify(aplicacion,atLeast(1)).pasoAAuto();
 	}
 	
 	@Test
