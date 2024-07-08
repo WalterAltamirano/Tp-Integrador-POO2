@@ -21,8 +21,9 @@ public class AplicacionSEM implements MovementSensor {
 	//private ModoGps gps;
     private EstadoApp estado;
     private Usuario usuario;
-    private String patente;
+    //private String patente;
     private Integer horaInicio;
+    private Integer horaFin;
     private boolean gps;
     					    //Constructores
 //	!-------------------------------------------------------------------------!
@@ -38,58 +39,21 @@ public class AplicacionSEM implements MovementSensor {
   		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
   		this.usuario = usuario;
   		this.gps = gps;
-  		this.patente = this.getUsuario().getPatente();
   		this.horaInicio = 0; //Manejado en tiempo real, es necesario inicializar porque sino queda un NULL 
   	}
-//    //Constructor #2 --> Puede elejirse el modo inicial
-//    public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular) {
-//		super();
-//		this.saldoAcreditado = 0;
-//		this.numeroDeCelular = nroDeCelular;
-//		this.modo = modo;
-//		this.estado = new EnAuto();
-//		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//		this.usuario = usuario;
-//		this.gps = new Apagado();
-//		this.patente = this.getUsuario().getPatente();
-//	}
-//    
-//   //Constructor #3 --> Puede elejirse el modo y el modoGps inicial
-//	public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,ModoGps gps) {
-//		super();
-//		this.saldoAcreditado = 0;
-//		this.numeroDeCelular = nroDeCelular;
-//		this.modo = modo;
-//		this.estado = new EnAuto();
-//		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//		this.usuario = usuario;
-//		this.gps = gps;
-//		this.patente = this.getUsuario().getPatente();
-//	}
-//	
-//	//Constructor #4 --> El modo, modoGps y el estado, estan inicializados (ModoAutomatico, Apagado,EnAuto)
-//	public AplicacionSEM(SEM sistemaDeEstacionamiento, Usuario usuario, Integer nroDeCelular) {
-//		super();
-//		this.saldoAcreditado = 0;
-//		this.modo = new ModoAutomatico();
-//		this.estado = new EnAuto();
-//		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//		this.usuario = usuario;
-//		this.gps = new Apagado();
-//		this.numeroDeCelular = nroDeCelular;
-//		this.patente = this.getUsuario().getPatente();
-//	}
-	
+
 					    //Mensajes Publicos
 //	!-------------------------------------------------------------------------!
-	//No hay parametros ya que la app obtiene el nro de celular por medio del constructor y la patente a traves del usuario
+	
+  	
+  	// ¡Esta harcodeada la hora de inicio!
 	public void iniciarEstacionamiento() {	
-		if(this.horaInicio() >= 7 && this.horaInicio() <= 19) {
+		if(this.getHoraInicio() >= 7 && this.getHoraInicio() <= 19) {
 			try {
 				this.puedeEstacionar(this.getPatente());
 				this.getSistemaEstacionamiento()
 				.registrarEstacionamiento(this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatente()));
-				this.setHoraInicio(this.horaInicio());
+				this.setHoraInicio(this.getHoraInicio());
 				this.darRespuestaInicial();
 			}
 			catch(ExcepcionPersonalizada e) {
@@ -108,8 +72,7 @@ public class AplicacionSEM implements MovementSensor {
 		}
 	}
 	public void puedeEstacionar(String patente) throws ExcepcionPersonalizada {
-	  //Creo que es responsabilidad del SEM verificar esta condicion 	
-	  if(this.hayEstacionamientoConPatente(patente)) { //Porque la app verifica el credito y la zona segun el enunciado
+	  if(this.hayEstacionamientoConPatente(patente)) { 
 			throw new ExcepcionPersonalizada("Ya hay un estacionamiento vigente con la patente dada");
 	  }
 	  if(!this.tieneCreditoSuficienteParaEstacionar()) {
@@ -213,32 +176,34 @@ public class AplicacionSEM implements MovementSensor {
 		return this.modo;
 	}
 	public void descontarSaldo() {
-		//Ojo aca en "this.horaInicio() Deberia cambiarse a "this.getHoraInicio()" pero como
-		//es en tiempo real, y son las 22, el estacionamiento no deberia iniciarse
-		//Entonces la variable queda en NULL y falla -- Actualmente puse un cero para
-		//Que no fallen los test
-		if((this.horaFin() - this.getHoraInicio()) > 0) {
+		//Se usan metodos harcodeados
+		if((this.getHoraFin() - this.getHoraInicio()) > 0) {
 			this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
 		}
-		
+		//Para usar en tiempo real seria if(this.horaFin() - this.getHoraInicio())
 	}
-	//Hora actual tiempo real
-	public int horaInicio() {
-		return LocalDateTime.now().getHour();
-	}
-	//Hora actual tiempo real
-	private Integer horaFin() {
-		return LocalDateTime.now().getHour();
-	}
-	//Hora guardada al momento de iniciar
+	
+//	public int horaInicio() {   //En tiempo real
+//		return LocalDateTime.now().getHour();
+//	}
+//	private Integer horaFin() {			 //En tiempo real
+//		return LocalDateTime.now().getHour();
+//	}
 	private int getHoraInicio() {
 		return this.horaInicio;
 	}
-	public int calcularHoraDuracion() { 		
-		return this.horaFin() - this.getHoraInicio();
+//	public int calcularHoraDuracion() { 		//En tiempo real
+//		return this.horaFin() - this.getHoraInicio();
+//	}
+	public Integer calcularHoraDuracion() {		//Harcodeado
+		return this.getHoraFin() - this.getHoraInicio();
 	}
+	
+	private Integer getHoraFin() { //Harcodeado
+		return this.horaFin;
+}
 	public double calcularCreditoAPagar() {
-    	return (this.horaFin() - this.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
+    	return (this.getHoraFin() - this.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
     }
 	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
 		return new EstacionamientoAplicacion(numeroDeCelular,patente);
@@ -256,9 +221,9 @@ public class AplicacionSEM implements MovementSensor {
 	   return 40;
    }
    
-   public int horaMaximaDeEstacionamiento() {
-	   return 20;
-   }
+//   public int horaMaximaDeEstacionamiento() {
+//	   return 20;
+//   }
    
 //   public int cantidadDeHorasSegunSaldo() {
 //	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
@@ -275,7 +240,7 @@ public class AplicacionSEM implements MovementSensor {
 			System.out.print("!---------------------------------!" + "\r\n"
 			 + "Su estacionamiento fue dado de baja con exito." +"\r\n"
 			 + "Hora exacta: " + this.getHoraInicio() +"\r\n"
-			 + "Hora fin: " + this.horaFin()  +"\r\n"
+			 + "Hora fin: " + this.getHoraFin()  +"\r\n"
 			 + "Duracion: " + this.calcularHoraDuracion() + "hs" +"\r\n"
 			 + "Costo: " + this.calcularCreditoAPagar() +"\r\n"
 			 + "!---------------------------------!");
@@ -292,22 +257,55 @@ public class AplicacionSEM implements MovementSensor {
 	public void setHoraInicio(Integer horaInicio) {
 		this.horaInicio = horaInicio;
 	}
+	public void setHoraFin(Integer horaFin) {
+		this.horaFin = horaFin;
+	}
 //	public void setHoraInicio(Integer horaHarcodeada) {
 //		this.horaInicio = horaHarcodeada;
 //	}
 	public String getPatente() {
-		// TODO Auto-generated method stub
-		return this.patente;
+		return usuario.getPatente();
 	}
 //	!-------------------------------------------------------------------------!
  
 }
-
-    /*
-     Anotaciones:
-      *Creo que el usuario deberia tener un mensaje donde pueda elegir el modo 
-        de la aplicacion y tambien otros dos mensajes que indiquen que quieran
-        prender el gps o apagarlo
-        */
     
- 
+////Constructor #2 --> Puede elejirse el modo inicial
+//public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular) {
+//	super();
+//	this.saldoAcreditado = 0;
+//	this.numeroDeCelular = nroDeCelular;
+//	this.modo = modo;
+//	this.estado = new EnAuto();
+//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
+//	this.usuario = usuario;
+//	this.gps = new Apagado();
+//	this.patente = this.getUsuario().getPatente();
+//}
+//
+////Constructor #3 --> Puede elejirse el modo y el modoGps inicial
+//public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,ModoGps gps) {
+//	super();
+//	this.saldoAcreditado = 0;
+//	this.numeroDeCelular = nroDeCelular;
+//	this.modo = modo;
+//	this.estado = new EnAuto();
+//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
+//	this.usuario = usuario;
+//	this.gps = gps;
+//	this.patente = this.getUsuario().getPatente();
+//}
+//
+////Constructor #4 --> El modo, modoGps y el estado, estan inicializados (ModoAutomatico, Apagado,EnAuto)
+//public AplicacionSEM(SEM sistemaDeEstacionamiento, Usuario usuario, Integer nroDeCelular) {
+//	super();
+//	this.saldoAcreditado = 0;
+//	this.modo = new ModoAutomatico();
+//	this.estado = new EnAuto();
+//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
+//	this.usuario = usuario;
+//	this.gps = new Apagado();
+//	this.numeroDeCelular = nroDeCelular;
+//	this.patente = this.getUsuario().getPatente();
+//}
+
