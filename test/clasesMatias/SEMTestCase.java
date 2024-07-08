@@ -183,8 +183,8 @@ public class SEMTestCase {
 		//Exercise
 		sem.registrarEstacionamiento(estacionamiento1);
 		//Verify
-		assertTrue(sem.verificarEstacionamientoVigente(estacionamiento1.getNumeroDeCelularDeEstacionamiento()));
-		assertTrue(sem.verificarEstacionamientoVigente(estacionamiento1.getPatente()));
+		assertTrue(sem.verificarEstacionamientoVigentePorCelular(estacionamiento1.getNumeroDeCelularDeEstacionamiento()));
+		assertTrue(sem.verificarEstacionamientoVigentePorPatente(estacionamiento1.getPatente()));
 		
 	}
 	

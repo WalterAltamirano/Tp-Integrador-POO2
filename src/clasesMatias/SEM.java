@@ -107,12 +107,12 @@ public class SEM {
 	}
 
 	//retorna un booleano dependiendo si hay un Estacionamiento vigente con una determinada patente
-	public boolean verificarEstacionamientoVigente(String patente) {
+	public boolean verificarEstacionamientoVigentePorPatente(String patente) {
 		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getPatente().equals(patente));		
 	}
 	
 	//retorna un booleano dependiendo si hay un Estacionamiento vigente con un determinado numero de telefono
-	public boolean verificarEstacionamientoVigente(int numeroCelular) {
+	public boolean verificarEstacionamientoVigentePorCelular(int numeroCelular) {
 		return this.estacionamientosRegistrados.stream().anyMatch(a -> a.getNumeroDeCelularDeEstacionamiento() == numeroCelular);		
 	}
 

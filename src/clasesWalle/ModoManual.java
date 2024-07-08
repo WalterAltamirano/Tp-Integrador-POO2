@@ -10,21 +10,13 @@ public class ModoManual implements Modo{
 	
 	@Override
 	public void inicioDeEstacionamiento(AplicacionSEM app) {
-		
+		System.out.print("Alerta: Usted esta en modo manual. Por lo que deberia iniciar su estacionamiento");	
 	}
 
 	@Override
 	public void finDeEstacionamiento(AplicacionSEM app) {
-		
+		System.out.print("Alerta: Usted esta en modo manual. Por lo que deberia finalizar su estacionamiento");
 	}
 
-	@Override
-	public void puedeAlertarInicio(AplicacionSEM app) throws ExcepcionPersonalizada {
-		
-	}
-
-	@Override
-	public void puedeAlertarFin(AplicacionSEM app) throws ExcepcionPersonalizada {
-		
-	}
+	
 }
