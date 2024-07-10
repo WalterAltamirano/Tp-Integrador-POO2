@@ -311,4 +311,3 @@ public class AplicacionSEM implements MovementSensor {
 //	this.numeroDeCelular = nroDeCelular;
 //	this.patente = this.getUsuario().getPatente();
 //}
-

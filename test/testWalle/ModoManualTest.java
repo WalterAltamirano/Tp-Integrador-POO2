@@ -35,16 +35,15 @@ public class ModoManualTest {
 		 modo= new ModoManual();
 	}
 	@Test
-	public void testModonuevo() {
+	public void testUnModoManualRecibeUnFinDeEstacionamientoYLaAppNoFinalizaNingunEstacionamiento() {
 		
-		//SetUp
 		//Excercise
 		modo.finDeEstacionamiento(app);
 		//Verify
 		verify(app,never()).finalizarEstacionamiento();
 	}
 	@Test
-	public void testAplicacionRecibeUnInicioDeEstacionamientoYDelegaEnModoUnInicioDeEstacionamientoYSeInicia() {
+	public void testUnModoManualRecibeUnInicioDeEstacionamientoYLaAppNoIniciaElEstacionamiento() {
 		
 		//SetUp
 		//Excercise
@@ -52,4 +51,5 @@ public class ModoManualTest {
 		//Verify
 		verify(app,never()).iniciarEstacionamiento();
 	}
+	
 }
