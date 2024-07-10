@@ -16,7 +16,7 @@ import clasesWalle.AplicacionSEM;
 
 public class SEM {
 
-	private SemListener Listener;
+	private List<SemListener> Listeners = new ArrayList<SemListener>();
 	private List<ZonaDeEstacionamiento> zonasEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Estacionamiento> estacionamientosRegistrados = new ArrayList<Estacionamiento>();
@@ -26,15 +26,21 @@ public class SEM {
 	  * Las listas de distintos elementos se crean al inicializarse la clase
 	  * */
 
-    //devulve el Listener
-	public SemListener getListener() {
-		return Listener;
+    //devulve la lista de Listenerd
+	public List<SemListener> getListeners() {
+		return Listeners;
 	}
 
-	// establece el Listener
-	public void setListener(SemListener listener) {
-		Listener = listener;
+	// agrega un nuevo Listener a la lista
+	public void addListener(SemListener listener) {
+		Listeners.add(listener);
 	}
+	
+	//elimina un Listener de la lista
+	public void removeListener(SemListener listener) {
+		this.getListeners().remove(listener);
+		
+	} 
 	
     // agrega una AplicacionSEM a la lista de aplicaciones registradas
 	public void registrarAplicacion(AplicacionSEM aplicacion) {
@@ -70,7 +76,7 @@ public class SEM {
     
 	//avisa al Listener que se realizo una nueva compra
 	public void notificarNuevaCompra(Compra compra) {
-		this.getListener().nuevaCompraRegistrada(this, compra);
+		this.getListeners().stream().forEach(l -> l.nuevaCompraRegistrada(this, compra));
 		
 	}
 
@@ -89,7 +95,7 @@ public class SEM {
     
 	//avisa al Listener que se inicio un nuevo estacionamiento
 	public void notificarNuevoEstacionamiento(Estacionamiento nuevoEstacionamiento) {
-		this.getListener().nuevoEstacionamientoIniciado(this, nuevoEstacionamiento);
+		this.getListeners().stream().forEach(l -> l.nuevoEstacionamientoIniciado(this, nuevoEstacionamiento));
 		
 	}
 
@@ -149,7 +155,7 @@ public class SEM {
 	}
 
 	public void notificarFinEstacionamiento(Estacionamiento estacionamiento) {
-		this.getListener().nuevoFinDeEstacionamiento(this, estacionamiento);
+		this.getListeners().stream().forEach(l -> l.nuevoFinDeEstacionamiento(this, estacionamiento));
 		
 	}
 

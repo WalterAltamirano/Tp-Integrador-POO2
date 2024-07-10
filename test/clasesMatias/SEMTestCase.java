@@ -36,7 +36,7 @@ public class SEMTestCase {
 		aplicacion1 = mock(AplicacionSEM.class);
 		
 		sem = new SEM();
-		sem.setListener(listener);
+		//sem.setListener(listener);
 		
 		
 	}
@@ -150,11 +150,35 @@ public class SEMTestCase {
 		assertEquals(sem.buscarPorNumeroCelular(123456), estacionamiento1);
 	}
 	
-
+		@Test
+	public void addListenerTest() {
+		//Exercise
+		sem.addListener(listener);
+		//Verify
+		assertEquals(sem.getListeners().size(), 1);
+	} 
+		
+	@Test
+	public void removeListenerTest() {
+	//Exercise
+	sem.addListener(listener);
+	sem.removeListener(listener);
+	//Verify
+	assertFalse(sem.getListeners().contains(listener));
+     } 		
+	
+	@Test
+	public void getListeners() {
+		//Exercise
+		sem.addListener(listener);
+		//Verify
+		assertTrue(sem.getListeners().contains(listener));
+	} 
 	
 	@Test
 	public void notificarNuevaCompra() {
 		//exercise
+		sem.addListener(listener);
 		sem.notificarNuevaCompra(cargaDeSaldo);
 		//verify
 		verify(listener, atLeast(1)).nuevaCompraRegistrada(sem, cargaDeSaldo);
@@ -163,6 +187,7 @@ public class SEMTestCase {
 	@Test
 	public void notificarNuevoEstacionamiento() {
 		//exercise
+		sem.addListener(listener);
 		sem.notificarNuevoEstacionamiento(estacionamiento1);
 		//verify
 		verify(listener, atLeast(1)).nuevoEstacionamientoIniciado(sem, estacionamiento1);
@@ -171,6 +196,7 @@ public class SEMTestCase {
 	@Test
 	public void notificarFinEstacionamiento() {
 		//exercise
+		sem.addListener(listener);
 		sem.notificarFinEstacionamiento(estacionamiento1);
 		//verify
 		verify(listener, atLeast(1)).nuevoFinDeEstacionamiento(sem, estacionamiento1);
