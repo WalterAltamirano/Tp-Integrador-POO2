@@ -11,7 +11,7 @@ import java.util.List;
 public class ZonaDeEstacionamiento {
 
 	private Inspector inspectorAsignado;
-	private List<PuntoDeVenta> puntosDeVenta = new ArrayList<PuntoDeVenta>();;
+	private List<PuntoDeVenta> puntosDeVenta = new ArrayList<PuntoDeVenta>();
     
 	/*Se inicializa recibiendo un Inspector como Inspector asignado
 	 * */

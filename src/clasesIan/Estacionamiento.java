@@ -47,4 +47,18 @@ public abstract class Estacionamiento {
 	public boolean getViencia() {
 		return vigencia;
 	}
+	
+	public void setHoraDeFin(LocalDateTime hora) {
+		
+	}
+
+	public int getHoraFin() {
+		
+		return 0;
+	}
+
+	public int getHoraInicio() {
+		
+		return 0;
+	}
 }

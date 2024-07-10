@@ -15,7 +15,23 @@ public class EstacionamientoAplicacion extends Estacionamiento{
 		return this.origenCelular;
 	}
 	
+	
+	public int getHoraFin() {
+		
+		return horaDeFin.getHour();
+	}
+
+	public int getHoraInicio() {
+		
+		return horaDeInicio.getHour();
+	}
+	
 	public void setHoraDeFin(LocalDateTime hora) {
 		this.horaDeFin = hora;
 	}
+	
+	public void setHoraDeInicio(LocalDateTime hora) {
+		this.horaDeInicio = hora;
+	}
+	
 }

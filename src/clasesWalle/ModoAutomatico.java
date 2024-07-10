@@ -1,5 +1,6 @@
 package clasesWalle;
 
+import java.time.LocalDateTime;
 
 public class ModoAutomatico implements Modo{
 
@@ -12,7 +13,7 @@ public class ModoAutomatico implements Modo{
 	@Override
 	public void inicioDeEstacionamiento(AplicacionSEM app) {
 		System.out.print("Alerta: Usted esta en modo automatico, por lo que podria iniciarse su estacionamiento");
-		app.iniciarEstacionamiento();
+		app.iniciarEstacionamiento(LocalDateTime.now().getHour());
 	}
 
 	@Override
