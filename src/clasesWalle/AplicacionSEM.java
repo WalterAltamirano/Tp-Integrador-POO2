@@ -8,6 +8,7 @@ import clasesIan.Usuario;
 import clasesMatias.SEM;
 import net.bytebuddy.asm.Advice.This;
 import clasesIan.EnAuto;
+import clasesIan.Estacionamiento;
 import clasesIan.EstacionamientoAplicacion;
 import clasesIan.Caminando;
 
@@ -39,7 +40,7 @@ public class AplicacionSEM implements MovementSensor {
   		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
   		this.usuario = usuario;
   		this.gps = gps;
-  		this.horaInicio = 0; //Manejado en tiempo real, es necesario inicializar porque sino queda un NULL 
+  		//this.horaInicio = 0; //Manejado en tiempo real, es necesario inicializar porque sino queda un NULL 
   	}
 
 					    //Mensajes Publicos
@@ -47,14 +48,15 @@ public class AplicacionSEM implements MovementSensor {
 	
   	
   	// ¡Esta harcodeada la hora de inicio!
-	public void iniciarEstacionamiento() {	
-		if(this.getHoraInicio() >= 7 && this.getHoraInicio() <= 19) {
+	public void iniciarEstacionamiento(int horaDeInicio) {	
+		if(horaDeInicio >= 7 && horaDeInicio <= 19) {
 			try {
-				this.puedeEstacionar(this.getPatenteUsuario());
+				this.puedeEstacionar(this.getPatente());
+				Estacionamiento estacionamiento = this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatente());
 				this.getSistemaEstacionamiento()
-				.registrarEstacionamiento(this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatenteUsuario()));
-				this.setHoraInicio(this.getHoraInicio());
-				this.darRespuestaInicial();
+				.registrarEstacionamiento(estacionamiento);
+				
+				this.darRespuestaInicial(estacionamiento);
 			}
 			catch(ExcepcionPersonalizada e) {
 			}
@@ -65,8 +67,9 @@ public class AplicacionSEM implements MovementSensor {
 		try {
 			this.puedeFinalizar();
 		    this.getSistemaEstacionamiento().finalizarEstacionamientoCon(this.getNumeroDeCelular());
-			this.descontarSaldo();
-			this.darRespuestaFinal();
+		    Estacionamiento estacionamiento = this.getSistemaEstacionamiento().buscarPorNumeroCelular(getNumeroDeCelular());
+			this.descontarSaldo(estacionamiento);
+			this.darRespuestaFinal(estacionamiento);
 		}
 		catch(ExcepcionPersonalizada e) {
 		}
@@ -175,10 +178,10 @@ public class AplicacionSEM implements MovementSensor {
 	public Modo getModo() {
 		return this.modo;
 	}
-	public void descontarSaldo() {
+	public void descontarSaldo(Estacionamiento estacionamiento) {
 		//Se usan metodos harcodeados
-		if((this.getHoraFin() - this.getHoraInicio()) > 0) {
-			this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar();
+		if((estacionamiento.getHoraFin() - estacionamiento.getHoraInicio()) > 0) {
+			this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar(estacionamiento);
 		}
 		//Para usar en tiempo real seria if(this.horaFin() - this.getHoraInicio())
 	}
@@ -189,22 +192,25 @@ public class AplicacionSEM implements MovementSensor {
 //	private Integer horaFin() {			 //En tiempo real
 //		return LocalDateTime.now().getHour();
 //	}
-	private int getHoraInicio() {
-		return this.horaInicio;
-	}
+//	private int getHoraInicio() {
+//		return this.horaInicio;
+//	}
 //	public int calcularHoraDuracion() { 		//En tiempo real
 //		return this.horaFin() - this.getHoraInicio();
 //	}
-	public Integer calcularHoraDuracion() {		//Harcodeado
-		return this.getHoraFin() - this.getHoraInicio();
+	public Integer calcularHoraDuracion(Estacionamiento estacionamiento) {		//Arreglado
+		return estacionamiento.getHoraFin() - estacionamiento.getHoraInicio();
 	}
 	
-	private Integer getHoraFin() { //Harcodeado
-		return this.horaFin;
-}
-	public double calcularCreditoAPagar() {
-    	return (this.getHoraFin() - this.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
+//	private Integer getHoraFin() { //Harcodeado
+//		return this.horaFin;
+//}
+	public double calcularCreditoAPagar(Estacionamiento estacionamiento) {
+    	return (estacionamiento.getHoraFin() - estacionamiento.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
     }
+	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
+		return new EstacionamientoAplicacion(numeroDeCelular,patente);
+	}
 //	!-------------------------------------------------------------------------!
 	
 	
@@ -233,38 +239,35 @@ public class AplicacionSEM implements MovementSensor {
 //    	
 //    }
 
-   public void darRespuestaFinal() {
+   public void darRespuestaFinal(Estacionamiento estacionamiento) {
 			System.out.print("!---------------------------------!" + "\r\n"
 			 + "Su estacionamiento fue dado de baja con exito." +"\r\n"
-			 + "Hora exacta: " + this.getHoraInicio() +"\r\n"
-			 + "Hora fin: " + this.getHoraFin()  +"\r\n"
-			 + "Duracion: " + this.calcularHoraDuracion() + "hs" +"\r\n"
-			 + "Costo: " + this.calcularCreditoAPagar() +"\r\n"
+			 + "Hora exacta: " + estacionamiento.getHoraInicio() +"\r\n"
+			 + "Hora fin: " + estacionamiento.getHoraFin()  +"\r\n"
+			 + "Duracion: " + this.calcularHoraDuracion(estacionamiento) + "hs" +"\r\n"
+			 + "Costo: " + this.calcularCreditoAPagar(estacionamiento) +"\r\n"
 			 + "!---------------------------------!");
    }
 
-   public void darRespuestaInicial() {
+   public void darRespuestaInicial(Estacionamiento estacionamiento) {
 		System.out.print( "\r\n"+"!---------------------------------!"+ "\r\n"
 				 + "Su estacionamiento fue dado de alta con exito."+ "\r\n"
-				 + "Hora exacta: " + this.getHoraInicio() + "\r\n"
+				 + "Hora exacta: " + estacionamiento.getHoraInicio() + "\r\n"
 				 + "Hora fin: " + "Pendiente" + "\r\n"
 				 + "La hora fin quedara establecida segun la cantidad de horas maximas equivalentes a su saldo acreditado" +"\r\n"
 				 + "!---------------------------------!");					
 	}
-	public void setHoraInicio(Integer horaInicio) {
-		this.horaInicio = horaInicio;
-	}
-	public void setHoraFin(Integer horaFin) {
-		this.horaFin = horaFin;
-	}
+//	public void setHoraInicio(Integer horaInicio) {
+//		this.horaInicio = horaInicio;
+//	}
+//	public void setHoraFin(Integer horaFin) {
+//		this.horaFin = horaFin;
+//	}
 //	public void setHoraInicio(Integer horaHarcodeada) {
 //		this.horaInicio = horaHarcodeada;
 //	}
-	public String getPatenteUsuario() {
-		return this.getUsuario().getPatente();
-	}
-	private EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
-		return new EstacionamientoAplicacion(numeroDeCelular,patente);
+	public String getPatente() {
+		return usuario.getPatente();
 	}
 //	!-------------------------------------------------------------------------!
  
@@ -308,4 +311,3 @@ public class AplicacionSEM implements MovementSensor {
 //	this.numeroDeCelular = nroDeCelular;
 //	this.patente = this.getUsuario().getPatente();
 //}
-

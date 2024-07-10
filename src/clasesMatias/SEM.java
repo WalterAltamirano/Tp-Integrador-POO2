@@ -1,8 +1,8 @@
 package clasesMatias;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import clasesIan.Estacionamiento;
 import clasesWalle.AplicacionSEM;
@@ -16,7 +16,7 @@ import clasesWalle.AplicacionSEM;
 
 public class SEM {
 
-	private List<SemListener> Listeners = new ArrayList<SemListener>();
+	private List<SemListener> listeners = new ArrayList<SemListener>();
 	private List<ZonaDeEstacionamiento> zonasEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Estacionamiento> estacionamientosRegistrados = new ArrayList<Estacionamiento>();
@@ -28,12 +28,12 @@ public class SEM {
 
     //devulve la lista de Listenerd
 	public List<SemListener> getListeners() {
-		return Listeners;
+		return listeners;
 	}
 
 	// agrega un nuevo Listener a la lista
 	public void addListener(SemListener listener) {
-		Listeners.add(listener);
+		listeners.add(listener);
 	}
 	
 	//elimina un Listener de la lista
@@ -149,6 +149,7 @@ public class SEM {
 	// le dice que finalice a un determinado Estacionamiento que posea un determinado numero de celular 
 	public void finalizarEstacionamientoCon(int numeroDeCelular) {
 		Estacionamiento estacionamiento = this.buscarPorNumeroCelular(numeroDeCelular);
+		estacionamiento.setHoraDeFin(LocalDateTime.now());
 		estacionamiento.finalizarEstacionamiento();
 		this.notificarFinEstacionamiento(estacionamiento);
 		
