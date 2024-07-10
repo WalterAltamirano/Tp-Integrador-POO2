@@ -21,8 +21,8 @@ public class Usuario {
 	}
 	
 	//Dudoso
-	public void estacionamientoPorAplicacion() {
-		this.aplicacion.iniciarEstacionamiento();
+	public void estacionamientoPorAplicacion(int horaInicio) {
+		this.aplicacion.iniciarEstacionamiento(horaInicio);
 	}
 	
 	/*public void notificarAlerta(String alerta) {

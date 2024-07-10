@@ -49,7 +49,7 @@ public class UsuarioTestCase {
 	
 	@Test
 	public void pruebaEstacionamientoPorAplicacion() {
-		usuario.estacionamientoPorAplicacion();
-		verify(aplicacion,atLeast(1)).iniciarEstacionamiento();
+		usuario.estacionamientoPorAplicacion(4);
+		verify(aplicacion,atLeast(1)).iniciarEstacionamiento(4);
 	}
 }
