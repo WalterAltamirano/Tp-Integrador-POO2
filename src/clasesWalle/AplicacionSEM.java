@@ -50,9 +50,9 @@ public class AplicacionSEM implements MovementSensor {
 	public void iniciarEstacionamiento() {	
 		if(this.getHoraInicio() >= 7 && this.getHoraInicio() <= 19) {
 			try {
-				this.puedeEstacionar(this.getPatente());
+				this.puedeEstacionar(this.getPatenteUsuario());
 				this.getSistemaEstacionamiento()
-				.registrarEstacionamiento(this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatente()));
+				.registrarEstacionamiento(this.instanciaDeEstacionamiento(this.getNumeroDeCelular(), this.getPatenteUsuario()));
 				this.setHoraInicio(this.getHoraInicio());
 				this.darRespuestaInicial();
 			}
@@ -205,9 +205,6 @@ public class AplicacionSEM implements MovementSensor {
 	public double calcularCreditoAPagar() {
     	return (this.getHoraFin() - this.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
     }
-	public EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
-		return new EstacionamientoAplicacion(numeroDeCelular,patente);
-	}
 //	!-------------------------------------------------------------------------!
 	
 	
@@ -263,8 +260,11 @@ public class AplicacionSEM implements MovementSensor {
 //	public void setHoraInicio(Integer horaHarcodeada) {
 //		this.horaInicio = horaHarcodeada;
 //	}
-	public String getPatente() {
-		return usuario.getPatente();
+	public String getPatenteUsuario() {
+		return this.getUsuario().getPatente();
+	}
+	private EstacionamientoAplicacion instanciaDeEstacionamiento(Integer numeroDeCelular,String patente) {
+		return new EstacionamientoAplicacion(numeroDeCelular,patente);
 	}
 //	!-------------------------------------------------------------------------!
  
