@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class ModoAutomaticoTest {
 	
-	private Modo modo;
+	private ModoAutomatico modo;
 	private AplicacionSEM app;
 	private int nroDeCelular;
 	private String patente;
@@ -44,7 +44,7 @@ public class ModoAutomaticoTest {
 		modo.inicioDeEstacionamiento(app);
 		
 		//Verify
-		verify(app).iniciarEstacionamiento(); 
+		verify(app).iniciarEstacionamiento(modo.calcularHoraActual()); 
 		
 	}
 	@Test

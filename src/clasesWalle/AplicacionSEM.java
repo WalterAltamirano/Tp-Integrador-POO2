@@ -270,6 +270,7 @@ public class AplicacionSEM implements MovementSensor {
 		return usuario.getPatente();
 	}
 //	!-------------------------------------------------------------------------!
+
  
 }
     
