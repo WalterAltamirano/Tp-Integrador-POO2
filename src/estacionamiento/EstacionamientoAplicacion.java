@@ -8,7 +8,7 @@ public class EstacionamientoAplicacion extends Estacionamiento{
 	
 	public EstacionamientoAplicacion(int numero, String patente) {
 		this.origenCelular = numero;
-		this.patenteDeVehiculo = patente; //en la super.
+		this.patenteDeVehiculo = patente;
 		this.horaDeInicio = LocalDateTime.now();
 	}
 	

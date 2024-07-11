@@ -20,15 +20,10 @@ public class Usuario {
 		puestoDeCarga.cargarSaldo(aplicacion, saldoACargar);
 	}
 	
-	//Dudoso
 	public void estacionamientoPorAplicacion(int horaInicio) {
 		this.aplicacion.iniciarEstacionamiento(horaInicio);
 	}
-	
-	/*public void notificarAlerta(String alerta) {
-		System.out.println(alerta);
-	}*/
-	
+
 	public String getPatente() {
 		return auto.getPatente();
 	}

@@ -8,16 +8,12 @@ public abstract class Estacionamiento {
 	protected String patenteDeVehiculo;
 	private boolean vigencia;
 	
-	/*public Estacionamiento(String patenteDeVehiculo) {
-		this.patenteDeVehiculo = patenteDeVehiculo;
-	}*/
-	
 	public boolean estaVigente() {
 		if(LocalDateTime.now().isAfter(horaDeInicio) && LocalDateTime.now().isBefore(horaDeFin)) {
 			vigencia = true;
 		}else{
 			vigencia = false;
-		}; //verifica si la hora actual esta despues de la hora de inicio y antes de la hora de finalizacion.
+		}
 		return vigencia;
 	}
 	
@@ -30,7 +26,7 @@ public abstract class Estacionamiento {
 
 	private boolean haFinalizado() {
 		return LocalDateTime.now().isAfter(horaDeFin);
-	};
+	}
 	
 	public void finalizarEstacionamiento() {
 		vigencia = false;
