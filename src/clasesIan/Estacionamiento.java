@@ -51,7 +51,7 @@ public abstract class Estacionamiento {
 	public void setHoraDeFin(LocalDateTime hora) {
 		
 	}
-
+	
 	public int getHoraFin() {
 		
 		return 0;
