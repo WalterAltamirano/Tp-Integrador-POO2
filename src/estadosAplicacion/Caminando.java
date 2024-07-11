@@ -4,6 +4,7 @@ import aplicacionSEM.AplicacionSEM;
 
 public class Caminando implements EstadoApp{
 	
+	//Metodos implementados de interfaz
 	@Override
 	public void manejando(AplicacionSEM aplicacion) {
 		System.out.println("El estado actual cambiara a manejando");

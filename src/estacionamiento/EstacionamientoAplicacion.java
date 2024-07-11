@@ -6,12 +6,15 @@ public class EstacionamientoAplicacion extends Estacionamiento{
 	
 	private int origenCelular;
 	
+	//Es usado en AplicacionSEM para la generacion del mismo
+	//Constructor
 	public EstacionamientoAplicacion(int numero, String patente) {
 		this.origenCelular = numero;
 		this.patenteDeVehiculo = patente;
 		this.horaDeInicio = LocalDateTime.now();
 	}
 	
+	//--------------------------------------------------------
 	public int getNumeroDeCelularDeEstacionamiento() {
 		return this.origenCelular;
 	}
