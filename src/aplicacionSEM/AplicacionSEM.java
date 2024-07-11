@@ -23,10 +23,10 @@ public class AplicacionSEM implements MovementSensor {
 	private Integer numeroDeCelular;
 	private SEM sistemaEstacionamiento;
 	private Modo modo;
-	//private ModoGps gps;
+	
     private EstadoApp estado;
     private Usuario usuario;
-    //private String patente;
+   
     private Integer horaInicio;
     private Integer horaFin;
     private boolean gps;
@@ -44,14 +44,14 @@ public class AplicacionSEM implements MovementSensor {
   		this.sistemaEstacionamiento = sistemaDeEstacionamiento;
   		this.usuario = usuario;
   		this.gps = gps;
-  		//this.horaInicio = 0; //Manejado en tiempo real, es necesario inicializar porque sino queda un NULL 
+  		
   	}
 
-					    //Mensajes Publicos
+					 
 //	!-------------------------------------------------------------------------!
 	
   	
-  	// ¡Esta harcodeada la hora de inicio!
+  	
 	public void iniciarEstacionamiento(int horaDeInicio) {	
 		if(horaDeInicio >= 7 && horaDeInicio <= 19) {
 			try {
@@ -142,8 +142,8 @@ public class AplicacionSEM implements MovementSensor {
 //	!-------------------------------------------------------------------------!	
 
 	
-						//Metodos de visibilidad de Paquete
-//	!-------------------------------------------------------------------------!	
+					
+
 	public void setEstado(EstadoApp estado) {
 		this.estado = estado;
 	}
@@ -183,32 +183,20 @@ public class AplicacionSEM implements MovementSensor {
 		return this.modo;
 	}
 	public void descontarSaldo(Estacionamiento estacionamiento) {
-		//Se usan metodos harcodeados
+		
 		if((estacionamiento.getHoraFin() - estacionamiento.getHoraInicio()) > 0) {
 			this.saldoAcreditado = this.saldoAcreditado - this.calcularCreditoAPagar(estacionamiento);
 		}
-		//Para usar en tiempo real seria if(this.horaFin() - this.getHoraInicio())
+		
 	}
 	
-//	public int horaInicio() {   //En tiempo real
-//		return LocalDateTime.now().getHour();
-//	}
-//	private Integer horaFin() {			 //En tiempo real
-//		return LocalDateTime.now().getHour();
-//	}
-//	private int getHoraInicio() {
-//		return this.horaInicio;
-//	}
-//	public int calcularHoraDuracion() { 		//En tiempo real
-//		return this.horaFin() - this.getHoraInicio();
-//	}
-	public Integer calcularHoraDuracion(Estacionamiento estacionamiento) {		//Arreglado
+
+
+	public Integer calcularHoraDuracion(Estacionamiento estacionamiento) {		
 		return estacionamiento.getHoraFin() - estacionamiento.getHoraInicio();
 	}
 	
-//	private Integer getHoraFin() { //Harcodeado
-//		return this.horaFin;
-//}
+
 	public double calcularCreditoAPagar(Estacionamiento estacionamiento) {
     	return (estacionamiento.getHoraFin() - estacionamiento.getHoraInicio()) * this.valorPorHoraDeEstacionamiento();
     }
@@ -218,8 +206,7 @@ public class AplicacionSEM implements MovementSensor {
 //	!-------------------------------------------------------------------------!
 	
 	
-							  //Metodos privados
-//	!-------------------------------------------------------------------------!	
+
 	
    public void setModoApp(Modo modo) {
 		this.modo = modo;
@@ -228,20 +215,7 @@ public class AplicacionSEM implements MovementSensor {
 	   return 40;
    }
    
-//   public int horaMaximaDeEstacionamiento() {
-//	   return 20;
-//   }
-   
-//   public int cantidadDeHorasSegunSaldo() {
-//	   return (int) this.saldoAcreditado / this.valorPorHoraDeEstacionamiento();
-//   }
-//   public int cantidadDeHorasMaximas() {
-//	   return this.horaMaximaDeEstacionamiento() - this.getHoraInicio();
-//   }
-//   public boolean puedePagarHastaFinDeFranjaHoraria() {
-//       return this.cantidadDeHorasSegunSaldo() >= this.cantidadDeHorasMaximas();
-//    	
-//    }
+
 
    public void darRespuestaFinal(Estacionamiento estacionamiento) {
 			System.out.print("!---------------------------------!" + "\r\n"
@@ -261,58 +235,13 @@ public class AplicacionSEM implements MovementSensor {
 				 + "La hora fin quedara establecida segun la cantidad de horas maximas equivalentes a su saldo acreditado" +"\r\n"
 				 + "!---------------------------------!");					
 	}
-//	public void setHoraInicio(Integer horaInicio) {
-//		this.horaInicio = horaInicio;
-//	}
-//	public void setHoraFin(Integer horaFin) {
-//		this.horaFin = horaFin;
-//	}
-//	public void setHoraInicio(Integer horaHarcodeada) {
-//		this.horaInicio = horaHarcodeada;
-//	}
+
 	public String getPatente() {
 		return usuario.getPatente();
 	}
-//	!-------------------------------------------------------------------------!
+
 
  
 }
     
-////Constructor #2 --> Puede elejirse el modo inicial
-//public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular) {
-//	super();
-//	this.saldoAcreditado = 0;
-//	this.numeroDeCelular = nroDeCelular;
-//	this.modo = modo;
-//	this.estado = new EnAuto();
-//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//	this.usuario = usuario;
-//	this.gps = new Apagado();
-//	this.patente = this.getUsuario().getPatente();
-//}
-//
-////Constructor #3 --> Puede elejirse el modo y el modoGps inicial
-//public AplicacionSEM(Modo modo, SEM sistemaDeEstacionamiento, Usuario usuario,Integer nroDeCelular,ModoGps gps) {
-//	super();
-//	this.saldoAcreditado = 0;
-//	this.numeroDeCelular = nroDeCelular;
-//	this.modo = modo;
-//	this.estado = new EnAuto();
-//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//	this.usuario = usuario;
-//	this.gps = gps;
-//	this.patente = this.getUsuario().getPatente();
-//}
-//
-////Constructor #4 --> El modo, modoGps y el estado, estan inicializados (ModoAutomatico, Apagado,EnAuto)
-//public AplicacionSEM(SEM sistemaDeEstacionamiento, Usuario usuario, Integer nroDeCelular) {
-//	super();
-//	this.saldoAcreditado = 0;
-//	this.modo = new ModoAutomatico();
-//	this.estado = new EnAuto();
-//	this.sistemaEstacionamiento = sistemaDeEstacionamiento;
-//	this.usuario = usuario;
-//	this.gps = new Apagado();
-//	this.numeroDeCelular = nroDeCelular;
-//	this.patente = this.getUsuario().getPatente();
-//}
+

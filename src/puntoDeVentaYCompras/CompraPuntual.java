@@ -19,10 +19,10 @@ public class CompraPuntual extends Compra {
 		this.horasCompradas = cantidadDeHoras;
 		this.horaInicio = this.horaEmision;
 		this.horaFin = this.horaInicio + this.horasCompradas;
-		
-		
-		
+				
 	}
+	
+	
 	public int getHorasCompradas() {
 		return horasCompradas;
 	}

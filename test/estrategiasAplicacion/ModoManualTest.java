@@ -24,7 +24,7 @@ public class ModoManualTest {
 	private String patente;
 	private Estacionamiento estacionamiento;
 	private SEM sistema;
-	//private ModoGps gps;
+	
 	
 	@BeforeEach
 	public void setUp() {
@@ -34,7 +34,7 @@ public class ModoManualTest {
 		 patente = "444JEO";
 		 sistema = mock(SEM.class);
 		 estacionamiento = mock(Estacionamiento.class);
-		// gps = mock(ModoGps.class);
+		
 		 modo= new ModoManual();
 	}
 	@Test

@@ -33,7 +33,7 @@ public class AplicacionSEMTest {
 	private EstadoApp estadoAppManejando;
 	private EstadoApp estadoApp;
 	private SEM sem;
-	//private ModoGps gps;
+	
 	private Estacionamiento estacionamiento;
 	private Usuario usuario;
 	
@@ -46,7 +46,7 @@ public class AplicacionSEMTest {
 		estadoApp = mock(EstadoApp.class);
 		estadoAppManejando = spy(EnAuto.class);
 		sem = spy(SEM.class);
-		//gps = spy(ModoGps.class); 
+		
 		estacionamiento = mock(EstacionamientoAplicacion.class);
 		usuario = mock(Usuario.class);
 		app = new AplicacionSEM(modoAutomatico,estadoAppManejando,sem,usuario,nroDeCelular,true);
@@ -56,26 +56,21 @@ public class AplicacionSEMTest {
 	@Test
 	public void testUnUsuarioIniciaUnEstacionamientoAutomaticamenteYLoFinalizaAutomaticamenteYLaApliacionSEMIniciaYFinalizaElEstacionamiento() {
 		
-		//Harcodeo la hora antes para probar el test--
-		//Si no es una hora valida, va a fallar el test 
+	
 		
 		when(sem.verificarEstacionamientoVigentePorPatente(patente)).thenReturn(false);
 		when(sem.verificarEstacionamientoVigentePorCelular(nroDeCelular)).thenReturn(true); 
 		when(usuario.getPatente()).thenReturn(patente);
 		when(modoAutomatico.calcularHoraActual()).thenReturn(16);
-		//app.setSEM(sem2);
-		//Excercise
+	
 		app.cargarSaldo(80);
-		//app.activarModoAutomatico(); Por defecto esta activado
+		
 		app.driving();
 		app.walking(); //PasoACaminando
 		app.walking();
 		app.driving(); //PasoAAuto
 		
-//		Estacionamiento estacionamientoPrueba = sem.getEstacionamientos().get(0);
-//		LocalDateTime horita = LocalDateTime.of(2024, 8, 2, 18, 43);
-//		estacionamientoPrueba.setHoraDeInicio(horita);
-		//assertEquals(0,app.consultarSaldo()); //Se descuentan las 2 horas
+
 		
 		//Verify
 		verify(estadoAppManejando).caminando(app);
@@ -84,12 +79,12 @@ public class AplicacionSEMTest {
 		verify(modoAutomatico).inicioDeEstacionamiento(app);
 		verify(modoAutomatico).finDeEstacionamiento(app);
 		verify(sem).verificarEstacionamientoVigentePorCelular(nroDeCelular);
-		//verify(usuario).alertaDeFinDeEstacionamiento(); ¡Actualmente lo hace por consola!
+		
 	}
 	@Test
 	public void testUnUsuarioIniciaUnEstacionamientoNoVigenteConGPSDesactivadoYModoAutomaticoYLaApliacionSEMConSaldoSuficienteNoIniciaElEstacionamiento()  {
 			
-		//doThrow(new ExcepcionPersonalizada("El usuario no esta en una zona de estacionamiento")).when(modoAutomatico).puedeAlertarInicio(app);
+		
 		
 		//Excercise
 		app.apagarGps(); //Por defecto esta encendido
@@ -126,7 +121,7 @@ public class AplicacionSEMTest {
 		verify(sem,never()).verificarEstacionamientoVigentePorPatente(patente);
 		verify(estadoAppManejando).caminando(app);
 		verify(estadoAppManejando,times(3)).manejando(app);
-		//verify(usuario).alertaInicioDeEstacionamiento(); ¡¡¡Actualmente lo hace por consola!!!
+		
 		
 		//Tear Down
 		
@@ -135,7 +130,7 @@ public class AplicacionSEMTest {
 	@Test
 	public void testUsuarioIniciaUnEstacionamientoConGpsActivadoYModoManualSinSaldoYLaAplicacionSEMArrojaUnaExcepcion() throws ExcepcionPersonalizada{
 		
-		//doThrow(new ExcepcionPersonalizada("No hay credito suficiente")).when(modoManual).puedeEstacionar(app, patente);
+		
 		
 		when(sem.verificarEstacionamientoVigentePorPatente(patente)).thenReturn(false);
 		
@@ -151,7 +146,7 @@ public class AplicacionSEMTest {
 		assertEquals("Saldo insuficiente. Estacionamiento no permitido",exception.getMessage());
 		
 		//Verify
-		//verify(usuario,times(1)).getPatente();falla si no lo comento
+		
 		verify(sem).verificarEstacionamientoVigentePorPatente(patente);
 		
 	}
@@ -161,7 +156,7 @@ public class AplicacionSEMTest {
 		when(usuario.getPatente()).thenReturn(patente);
 		when(sem.verificarEstacionamientoVigentePorPatente(patente)).thenReturn(false, true);
 		//Excercise
-		//Ya esta activado el gps
+		
 		app.activarModoManual(); //Por defecto, esta el modo automatico
 		app.cargarSaldo(120);
 		app.iniciarEstacionamiento(16);
@@ -177,7 +172,7 @@ public class AplicacionSEMTest {
 		
 		//Verify
 		verify(sem,times(2)).verificarEstacionamientoVigentePorPatente(patente);
-		//verify(usuario).getPatente(); falla si no lo comento
+		
 	}
 
 	@Test
@@ -186,8 +181,7 @@ public class AplicacionSEMTest {
 		when(sem.verificarEstacionamientoVigentePorCelular(nroDeCelular)).thenReturn(false); 
 		when(usuario.getPatente()).thenReturn(patente);
 		
-		//Este test para probarlo hay que cambiar la forma en que se descuenta la plata
-		//Osea en vez de que sea en tiempo real, en tiempo fake jajja
+		
 		app.cargarSaldo(100);
 							
 		app.iniciarEstacionamiento(21);
@@ -199,7 +193,7 @@ public class AplicacionSEMTest {
 		//Verify
 		verify(sem,never()).verificarEstacionamientoVigentePorPatente(patente);
 		verify(sem).verificarEstacionamientoVigentePorCelular(nroDeCelular);
-		//verify(usuario,times(2)).getPatente();falla si no lo comento
+		
 	}
 	@Test
 	public void testSaldoDeAppDentroDeFranjaHoraria() {
@@ -211,10 +205,10 @@ public class AplicacionSEMTest {
 		when(estacionamiento.getHoraInicio()).thenReturn(16);
 		when(estacionamiento.getHoraFin()).thenReturn(18);
 		
-		//app.setSEM(sem2);
+		
 		app.activarModoManual();
 		app.cargarSaldo(100);
-		//app.setHoraFin(18); //Horita a cambiar
+		
 		app.iniciarEstacionamiento(16);
 		app.finalizarEstacionamiento();
 		app.descontarSaldo(estacionamiento);
@@ -248,7 +242,7 @@ public class AplicacionSEMTest {
 		app.iniciarEstacionamiento(16); //Ahora si puede iniciarse
 		
 		//Verify
-		//verify(usuario,times(2)).getPatente();
+		
 		verify(sem,times(2)).verificarEstacionamientoVigentePorPatente(patente);
 		
 	}
