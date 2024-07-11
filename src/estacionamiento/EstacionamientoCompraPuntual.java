@@ -8,6 +8,8 @@ public class EstacionamientoCompraPuntual extends Estacionamiento{
 
 	private CompraPuntual compraPuntual;
 	
+	//Es usado en PuntoDeVenta para la generacion del mismo
+	//Constructor
 	public EstacionamientoCompraPuntual(CompraPuntual compraPuntual, String patente) {
 		this.compraPuntual = compraPuntual;
 		this.patenteDeVehiculo = patente;

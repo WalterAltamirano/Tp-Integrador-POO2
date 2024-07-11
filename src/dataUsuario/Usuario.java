@@ -7,11 +7,13 @@ public class Usuario {
 	Auto auto;
 	AplicacionSEM aplicacion;
 	
+	//Constructor
 	public Usuario(Auto auto, AplicacionSEM aplicacion) {
 		this.auto = auto;
 		this.aplicacion = aplicacion;
 	}
 	
+	//En un punto de venta, punto de venta se encarga de registrarlo.
 	public void estacionamientoCompraPuntual(String patente, int cantidadDeHoras, PuntoDeVenta puntoDeVenta) {
 		puntoDeVenta.registrarEstacionamiento(patente, cantidadDeHoras);
 	}
@@ -20,6 +22,7 @@ public class Usuario {
 		puestoDeCarga.cargarSaldo(aplicacion, saldoACargar);
 	}
 	
+	//A traves de la aplicacion
 	public void estacionamientoPorAplicacion(int horaInicio) {
 		this.aplicacion.iniciarEstacionamiento(horaInicio);
 	}
