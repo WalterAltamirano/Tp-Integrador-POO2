@@ -1,10 +1,16 @@
-package clasesMatias;
+package sistemaEstacionamientoMunicipal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import clasesIan.Estacionamiento;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+import estacionamiento.Estacionamiento;
+import puntoDeVentaYCompras.CargaDeSaldo;
+import puntoDeVentaYCompras.Compra;
+import puntoDeVentaYCompras.CompraPuntual;
+
+import zonaEstacionamientoEInspector.Infraccion;
+import zonaEstacionamientoEInspector.ZonaDeEstacionamiento;
 
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;

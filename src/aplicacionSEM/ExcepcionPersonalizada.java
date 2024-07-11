@@ -1,4 +1,4 @@
-package clasesWalle;
+package aplicacionSEM;
 
 public class ExcepcionPersonalizada extends Exception {
 

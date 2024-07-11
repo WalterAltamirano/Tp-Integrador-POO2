@@ -1,7 +1,9 @@
-package clasesMatias;
+package zonaEstacionamientoEInspector;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import puntoDeVentaYCompras.PuntoDeVenta;
 
 /** Clase que representa una ZonaDeEstacionamiento con un Ispector asignado y su lista de PuntosDeVenta
  * 

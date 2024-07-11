@@ -1,11 +1,14 @@
-package clasesMatias;
+package sistemaEstacionamientoMunicipal;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import clasesIan.Estacionamiento;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+import estacionamiento.Estacionamiento;
+import puntoDeVentaYCompras.Compra;
+import zonaEstacionamientoEInspector.Infraccion;
+import zonaEstacionamientoEInspector.ZonaDeEstacionamiento;
 
 /** Clase que representa el sistema central del SEM, guarda listas de elementos de interes y opera sobre ellas
  * 

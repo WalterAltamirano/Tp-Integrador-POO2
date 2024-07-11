@@ -1,10 +1,10 @@
-package testIan;
+package dataUsuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.*;
 
-import clasesIan.Auto;
+
 
 public class AutoTestCase {
 

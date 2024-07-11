@@ -1,13 +1,12 @@
-package testIan;
+package dataUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.*;
 
-import clasesIan.Auto;
-import clasesIan.Usuario;
-import clasesMatias.PuntoDeVenta;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+
+import puntoDeVentaYCompras.PuntoDeVenta;
 
 public class UsuarioTestCase {
 

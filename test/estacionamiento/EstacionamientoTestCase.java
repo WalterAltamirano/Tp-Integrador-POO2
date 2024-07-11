@@ -1,17 +1,17 @@
-package testIan;
+package estacionamiento;
 
 import org.junit.jupiter.api.*;
+
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 
-import clasesIan.EstacionamientoAplicacion;
-import clasesIan.EstacionamientoCompraPuntual;
-import clasesMatias.Compra;
-import clasesMatias.CompraPuntual;
-import clasesWalle.AplicacionSEM;
+
+import puntoDeVentaYCompras.Compra;
+import puntoDeVentaYCompras.CompraPuntual;
 
 public class EstacionamientoTestCase {
 

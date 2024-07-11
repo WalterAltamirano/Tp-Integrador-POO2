@@ -1,16 +1,20 @@
-package clasesWalle;
+package aplicacionSEM;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.*;
-import clasesIan.EstadoApp;
-import clasesIan.Usuario;
-import clasesMatias.SEM;
+
+import dataUsuario.Usuario;
+import estacionamiento.Estacionamiento;
+import estacionamiento.EstacionamientoAplicacion;
+import estadosAplicacion.Caminando;
+import estadosAplicacion.EnAuto;
+import estadosAplicacion.EstadoApp;
+import estrategiasAplicacion.Modo;
+import estrategiasAplicacion.ModoAutomatico;
+import estrategiasAplicacion.ModoManual;
 import net.bytebuddy.asm.Advice.This;
-import clasesIan.EnAuto;
-import clasesIan.Estacionamiento;
-import clasesIan.EstacionamientoAplicacion;
-import clasesIan.Caminando;
+import sistemaEstacionamientoMunicipal.SEM;
 
 public class AplicacionSEM implements MovementSensor {
 	

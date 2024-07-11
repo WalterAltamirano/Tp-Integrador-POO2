@@ -1,4 +1,4 @@
-package clasesIan;
+package dataUsuario;
 
 public class Auto {
 	private String patente;

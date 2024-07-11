@@ -1,4 +1,4 @@
-package clasesIan;
+package estacionamiento;
 
 import java.time.LocalDateTime;
 
@@ -16,17 +16,18 @@ public class EstacionamientoAplicacion extends Estacionamiento{
 		return this.origenCelular;
 	}
 	
-	
+	@Override
 	public int getHoraFin() {
 		
 		return horaDeFin.getHour();
 	}
-
+	@Override
 	public int getHoraInicio() {
 		
 		return horaDeInicio.getHour();
 	}
 	
+	@Override
 	public void setHoraDeFin(LocalDateTime hora) {
 		this.horaDeFin = hora;
 	}

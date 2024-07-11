@@ -1,10 +1,14 @@
-package testWalle;
+package estrategiasAplicacion;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import clasesIan.*;
-import clasesMatias.*;
-import clasesWalle.*;
+
+import aplicacionSEM.AplicacionSEM;
+
+import estacionamiento.Estacionamiento;
+import estacionamiento.EstacionamientoAplicacion;
+
+import sistemaEstacionamientoMunicipal.SEM;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;

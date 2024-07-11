@@ -1,8 +1,8 @@
-package clasesIan;
+package estadosAplicacion;
 
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
 
-public abstract class EstadoApp {
+public interface EstadoApp {
 	
 	public abstract void manejando(AplicacionSEM aplicacion);
 	public abstract void caminando(AplicacionSEM aplicacion);

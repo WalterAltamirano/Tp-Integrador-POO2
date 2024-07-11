@@ -1,6 +1,8 @@
-package clasesWalle;
+package estrategiasAplicacion;
 
 import java.time.LocalDateTime;
+
+import aplicacionSEM.AplicacionSEM;
 
 public class ModoAutomatico implements Modo{
 

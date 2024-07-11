@@ -1,5 +1,6 @@
-package clasesWalle;
+package estrategiasAplicacion;
 
+import aplicacionSEM.AplicacionSEM;
 
 public class ModoManual implements Modo{
 

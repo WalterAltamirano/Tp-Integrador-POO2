@@ -1,6 +1,6 @@
-package clasesMatias;
+package puntoDeVentaYCompras;
 
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
 
 /** Clase que representa las Compras de Carga de Saldo
  * 

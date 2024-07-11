@@ -1,8 +1,8 @@
-package clasesIan;
+package estadosAplicacion;
 
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
 
-public class EnAuto extends EstadoApp {
+public class EnAuto implements EstadoApp {
 
 	@Override
 	public void manejando(AplicacionSEM aplicacion) {

@@ -1,4 +1,6 @@
-package clasesWalle;
+package estrategiasAplicacion;
+
+import aplicacionSEM.AplicacionSEM;
 
 public interface Modo {
 	

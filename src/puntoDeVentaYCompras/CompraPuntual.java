@@ -1,4 +1,4 @@
-package clasesMatias;
+package puntoDeVentaYCompras;
 
 /** Clase que representa las Compras de horas de Estacionamiento por CompraPuntual
  * 

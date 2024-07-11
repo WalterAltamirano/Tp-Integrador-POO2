@@ -1,4 +1,4 @@
-package clasesMatias;
+package puntoDeVentaYCompras;
 
 
 import java.time.LocalDate;

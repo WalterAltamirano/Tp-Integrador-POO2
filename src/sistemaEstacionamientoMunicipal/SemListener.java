@@ -1,6 +1,7 @@
-package clasesMatias;
+package sistemaEstacionamientoMunicipal;
 
-import clasesIan.Estacionamiento;
+import estacionamiento.Estacionamiento;
+import puntoDeVentaYCompras.Compra;
 
 /** Interfaz que deberan implementar los distintos organizmos interesados en recibir actualizaciones
  * acerca de los cambios ocurridos en el SEM 

@@ -1,11 +1,19 @@
-package testWalle;
+package aplicacionSEM;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import clasesIan.*;
-import clasesMatias.*;
-import clasesWalle.*;
+
+
+import dataUsuario.Usuario;
+import estacionamiento.Estacionamiento;
+import estacionamiento.EstacionamientoAplicacion;
+import estadosAplicacion.EnAuto;
+import estadosAplicacion.EstadoApp;
+import estrategiasAplicacion.Modo;
+import estrategiasAplicacion.ModoAutomatico;
+import estrategiasAplicacion.ModoManual;
+import sistemaEstacionamientoMunicipal.SEM;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;

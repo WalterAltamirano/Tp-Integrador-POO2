@@ -1,8 +1,8 @@
-package clasesIan;
+package estacionamiento;
 
 import java.time.LocalDateTime;
 
-import clasesMatias.CompraPuntual;
+import puntoDeVentaYCompras.CompraPuntual;
 
 public class EstacionamientoCompraPuntual extends Estacionamiento{
 

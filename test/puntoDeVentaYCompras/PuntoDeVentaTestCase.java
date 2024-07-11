@@ -1,12 +1,14 @@
-package clasesMatias;
+package puntoDeVentaYCompras;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import clasesIan.Auto;
-import clasesIan.EstacionamientoCompraPuntual;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+import dataUsuario.Auto;
+import estacionamiento.EstacionamientoCompraPuntual;
+
+import sistemaEstacionamientoMunicipal.SEM;
 
 import org.junit.jupiter.api.BeforeEach;
 

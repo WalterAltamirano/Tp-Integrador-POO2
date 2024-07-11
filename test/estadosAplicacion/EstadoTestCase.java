@@ -1,16 +1,14 @@
-package testIan;
+package estadosAplicacion;
 
 import org.junit.jupiter.api.*;
 
-import clasesIan.Auto;
-import clasesIan.Caminando;
-import clasesIan.EnAuto;
-import clasesIan.EstadoApp;
-import clasesIan.Usuario;
-import clasesWalle.AplicacionSEM;
-import clasesWalle.Modo;
-import clasesWalle.ModoAutomatico;
-import clasesWalle.ModoManual;
+import aplicacionSEM.AplicacionSEM;
+import dataUsuario.Auto;
+import dataUsuario.Usuario;
+
+import estrategiasAplicacion.Modo;
+import estrategiasAplicacion.ModoAutomatico;
+import estrategiasAplicacion.ModoManual;
 
 import static org.mockito.Mockito.*;
 

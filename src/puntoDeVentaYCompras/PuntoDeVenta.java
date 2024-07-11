@@ -1,9 +1,10 @@
-package clasesMatias;
+package puntoDeVentaYCompras;
 
 
-import clasesIan.Estacionamiento;
-import clasesIan.EstacionamientoCompraPuntual;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+import estacionamiento.Estacionamiento;
+import estacionamiento.EstacionamientoCompraPuntual;
+import sistemaEstacionamientoMunicipal.SEM;
 
 /** Clase que representa el PuntoDeVenta en que se puede cargarSaldo para las Aplicaciones SEM
  * 

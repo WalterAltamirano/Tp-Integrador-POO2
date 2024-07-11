@@ -1,6 +1,7 @@
-package clasesMatias;
+package zonaEstacionamientoEInspector;
 
-import clasesIan.Auto;
+import dataUsuario.Auto;
+import sistemaEstacionamientoMunicipal.SEM;
 
 /** Clase que representa al Inspector asignado a una ZonaDeEstacionamiento
  * 

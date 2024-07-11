@@ -1,7 +1,7 @@
-package clasesIan;
+package dataUsuario;
 
-import clasesMatias.PuntoDeVenta;
-import clasesWalle.AplicacionSEM;
+import aplicacionSEM.AplicacionSEM;
+import puntoDeVentaYCompras.PuntoDeVenta;
 
 public class Usuario {
 	Auto auto;
